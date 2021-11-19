@@ -1,0 +1,263 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200&display=swap');
+*, *:before, *:after {
+    /* border: 2px solid red; */
+    box-sizing: border-box;
+}
+
+body {
+    background-color: rgb(237, 242, 249);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1.8rem;
+}
+
+#heading1 {
+    font-family: 'Poppins', sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+#mainContainer {
+    display: flex;
+    flex-direction: column;
+    column-gap: 40px;
+    background-color: rgb(210, 227, 252);
+    padding: 30px;
+    border-radius: 30px;
+    transition: all 300ms ease;
+}
+
+
+#mainContainer:active , #mainContainer:hover{
+    box-shadow: 5px 10px 15px #888888;
+}
+
+#formContainer {
+    display: flex;
+    align-items: center;
+    column-gap: 40px;
+    padding: 10px;
+}
+
+#form {
+    font-family: 'Poppins', sans-serif;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+::placeholder{
+    font-size: smaller;
+}
+#form input {
+    font-size: 15px;
+    border: none;
+    border-bottom: 1px solid grey;
+    background-color: transparent;
+    color: black;
+    padding: 5px 0px;
+    width: 100%;
+    transition: all 300ms ease;
+}
+
+#form button {
+    cursor: pointer;
+    border: none;
+    background-color: #2d78fae0;
+    color: white;
+    padding: 8px;
+    margin: 0.3rem 0px;
+    width: 100%;
+    border-radius: 5px;
+    transition: all 300ms ease;
+}
+
+#form button:hover {
+    background-color: #2d78fa;
+}
+
+#btnContainer {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    margin-top: 10px;
+}
+
+#form button:focus {
+    outline: none;
+    background-color: #2d78fa;
+}
+
+#form textarea:focus, #form input:focus {
+    outline: none;
+    transform: scale(1.1);
+
+}
+
+
+
+#askAnchor , #forgetAnchor{
+    font-size: 0.8rem;
+    margin-top: 0.8rem;
+    text-align: center;
+    text-decoration: none;
+    color: rgb(65, 70, 77);
+    transition: all 200ms ease;
+}
+#anchorContainer{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center ;
+    row-gap: -5px;
+    width: 100%;
+    margin-top: 1rem;
+
+}
+
+#askAnchor:hover , #forgetAnchor:hover{
+    text-decoration: underline;
+    color: black;
+}
+
+#askAnchor:focus , #forgetAnchor:focus{
+    outline: none;
+    text-decoration: underline;
+    color: black;
+}
+
+#formSvg img {
+    width: 20rem;
+}
+
+
+
+
+
+
+
+
+
+
+
+@media screen and (max-width: 800px) and (min-width: 600px) {
+    body {
+        background-color: rgb(237, 242, 249);
+        padding: 0.3rem;
+    }
+    #heading1 {
+        font-size: 1.5rem;
+    }
+    #mainContainer {
+        column-gap: 0;
+        padding: 10px;
+        border-radius: 25px;
+    }
+    #formContainer {
+        column-gap: 1rem;
+        padding: 10px;
+    }
+    #form {
+        padding: 15px;
+    }
+    #formSvg img {
+        width: 17rem;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+@media screen and (max-width: 599px) and (min-width: 10px) 
+{
+
+
+
+    body {
+        background-color: rgb(210, 227, 252);
+        padding: 0;
+
+    }
+
+    #heading1 {
+        font-size: 1.5rem;
+    }
+
+    
+    #mainContainer {
+        /* border: 2px solid rgb(210, 227, 252); */
+        width: 100%;
+        column-gap: 0px;
+        padding:  2rem 0.2rem ;
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+        row-gap: 15px;
+        box-shadow: 5px 10px 15px #888888;
+    }
+    
+    
+    
+
+    #formContainer {
+        
+        display: flex;
+        justify-content: center;
+        width: 100%;
+        column-gap: 0px;
+        padding: 0px;
+        margin: 0;
+    }
+
+    #form {
+        width: 100%;
+        padding: 0.2rem;
+        margin: 0;
+    }
+
+    #form input {
+        width: 100%;
+        padding: 0.4rem 0px;
+        margin-top: 0.8rem;
+    }
+
+    #break1 , #forgetButton{
+        display: none;
+    }
+
+    #form button {
+        padding: 10px;
+        margin-top: 0px;
+    }
+
+    #forgetAnchor{
+        display: flex;
+        justify-content: center;
+    }
+    #askAnchor{
+        margin-top: 5px;
+    }
+    #anchorContainer{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center ;
+        row-gap: -5px;
+        width: 100%;
+        margin-top: 1rem;
+    }
+
+    #formSvg img {
+        display: none;
+    }
+}
