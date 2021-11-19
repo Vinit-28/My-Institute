@@ -53,4 +53,20 @@
         die("SOME INTERNAL ERROR !!!");
     }
 
+
+    // Function to get a Column Value From a Database //
+    function getColumnValue($databaseConnectionObject, $query, $parameterArray, $parameterTypes, $columnName){
+
+        $result = runQuery($databaseConnectionObject, $query, $parameterArray, $parameterTypes);
+
+        if( $result && $result->num_rows ){
+            $row = $result->fetch_assoc();
+            foreach($row as $col => $val){
+                if( $col == $columnName ) return $val;
+            }
+        }
+        else
+            die("SOME INTERNAL ERROR !!!");
+    }
+
 ?>

@@ -5,6 +5,8 @@
     // Registration of Institute //
     function makeInstituteRegistered($databaseConnectionObject, $instituteId, $instituteName, $instituteEmail, $password){
         
+        $databaseConnectionObject->select_db("App_Database");
+
         $password = password_hash($password, PASSWORD_BCRYPT);
         
         // Registering the Institute in the App Database //
@@ -20,12 +22,17 @@
         
         // Making a TeacherInfo Table which will store all teachers related information // 
         $query = "CREATE TABLE TeacherInfo(
-            teacherId VARCHAR(100) PRIMARY kEY, 
-            teacherName VARCHAR(100), 
-            department VARCHAR(100), 
-            designation VARCHAR(100), 
+            userId VARCHAR(100) PRIMARY kEY, 
+            name VARCHAR(100), 
             email VARCHAR(100), 
-            contact VARCHAR(100)
+            gender VARCHAR(100), 
+            designation VARCHAR(100), 
+            phoneNo VARCHAR(100), 
+            adharCardNo VARCHAR(100), 
+            address VARCHAR(100), 
+            city VARCHAR(100), 
+            state VARCHAR(100),
+            pinCode VARCHAR(100)
             );";
         runQuery($instituteDatabase, $query, [], "");
         
@@ -48,6 +55,40 @@
         //     );";
         // runQuery($instituteDatabase, $query, [], "");
     }
+
+    
+
+    // Registration of a User(Teacher/Student) //
+    function makeTeacherOrStudentRegistered($databaseConnectionObject, $userDetails){
+        
+        $databaseConnectionObject->select_db("App_Database");
+        
+        // Registering the User in the App Database //
+        $query = "INSERT INTO AppUsers(userId, password, email, instituteName, authority, emailVerified) VALUES(?,?,?,?,?,?);";
+        runQuery($databaseConnectionObject, $query, [$userDetails['userId'], $userDetails['password'], $userDetails['email'], $userDetails['instituteName'], $userDetails['designation'], "false"], "ssssss");
+         
+        $query = "INSERT INTO LoggedInUsers(userId, sessionId) VALUES(?,?);";
+        runQuery($databaseConnectionObject, $query, [$userDetails['userId'], "false"], "ss");
+        
+        // Switching to the Specific Institute Database //
+        $databaseConnectionObject->select_db($userDetails['instituteId']);
+        
+        // If the new User is a Teacher //
+        if( $userDetails['designation'] == "teacher" || $userDetails['designation'] == "Teacher" ){
+            
+            $query = "INSERT INTO TeacherInfo(userId, name, email, gender, phoneNo, adharCardNo, address, city, state, pinCode) VALUES(?,?,?,?,?,?,?,?,?,?);";
+            runQuery($databaseConnectionObject, $query, [ $userDetails['userId'], $userDetails['name'], $userDetails['email'], $userDetails['gender'], $userDetails['phoneNo'], $userDetails['adharCardNo'], $userDetails['address'], $userDetails['city'], $userDetails['state'], $userDetails['pincode'] ], "ssssssssss");
+        
+        }
+        // If the new User is a Student //
+        else if( $userDetails['designation'] == "student" || $userDetails['designation'] == "Student" ){
+
+        }
+        
+    }
+
+
+
 
 
     // Checking whether the user is authorized or not (Will be used for login purpose)//
