@@ -151,6 +151,37 @@
     }
 
 
+    // Search Users in the Institute's Database //
+    function searchUsers($databaseConnectionObject, $request){
+
+        $relatedPersons = array();
+
+        // Searching for students //
+        $query = "SELECT * FROM StudentInfo";
+        $result = runQuery($databaseConnectionObject, $query, [], "");
+
+        if( $result && $result->num_rows ){
+            while($row = $result->fetch_assoc()){
+                if( str_contains($request['searchKey'], $row['studentId']) || str_contains($request['searchKey'], $row['studentName']) ||str_contains($request['searchKey'], $row['department']) )
+                    array_push($relatedPersons, $row);
+            }
+        }
+
+        // Searching for teachers //
+        $query = "SELECT * FROM TeacherInfo";
+        $result = runQuery($databaseConnectionObject, $query, [], "");
+
+        if( $result && $result->num_rows ){
+            while($row = $result->fetch_assoc()){
+                if( str_contains($request['searchKey'], $row['teacherId']) || str_contains($request['searchKey'], $row['teacherName']) ||str_contains($request['searchKey'], $row['department']) )
+                    array_push($relatedPersons, $row);
+            }
+        }
+
+        return $relatedPersons;
+    }
+
+
 
 
 
