@@ -1,0 +1,246 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200&display=swap');
+
+*, *:before, *:after {
+    box-sizing: border-box;
+    --fontFamily : Poppins, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    --backgroundColor : #edf2f9;
+    --navigationBarColor : rgb(209, 225, 248);
+    --textColor : #5e6e82;
+    --textHoverColor : #cad0d6;
+    --activeTextColor : #2864c5;
+    --hoverDarkColor : rgb(35, 43, 53);
+    --buttonColor : rgba(44, 124, 229, 0.844);
+    --buttonHover : rgb(44, 123, 229);
+    --formBorder : #d8e2ef;
+    --littleHeadings : #344050;
+    --backgroundDark : #0b1727;
+    --boxShadow : 0 .5rem 1rem rgba(0,0,0,.15) ;
+}
+
+
+
+
+
+
+
+
+/* Forms */
+
+.rootStudentsDiv *{
+    font-family: var(--fontFamily);
+}
+.rootStudentsDiv {
+    box-shadow:  var(--boxShadow);
+    padding: 0.6rem;
+    margin-top: 1.2rem;
+    margin-left: 0.5rem;
+    width: 80%;
+    background-color: #fff;
+    border-radius: 0.5rem;
+    overflow: hidden;
+}
+
+.itemBoxHeading{
+    margin: 0.6rem;
+    font-size:x-large;
+    color: var(--littleHeadings);
+    text-align: center;
+    font-weight: bolder;
+}
+
+
+#itemBoxTabs{
+    display: flex;
+
+}
+#itemBoxTabs .itemTabs{
+    cursor: pointer;
+    padding: 0.2rem 0.8rem;
+    border-top-left-radius: 0.4rem;
+    border-top-right-radius: 0.4rem;
+    transition: 200ms ease;
+}
+
+#itemBoxTable{
+    padding: 0.3rem;
+    height: 82%;
+    overflow: scroll;
+    background-color: var(--backgroundColor);
+}
+
+
+.activeTab{
+    background-color: var(--backgroundColor);
+}
+
+
+
+#studentTable{
+    border-spacing: 0;
+    overflow:scroll;
+    width: 100%;
+}
+
+
+td:hover{
+    box-shadow:inset 3px 3px 10px -3px var(--activeTextColor),inset 2px 5px 6px -5px var(--activeTextColor);
+}
+th , td{
+    cursor: pointer;
+    padding: 0.4rem 0.4rem;
+    border-spacing: 0;
+    border: 2px solid var(--textColor);
+    border-left: none;
+    transition: all 200ms ease;
+}
+.afterRows *{
+    border-bottom: none !important;
+}
+
+.firstBlockOfTable{
+    border: 2px solid var(--textColor);
+    border-left:2px solid var(--textColor);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.forms{
+    padding: 0.6rem;
+    display: grid;
+    grid-template-columns: repeat(2, minmax( 3rem  , 22rem));
+    gap: 10px;
+}
+
+.forms ::placeholder{
+    font-size: 0.8rem;
+    font-weight: bold;
+}
+.forms input{
+    padding: 0.6rem ;
+    font-size: 0.9rem;
+    font-weight: 700;
+    border: 1px solid var(--formBorder);
+    background-color: #fff;
+    border-radius: 0.25rem;
+
+}
+.forms select {
+    padding: 0.6rem;
+    border: 1px solid var(--formBorder);
+    background-color: #fff;
+    border-radius: 0.25rem;
+    text-transform: none;
+    font-size: 0.9rem;
+    font-weight: 700;
+    
+}
+.forms .options{
+    padding: 0px 2px 1px;
+    font-size: 1rem;
+}
+.forms button{
+    padding: 0.6rem;
+    border-radius: 0.25rem;
+    border: none;
+    cursor: pointer;
+    background-color: var(--buttonColor);
+    color: white;
+    font-size: 0.8rem;
+    font-weight: bold;
+    transition: all 300ms ease;
+
+}
+.forms button:hover{
+    background-color: var(--buttonHover);
+}
+.forms input:active , .forms input:focus , .forms select:active , .forms select:focus ,  .forms button:active , .forms button:focus{
+    outline: none;
+}
+
+
+/* Forms */
+
+
+
+
+
+
+
+
+@media screen and (max-width : 6000px) and (min-width : 1200px) 
+{
+    .forms{
+        grid-template-columns: repeat(2, minmax( 3rem  , 22rem));
+    }
+}
+@media screen and (max-width : 1199px) and (min-width : 1001px) 
+{
+    .forms{
+        grid-template-columns: repeat(2, minmax( 3rem  , 17rem));
+    }
+}
+
+@media screen and (max-width : 1000px) and (min-width : 850px) 
+{
+    .forms{
+        grid-template-columns: repeat(2, minmax( 3rem  , 17rem));
+    }    
+
+}
+@media screen and (max-width : 849px) and (min-width : 750px) 
+{
+    .forms{
+        grid-template-columns: repeat(2, minmax( 3rem  , 15rem));
+    }    
+}
+@media screen and (max-width : 749px) and (min-width : 701px) 
+{
+    .forms{
+        grid-template-columns: repeat(2, minmax( 3rem  , 13rem));
+    }    
+}
+
+
+
+
+
+@media screen and (max-width : 700px) and (min-width:80px) 
+{
+
+    .rootStudentsDiv {
+        padding: 0.6rem;
+        margin-top: 1.2rem;
+        margin-left: 0.5rem;
+        margin-right: 0.5rem;        
+        width: 100%;
+    }
+
+    .forms{
+        grid-template-columns: repeat(1, minmax( 3rem  , auto));
+    }    
+    
+}
