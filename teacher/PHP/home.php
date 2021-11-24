@@ -11,7 +11,7 @@
     if( !( isset($_SESSION["isUserLogedIn"]) && isset($_SESSION["userId"]) && isset($_SESSION["sessionId"]) && (isUserOnline($databaseConnectionObject, $_SESSION["userId"], $_SESSION["sessionId"])) ) ){
         
         session_destroy();
-        header('Location: ../../PHP/index.php');
+        header('Location: ../../index.php');
     }
     else{
 ?>
