@@ -37,7 +37,7 @@
     
     
     // Function to execute a SQL query and will return the result //
-    function runQuery($databaseConnectionObject, $query, $parameterArray, $parameterTypes){
+    function runQuery($databaseConnectionObject, $query, $parameterArray, $parameterTypes, $checkAfftectedRows=false){
         
         $stmt = $databaseConnectionObject->prepare($query);
         if( $stmt ){
@@ -47,6 +47,7 @@
             }
             $stmt->execute();
             $result = $stmt->get_result();
+            if( $checkAfftectedRows ) checkAffectedRows($stmt);
             $stmt->close();
             return $result;
         }
@@ -69,4 +70,11 @@
             die("SOME INTERNAL ERROR !!!");
     }
 
+
+    // Function to check whether the previously executed query has changed the Database or Not //
+    function checkAffectedRows($stmt){
+        if( $stmt->affected_rows <= 0 ){
+            die("SOME INTERNAL ERROR !!! Tip - Try with Unique Credentials");
+        }
+    }
 ?>

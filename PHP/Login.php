@@ -59,29 +59,44 @@
            
             e.preventDefault();
             
+            // Creating the XHR Object //
             let xhrObject = new XMLHttpRequest();
             xhrObject.open("POST", "../Server/server.php");
             xhrObject.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            
+            // Creating Some Variables //
             let credentials = {
                 "task" :"login", 
                 "userId" : document.getElementById("userId").value, 
                 "password" : document.getElementById("password").value
             };
+
+
+            // After getting the Response from the Server this Function will be executed //
             xhrObject.onload = function(){
                 
                 if( this.status != 200 ){
                     alert("Something Went Wrong!");
                 }
                 else{
-                    let response = JSON.parse(this.responseText.replace(/(\r\n|\n|\r)/gm, ""));
-                    if(response.result == "Failed"){
-                        alert(response.message);
+                    this.responseText = this.responseText.replace(/(\r\n|\n|\r)/gm, "");
+                    
+                    if(this.responseText.includes("SOME INTERNAL ERROR !!!")){
+                        alert("Something Went Wrong!");
                     }
                     else{
-                        window.location = "./UserIndex.php";
+                        let response = JSON.parse(this.responseText);
+                        if(response.result == "Failed"){
+                            alert(response.message);
+                        }
+                        else{
+                            window.location = "./UserIndex.php";
+                        }
                     }
                 }
             };
+
+            // Making the Request //
             xhrObject.send("request="+JSON.stringify(credentials));
         }
         

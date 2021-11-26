@@ -103,7 +103,7 @@
 
                     <!-- This is for when a person is found ! -->
                     <div class="suggestedPerson">
-                        <div class="suggestedPersonProfile"><img src="./profile.jpg" alt=""></div>
+                        <div class="suggestedPersonProfile"><img src="../IMAGES/profile.jpg" alt=""></div>
                         <div class="suggestedPersonDetails">
                             <span class="suggestedPersonID">1001</span>
                             <span class="suggestedPersonName">Aman Khushalani</span>
@@ -165,30 +165,30 @@
                 <h3 class="boxHeading">Add Person Pannel</h3>
             </div>
             <form id="addstudentform" action="" method="post" class="forms">
-                <input required autocomplete="off" name="personID" type="text" placeholder="*Person ID">
-                <input required autocomplete="off" name="personName" type="text" placeholder="*Person Name">
-                <input required autocomplete="off" name="personPassword" type="password" placeholder="*Password">
-                <input required autocomplete="off" name="personEmail" type="email" placeholder="*Person Email">
+                <input required autocomplete="off" id="add-personId" type="text" placeholder="*Person ID">
+                <input required autocomplete="off" id="add-name" type="text" placeholder="*Person Name">
+                <input required autocomplete="off" id="add-password" type="password" placeholder="*Password">
+                <input required autocomplete="off" id="add-email" type="email" placeholder="*Person Email">
                 
-                <select id="gender" name="personGender">
-                    <option class="options" value="" selected="selected">Gender</option>
+                <select id="add-gender" name="personGender">
+                    <option class="options" value="gender" selected="selected">Gender</option>
                     <option class="options" value="male">Male</option>
                     <option class="options" value="female">Female</option>
                     <option class="options" value="other">Other</option>
                 </select>
-                <select id="role" name="personRole">
-                    <option class="options" value="" selected="selected">Designation</option>
-                    <option class="options" value="female">Teacher</option>
-                    <option class="options" value="female">Student</option>
+                <select id="add-designation" name="personRole">
+                    <option class="options" value="designation" selected="selected">Designation</option>
+                    <option class="options" value="teacher">Teacher</option>
+                    <option class="options" value="student">Student</option>
                 </select>
 
-                <input required autocomplete="off" name="personPhone" type="number" placeholder="*Phone No.">
-                <input required autocomplete="off" name="personAadhar" type="number" placeholder="*Aadhar Card No.">
-                <input required autocomplete="off" name="personAddress" type="text" placeholder="*Address">
-                <input required autocomplete="off" name="personCity" type="text" placeholder="*City">
-                <input required autocomplete="off" name="personState" type="text" placeholder="*State">
-                <input required autocomplete="off" name="personPin" type="number" placeholder="*PIN Code">
-                <button type="submit" name="submitPerson">Submit Details</button>
+                <input required autocomplete="off" id="add-phoneNo" type="number" placeholder="*Phone No.">
+                <input required autocomplete="off" id="add-adharCardNo" type="number" placeholder="*Aadhar Card No.">
+                <input required autocomplete="off" id="add-address" type="text" placeholder="*Address">
+                <input required autocomplete="off" id="add-city" type="text" placeholder="*City">
+                <input required autocomplete="off" id="add-state" type="text" placeholder="*State">
+                <input required autocomplete="off" id="add-pinCode" type="number" placeholder="*PIN Code">
+                <button type="submit" name="submitPerson" id="submitAddPersonForm">Submit Details</button>
             </form>
         </div>
         
@@ -438,6 +438,7 @@
 
 
     <p id="userId" style="display: none;"><?php echo $_SESSION['userId'];?></p>
+    <p id="sessionId" style="display: none;"><?php echo $_SESSION['sessionId'];?></p>
 
 </body>
 
@@ -651,6 +652,8 @@
     document.getElementById('logout').addEventListener('click', logoutUser);
 
 </script>
+
+<script src="../JS/main.js"></script>
 
 <?php
     }

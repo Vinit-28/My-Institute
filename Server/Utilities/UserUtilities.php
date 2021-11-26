@@ -11,10 +11,10 @@
         
         // Registering the Institute in the App Database //
         $query = "INSERT INTO AppUsers(userId, password, email, instituteName, authority, emailVerified) VALUES(?,?,?,?,?,?);";
-        $result = runQuery($databaseConnectionObject, $query, [$instituteId, $password, $instituteEmail, $instituteName, "root", "false"], "ssssss");
+        $result = runQuery($databaseConnectionObject, $query, [$instituteId, $password, $instituteEmail, $instituteName, "root", "false"], "ssssss", true);
         
         $query = "INSERT INTO LoggedInUsers(userId, sessionId) VALUES(?,?);";
-        $result = runQuery($databaseConnectionObject, $query, [$instituteId, "offline"], "ss");
+        $result = runQuery($databaseConnectionObject, $query, [$instituteId, "offline"], "ss", true);
         
         
         // Making a seperate database for the  institute //
@@ -26,7 +26,6 @@
             name VARCHAR(100), 
             email VARCHAR(100), 
             gender VARCHAR(100), 
-            designation VARCHAR(100), 
             phoneNo VARCHAR(100), 
             adharCardNo VARCHAR(100), 
             address VARCHAR(100), 
@@ -65,11 +64,13 @@
         
         // Registering the User in the App Database //
         $query = "INSERT INTO AppUsers(userId, password, email, instituteName, authority, emailVerified) VALUES(?,?,?,?,?,?);";
-        runQuery($databaseConnectionObject, $query, [$userDetails['userId'], $userDetails['password'], $userDetails['email'], $userDetails['instituteName'], $userDetails['designation'], "false"], "ssssss");
+        runQuery($databaseConnectionObject, $query, [$userDetails['userId'], $userDetails['password'], $userDetails['email'], $userDetails['instituteName'], $userDetails['designation'], "false"], "ssssss", true);
          
+
         $query = "INSERT INTO LoggedInUsers(userId, sessionId) VALUES(?,?);";
-        runQuery($databaseConnectionObject, $query, [$userDetails['userId'], "false"], "ss");
+        runQuery($databaseConnectionObject, $query, [$userDetails['userId'], "offline"], "ss", true);
         
+
         // Switching to the Specific Institute Database //
         $databaseConnectionObject->select_db($userDetails['instituteId']);
         
@@ -77,8 +78,7 @@
         if( $userDetails['designation'] == "teacher" || $userDetails['designation'] == "Teacher" ){
             
             $query = "INSERT INTO TeacherInfo(userId, name, email, gender, phoneNo, adharCardNo, address, city, state, pinCode) VALUES(?,?,?,?,?,?,?,?,?,?);";
-            runQuery($databaseConnectionObject, $query, [ $userDetails['userId'], $userDetails['name'], $userDetails['email'], $userDetails['gender'], $userDetails['phoneNo'], $userDetails['adharCardNo'], $userDetails['address'], $userDetails['city'], $userDetails['state'], $userDetails['pincode'] ], "ssssssssss");
-        
+            runQuery($databaseConnectionObject, $query, [ $userDetails['userId'], $userDetails['name'], $userDetails['email'], $userDetails['gender'], $userDetails['phoneNo'], $userDetails['adharCardNo'], $userDetails['address'], $userDetails['city'], $userDetails['state'], $userDetails['pinCode'] ], "ssssssssss", true);
         }
         // If the new User is a Student //
         else if( $userDetails['designation'] == "student" || $userDetails['designation'] == "Student" ){
@@ -139,7 +139,7 @@
     function makeUserOnline($databaseConnectionObject, $userId, $sessionId){
         
         $query = "UPDATE LoggedInUsers SET sessionId = ? WHERE userId = ?;";
-        runQuery($databaseConnectionObject, $query, [$sessionId, $userId], "ss");
+        runQuery($databaseConnectionObject, $query, [$sessionId, $userId], "ss", true);
     }
 
 
@@ -147,7 +147,7 @@
     function makeUserOffline($databaseConnectionObject, $userId){
 
         $query = "UPDATE LoggedInUsers SET sessionId = ? WHERE userId = ?;";
-        runQuery($databaseConnectionObject, $query, ["offline", $userId], "ss");
+        runQuery($databaseConnectionObject, $query, ["offline", $userId], "ss", true);
     }
 
 
