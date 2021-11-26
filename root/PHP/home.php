@@ -24,17 +24,13 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- <link rel="stylesheet" href="mynavbar.css"> -->
-    <!-- <link rel="stylesheet" href="./mynavigationbar.css"> -->
-    <!-- <link rel="stylesheet" href="./mainPage.css"> -->
-    <!-- <link rel="stylesheet" href="./searchBar.css"> -->
-    <!-- <link rel="stylesheet" href="./progress.css"> -->
     <link rel="stylesheet" href="../CSS/mynavbar.css">
     <link rel="stylesheet" href="../CSS/mynavigationbar.css">
     <link rel="stylesheet" href="../CSS/mainPage.css">
     <link rel="stylesheet" href="../CSS/searchBar.css">
     <link rel="stylesheet" href="../CSS/progress.css">
     <link rel="stylesheet" href="../CSS/formsCss.css">
+    <link rel="stylesheet" href="../CSS/downloads.css">
     <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
     <title>Root Dashboard</title>
 </head>
@@ -73,7 +69,7 @@
                 <i class='mynavigationItemIcon bx bx-home'></i>
                 <span class="mynavigationItemName">Dashboard</span>
             </div>
-            <div class="mynavigationItem" value="#div2" >
+            <div class="mynavigationItem" value="#div2">
                 <i class='mynavigationItemIcon bx bx-search'></i>
                 <span class="mynavigationItemName">Search Person</span>
             </div>
@@ -85,15 +81,14 @@
                 <i class='mynavigationItemIcon bx bxs-user-rectangle'></i>
                 <span class="mynavigationItemName">Add Person</span>
             </div>
-            <div class="mynavigationItem">
+            <div class="mynavigationItem" value="#div5">
                 <i class='mynavigationItemIcon bx bx-laptop'></i>
-                <span class="mynavigationItemName">Live_Classes</span>
+                <span class="mynavigationItemName">Launch Class</span>
             </div>
-            <div class="mynavigationItem">
+            <div class="mynavigationItem" value="#div6">
                 <i class='mynavigationItemIcon bx bx-download'></i>
                 <span class="mynavigationItemName">Download</span>
             </div>
-            
         </div>
 
         <div id="div2" style="display: none;">
@@ -103,12 +98,12 @@
                     <input type="search" name="search" id="" placeholder="Search person..." autocomplete="OFF">
                     <button type="submit"><i class='mynavigationItemIcon bx bx-search'></i></button>
                 </form>
-                    
+
                 <div id="searchResults" style="display: none;">
-                    
+
                     <!-- This is for when a person is found ! -->
                     <div class="suggestedPerson">
-                        <div class="suggestedPersonProfile"><img src="../IMAGES/profile.jpg" alt=""></div>
+                        <div class="suggestedPersonProfile"><img src="./profile.jpg" alt=""></div>
                         <div class="suggestedPersonDetails">
                             <span class="suggestedPersonID">1001</span>
                             <span class="suggestedPersonName">Aman Khushalani</span>
@@ -119,19 +114,20 @@
                     <!-- OR OR OR OR OR -->
 
                     <!-- This is for else part if could not found anything ! -->
-                    <div id="notFound" style="color: red;">Couldn't find anything ! (Try again using relevant keywords.)</div>
+                    <div id="notFound" style="color: red;">Couldn't find anything ! (Try again using relevant keywords.)
+                    </div>
                 </div>
 
-                <div id="selectedPersonProfile"  class="selectedFormsDiv formsDiv" style="width: 100%;">
+                <div id="selectedPersonProfile" class="selectedFormsDiv" style="width: 100%; display: none; ">
                     <div id="profileimgdiv">
-                        <img id="selectedImg" src="../IMAGES/profile.jpg" alt="" >
+                        <img id="selectedImg" src="../IMAGES/profile.jpg" alt="">
                     </div>
-                    <form action="" method="post" class="forms" id="selectedProfileFrom">
+                    <form action="" method="post" class="forms">
                         <input required autocomplete="off" name="personID" type="text" placeholder="*Person ID">
                         <input required autocomplete="off" name="personName" type="text" placeholder="*Person Name">
                         <input required autocomplete="off" name="personEmail" type="email" placeholder="*Person Email">
                         <input required autocomplete="off" name="personEmail" type="text" placeholder="*Person Class">
-                        
+
                         <select id="gender" name="personGender">
                             <option class="options" value="" selected="selected">Gender</option>
                             <option class="options" value="male">Male</option>
@@ -143,9 +139,10 @@
                             <option class="options" value="female">Teacher</option>
                             <option class="options" value="female">Student</option>
                         </select>
-        
+
                         <input required autocomplete="off" name="personPhone" type="number" placeholder="*Phone No.">
-                        <input required autocomplete="off" name="personAadhar" type="number" placeholder="*Aadhar Card No.">
+                        <input required autocomplete="off" name="personAadhar" type="number"
+                                placeholder="*Aadhar Card No.">
                         <input required autocomplete="off" name="personAddress" type="text" placeholder="*Address">
                         <input required autocomplete="off" name="personCity" type="text" placeholder="*City">
                         <input required autocomplete="off" name="personState" type="text" placeholder="*State">
@@ -154,13 +151,13 @@
                         <button type="submit" name="submitPerson">Go Back </button>
                     </form>
                 </div>
-                
+
 
             </div>
 
         </div>
 
-                
+
         <!-- Add Person Div -->
         
         <div id="div4" about="addStudent" class="formsDiv" style="display: none;">
@@ -198,12 +195,250 @@
         <!-- Add Person Div End -->
 
 
-    </div>
+        <!-- Live Class Section -->
+
+        <div id="div5" style="display: none;">
+            <!-- <div id="div5" > -->
+            <div class="boxHeadingDiv">
+                <h3 class="boxHeading">Live Classes</h3>
+            </div>
+            <div id="downloads">
+                <div id="downloadOptionContainer">
+                    <button onclick="changeLiveClassForm()" class="downloadOptions">Launch Class</button>
+                    <button class="downloadOptions">Delete Class</button>
+                </div>
+
+                <div id="liveClassContainer">
+
+                    <!-- This is a whole live class form -->
+                    <form class="classItem" action="" method="post">
+                        <div class="classSelector">
+                            <input type="checkbox" name="">
+                            <div class="classHeading">C++</div>
+                            &nbsp;&nbsp;&nbsp;
+                            <div class="hostName">(Tarun Sharma)</div>
+                        </div>
+                        <div class="classDescription">
+                            <div class="classTitle">Oop's</div>
+                            <ul class="classSubtopics">
+                                <p>Polymorphism, Encapsulation , Objects</p>
+                                <div class="classDate">Date :- 25-Nov-2021</div>
+                                <div class="classTime">Timing :- 10:00 AM to 11:00 AM</div>
+                            </ul>
+                        </div>
+
+                        <div style=" display: flex; text-align: center; justify-content: center;">
+                            <a href="" class="classJoinButton">Join Class</a>
+                        </div>
+                    </form>
+                    <form class="classItem" action="" method="post">
+                        <div class="classSelector">
+                            <input type="checkbox" name="">
+                            <div class="classHeading">C++</div>
+                            &nbsp;&nbsp;&nbsp;
+                            <div class="hostName">(Tarun Sharma)</div>
+                        </div>
+                        <div class="classDescription">
+                            <div class="classTitle">Oop's</div>
+                            <ul class="classSubtopics">
+                                <p>Polymorphism, Encapsulation , Objects</p>
+                                <div class="classDate">Date :- 25-Nov-2021</div>
+                                <div class="classTime">Timing :- 10:00 AM to 11:00 AM</div>
+                            </ul>
+                        </div>
+
+                        <div style=" display: flex; text-align: center; justify-content: center;">
+                            <a href="" class="classJoinButton">Join Class</a>
+                        </div>
+                    </form>
+                    <form class="classItem" action="" method="post">
+                        <div class="classSelector">
+                            <input type="checkbox" name="">
+                            <div class="classHeading">C++</div>
+                            &nbsp;&nbsp;&nbsp;
+                            <div class="hostName">(Tarun Sharma)</div>
+                        </div>
+                        <div class="classDescription">
+                            <div class="classTitle">Oop's</div>
+                            <ul class="classSubtopics">
+                                <p>Polymorphism, Encapsulation , Objects</p>
+                                <div class="classDate">Date :- 25-Nov-2021</div>
+                                <div class="classTime">Timing :- 10:00 AM to 11:00 AM</div>
+                            </ul>
+                        </div>
+
+                        <div style=" display: flex; text-align: center; justify-content: center;">
+                            <a href="" class="classJoinButton">Join Class</a>
+                        </div>
+                    </form>
+                    <form class="classItem" action="" method="post">
+                        <div class="classSelector">
+                            <input type="checkbox" name="">
+                            <div class="classHeading">C++</div>
+                            &nbsp;&nbsp;&nbsp;
+                            <div class="hostName">(Tarun Sharma)</div>
+                        </div>
+                        <div class="classDescription">
+                            <div class="classTitle">Oop's</div>
+                            <ul class="classSubtopics">
+                                <p>Polymorphism, Encapsulation , Objects</p>
+                                <div class="classDate">Date :- 25-Nov-2021</div>
+                                <div class="classTime">Timing :- 10:00 AM to 11:00 AM</div>
+                            </ul>
+                        </div>
+
+                        <div style=" display: flex; text-align: center; justify-content: center;">
+                            <a href="" class="classJoinButton">Join Class</a>
+                        </div>
+                    </form>
+                    <form class="classItem" action="" method="post">
+                        <div class="classSelector">
+                            <input type="checkbox" name="">
+                            <div class="classHeading">C++</div>
+                            &nbsp;&nbsp;&nbsp;
+                            <div class="hostName">(Tarun Sharma)</div>
+                        </div>
+                        <div class="classDescription">
+                            <div class="classTitle">Oop's</div>
+                            <ul class="classSubtopics">
+                                <p>Polymorphism, Encapsulation , Objects</p>
+                                <div class="classDate">Date :- 25-Nov-2021</div>
+                                <div class="classTime">Timing :- 10:00 AM to 11:00 AM</div>
+                            </ul>
+                        </div>
+
+                        <div style=" display: flex; text-align: center; justify-content: center;">
+                            <a href="" class="classJoinButton">Join Class</a>
+                        </div>
+                    </form>
+                    <form class="classItem" action="" method="post">
+                        <div class="classSelector">
+                            <input type="checkbox" name="">
+                            <div class="classHeading">C++</div>
+                            &nbsp;&nbsp;&nbsp;
+                            <div class="hostName">(Tarun Sharma)</div>
+                        </div>
+                        <div class="classDescription">
+                            <div class="classTitle">Oop's</div>
+                            <ul class="classSubtopics">
+                                <p>Polymorphism, Encapsulation , Objects</p>
+                                <div class="classDate">Date :- 25-Nov-2021</div>
+                                <div class="classTime">Timing :- 10:00 AM to 11:00 AM</div>
+                            </ul>
+                        </div>
+
+                        <div style=" display: flex; text-align: center; justify-content: center;">
+                            <a href="" class="classJoinButton">Join Class</a>
+                        </div>
+                    </form>
+                    <form class="classItem" action="" method="post">
+                        <div class="classSelector">
+                            <input type="checkbox" name="">
+                            <div class="classHeading">C++</div>
+                            &nbsp;&nbsp;&nbsp;
+                            <div class="hostName">(Tarun Sharma)</div>
+                        </div>
+                        <div class="classDescription">
+                            <div class="classTitle">Oop's</div>
+                            <ul class="classSubtopics">
+                                <p>Polymorphism, Encapsulation , Objects</p>
+                                <div class="classDate">Date :- 25-Nov-2021</div>
+                                <div class="classTime">Timing :- 10:00 AM to 11:00 AM</div>
+                            </ul>
+                        </div>
+
+                        <div style=" display: flex; text-align: center; justify-content: center;">
+                            <a href="" class="classJoinButton">Join Class</a>
+                        </div>
+                    </form>
+                    <!-- This is a whole live class form End-->
+                    
+                </div>
+
+
+                <div id="liveClassLaunchContainer" style="display: none;">
+
+                    <form action="" class="forms">
+                        <input required autocomplete="OFF" type="text" placeholder="Host Name" name="hostName">
+                        <input required autocomplete="OFF" type="text" placeholder="Subject Name" name="subjectName">
+                        <input required autocomplete="OFF" type="text" placeholder="Topic Name" name="topicName">
+                        <input required autocomplete="OFF" type="text" placeholder="Topic Description"
+                                name="topicDescription">
+
+                        <div class="timeDiv">
+                            <label for="">From:- </label>
+                            <input required autocomplete="OFF" type="time" name="startingTime">
+                            <label for="">Till:- </label>
+                            <input required autocomplete="OFF" type="time" name="endingTime">
+                        </div>
+
+                        <input required autocomplete="OFF" type="date" name="classDate" style="width: 100%;">
+                        <input required autocomplete="OFF" type="url" placeholder="Joining Link" name="classLink">
+                        <select name="classForClass">
+                            <option value="">BCA 1st Yr.</option>
+                            <option value="">BCA 2nd Yr.</option>
+                            <option value="">BCA 3rd Yr.</option>
+                        </select>
+                        <button type="submit">Upload</button>
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Live Class Section END -->
+
+
+        <!-- Download Section Div -->
         
+        <div id="div6" style="display: none;">
+            <div class="boxHeadingDiv">
+                <h3 class="boxHeading">Downloads</h3>
+            </div>
+            <div id="downloads">
+                <div id="downloadOptionContainer">
+                    <button id="addFileButton" onclick="changeForm()" class="downloadOptions">Add File</button>
+                    <button class="downloadOptions" onclick="changeForm()">Show Files</button>
+                    <button class="downloadOptions">Delete File</button>
+                </div>
+                <div id="downloadContainer">
+
+                    <form id="downloadFileForm" action="" method="post" >
+                        
+                        <div class="containerItem">
+                            <input type="checkbox" name="" id="">
+                            <a href="">File 1</a>
+                        </div>
+                    </form>
+
+                    <form id="addFileForm" action="" method="post" style="display: none;">
+
+                        <input required autocomplete="OFF" type="text" placeholder="File Title" >
+                        <input type="file">
+                        <select name="visibleTo" id="">
+                            <option selected value="all">Everyone</option>
+                            <option value="teachers">Only Teachers</option>
+                            <option value="students">Only Students</option>
+                        </select>
+                        <button type="submit">Upload File</button>
+
+                    </form>
+
+                </div>
+
+            </div>
+            
+        </div>
+        
+        <!-- Add Person Div End -->
+
+    </div>
+
 
     <p id="userId" style="display: none;"><?php echo $_SESSION['userId'];?></p>
 
-        
 </body>
 
 </html>
@@ -215,79 +450,116 @@
 <script>
 
 
-    $("#mynavigationBar").height( $(window).height() - 100);
-    if($(window).width() >= 701)
-    {
-        $("#searchResults").height( $(window).height() * 65/100);
-        $("#selectedPersonProfile").height( $(window).height() * 65/100);
-    }
-    else
-    {
-        $("#searchResults").height( $(window).height()  * 80/100);
-        // $("#selectedPersonProfile").height( $(window).height()  * 80/100);
-    }
-    
+    let windowWidth = $(window).width();
 
-    let reloaded = false;
-    $(window).resize(function () 
-    {
-        if($(window).width() <= 700)
-        {
-            setTimeout(function(){
-                $("#mynavigationBar").css({"height" : "0px"});
-            },50);
 
-            if(reloaded == true)
-            {
-                console.log("2");
+    $("#mynavigationBar").height($(window).height());
+
+    if (windowWidth >= 701) {
+
+        $($("#mynavigationBar").children()[0]).css("margin-top", $("#mynavbar").height() * 22 / 100);
+        $("#mynavigationBar").height($(window).height() * 88 / 100);
+
+        $("#downloads").height($(window).height() * 65 / 100);
+        $("#downloadContainer").height($("#downloads").height() * 95 / 100);
+        $("#searchResults").height($(window).height() * 65 / 100);
+    }
+    else {
+        $($("#mynavigationBar").children()[0]).css("margin-top", $("#mynavbar").height() * 23 / 100);
+        $("#downloadContainer").height($(window).height() * 60 / 100);
+        $("#searchResults").height($(window).height() * 80 / 100);
+    }
+
+
+    $(window).resize(function () {
+        if (windowWidth <= 700 && windowWidth >= 697) {
                 window.location.reload("true");
-                reloaded = false;
-            }
         }
-        else
+        else if (windowWidth >= 701 && windowWidth <= 704) {
+                window.location.reload("true");
+        }
+        if (windowWidth > 700)
         {
-            $("#mynavigationBar").css("width" ,"10rem");
-            $("#mynavigationBar").css({"height" : $(window).height()+20+"px"});
-            reloaded = true;
-
+            if (windowWidth <= 849 && windowWidth >= 701) {
+                $("#mynavigationBar").css("width", "12rem");
+            }
+            else {
+                $("#mynavigationBar").css("width", "13rem");
+            }
+            $("#mynavigationBar").css({ "height": $(window).height() * 88 / 100, "position": "relative" });
+            $("#searchResults").height($(window).height() - ($(window).height() * 35 / 100));
         }
-        if($(window).width() >= 701)
-            $("#searchResults").height( $(window).height() - ($(window).height() * 35/100));
-
         
+
+
     });
-    
+
+
     let lastActiveItem = $("#item1");
 
-    function manipulate(person){
+    function manipulate(person) {
 
         $(lastActiveItem).removeClass("activeItem");
-        $($(lastActiveItem).attr("value")).css("display","none");
-        
+        $($(lastActiveItem).attr("value")).css("display", "none");
+
         $(person).addClass("activeItem");
-        $($(person).attr("value")).css("display","block");
-        
-        
+        $($(person).attr("value")).css("display", "block");
+
+
         lastActiveItem = $(person);
     }
-    $(".mynavigationItem").click(function(){
+    $(".mynavigationItem").click(function () {
         manipulate($(this));
     });
+
+
+
+
+    // Download File Button Handeler
+    let currentForm = "#downloadFileForm";
+    let previousForm = "#addFileForm";
+    function changeForm() {
+        $(currentForm).css("display", "none");
+        $(previousForm).css("display", "block");
+        let temp = previousForm;
+        previousForm = currentForm;
+        currentForm = temp;
+    };
+    // Download File Button Handeler End
+
+
+    // Launch class Button Handeler
+    let liveClassPreviousForm = "#liveClassLaunchContainer";
+    let liveClassCurrentForm = "#liveClassContainer";
+
+    function changeLiveClassForm() {
+        window.open(
+
+            'https://meet.google.com/',
+            '_blank'
+        );
+
+        $(liveClassCurrentForm).css("display", "none");
+        $(liveClassPreviousForm).css("display", "block");
+        let temp = liveClassPreviousForm;
+        liveClassPreviousForm = liveClassCurrentForm;
+        liveClassCurrentForm = temp;
+    };
+    // Launch class Button Handeler END
+
 
     let position = false;
     let navBarWidth = $("#mynavigationBar").css("width");
     let btn = document.querySelector('#mytoggleButton');
-    
-    $("#mytoggleButton").click(function()
-    {      
-        
-        if(position)
-        {
+
+    $("#mytoggleButton").click(function () {
+
+        if (position) {
 
             btn.classList.remove('cross');
             setTimeout(function () { btn.classList.remove('open') }, 200);
 
-            
+
             if($(window).width()<=700)
             {
                 $("#mynavigationBar").css({"height" : "0px"});
@@ -295,24 +567,21 @@
                     $("#mynavigationBar").css({"transform": "translateY(-100%)"});
                 },500);
             }
-            else
-            {
-                
-                $("#mynavigationBar").animate({"width" : navBarWidth },10);
+            else {
+
+                $("#mynavigationBar").animate({ "width": navBarWidth }, 10);
 
 
-                setTimeout(function()
-                {
-                    $(".mynavigationItemName").css("display" , "flex" );
+                setTimeout(function () {
+                    $(".mynavigationItemName").css("display", "flex");
                 }, 200);
-                
-                setTimeout(function()
-                {
+
+                setTimeout(function () {
                     $(".mynavigationItemName").css({
-                        "transform" : "translateX(0%)",
-                        "opacity" : "1"
+                        "transform": "translateX(0%)",
+                        "opacity": "1"
                     });
-                } , 300);
+                }, 300);
 
             }
 
@@ -320,12 +589,10 @@
 
 
         }
-        else
-        {
-            console.log("opened");
+        else {
+            
             btn.classList.add('open');
             setTimeout(function () { btn.classList.add('cross') }, 200);
-
             if($(window).width()<=700)
             {
                 setTimeout(function(){
@@ -334,29 +601,29 @@
                 },50);
 
             }
-            else
-            {
+            else {
                 navBarWidth = $("#mynavigationBar").css("width");
 
 
                 $(".mynavigationItemName").css({
-                    "transform" : "translateX(-300%)",
-                    "opacity" : "0"
+                    "transform": "translateX(-300%)",
+                    "opacity": "0"
                 });
 
-                setTimeout(function(){
-                    $(".mynavigationItemName").css("display" , "none" );
-                    $("#mynavigationBar").css("width" , "max-content" );
+                setTimeout(function () {
+                    $(".mynavigationItemName").css("display", "none");
+                    $("#mynavigationBar").css("width", "max-content");
 
-                } , 320);
+                }, 320);
             }
 
-            position = true;            
+            position = true;
         }
 
     });
-    
+
 </script>
+
 
 <script>
 

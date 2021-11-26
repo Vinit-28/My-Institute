@@ -27,19 +27,20 @@
 /* Side Anchor */
 
 #mynavigationBar {
-        
-    /* border: 2px solid green; */
     display: flex;
     flex-direction: column;
-    width: 10rem;
     position: relative;
-    padding-top: 1rem;
     overflow-y: scroll;
-    -ms-overflow-style: none;  
-    scrollbar-width: none;
     background-color: var(--backgroundDark);
-    transition: width 300ms linear;
+    
 }
+
+/*
+#mynavigationBar {  
+    
+}
+
+*/
 
 #mynavigationBar::-webkit-scrollbar {
     display: none;
@@ -112,12 +113,16 @@
     html{
         font-size: 150%;
     }
+
     #mynavigationBar {        
         width: 13rem;
+        transition: width 300ms linear;
+        overflow: hidden;
+        transform: none;
+        position: relative;
     }
     
     
-
 }
 @media screen and (max-width : 1500px) and (min-width : 1001px) 
 {
@@ -127,6 +132,10 @@
     }
     #mynavigationBar {        
         width: 13rem;
+        transition: width 300ms linear;
+        overflow: hidden;
+        transform: none;
+        position: relative;
     }
     
 
@@ -135,7 +144,11 @@
 {
 
     #mynavigationBar {        
-        width: 11rem;
+        width: 13rem;
+        transition: width 300ms linear;
+        overflow: hidden;
+        transform: none;
+        position: relative;
     }
     
     .mynavigationItemIcon {
@@ -151,7 +164,11 @@
 {
 
     #mynavigationBar {
-        width: 10rem;
+        width: 12rem;
+        transition: width 300ms linear;
+        overflow: hidden;
+        transform: none;
+        position: relative;
     }
     
     .mynavigationItemIcon {
@@ -173,7 +190,7 @@
 {
 
     #mynavigationBar {  
-        z-index: 300;  
+        z-index: 500;  
         width: 100%;
         position: fixed;
         overflow-y: hidden;
@@ -193,12 +210,6 @@
         border-top-left-radius: 20px;
         background-color: var(--backgroundDark);
     }
-
-
-
-
-
-
 
 }
 

@@ -42,7 +42,6 @@ body::-webkit-scrollbar {
 
 #div1{
     padding: 0.4rem;
-    /* border: 2px solid red;  */
     width: 66rem; 
     display: flex; 
     column-gap: 4rem;

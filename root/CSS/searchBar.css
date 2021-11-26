@@ -35,11 +35,7 @@
     position: relative;
     padding: 0.2rem;
 }
-#searchForm {
-    border: none;
-    border-bottom: 2px solid var(--textColor);
-    
-}
+
 
 #searchDiv input:active , #searchDiv input:focus , #searchDiv button:active , #searchDiv button:focus{
     outline: none;
@@ -48,7 +44,11 @@
     width: 100%;
     padding: 0.4rem;
     font-size: 1rem;
+    /* border: none; */
+}
+#searchForm input{
     border: none;
+    border-bottom: 2px solid var(--textColor);    
 }
 #searchForm button{
     cursor: pointer;
@@ -98,17 +98,12 @@
     border-radius: 0.4rem;
     background-color: #fff;
     font-size: 0.8rem;
-    /* border: 1px solid var(--textColor); */
-    /* box-shadow: var(--boxShadow); */
     box-shadow: 0 .5rem 1rem rgba(0,0,0,0.40) ;
     display: flex;
     column-gap: 0.8rem;
     margin-bottom: 0.8rem;
     transition: all 300ms ease;
 }
-/* .suggestedPerson:hover{
-    box-shadow: 0 .5rem 1rem rgba(0,0,0,0.40) ;
-} */
 
 
 .suggestedPersonID{
@@ -179,13 +174,26 @@
     }
 }
 
-@media screen and (max-width : 900px) and (min-width : 701px) 
+@media screen and (max-width : 900px) and (min-width : 801px) 
 {
     #div2{
-        width: 30rem;
+        width: 35rem;
     }
     #notFound{
         font-size: 15px;
+    }
+}
+@media screen and (max-width : 800px) and (min-width : 701px) 
+{
+    #div2{
+        width: 29rem;
+    }
+    #notFound{
+        font-size: 15px;
+    }
+    .suggestedPersonDetails{
+        /* color: red; */
+        font-size: 0.7rem;
     }
 }
 

@@ -194,7 +194,20 @@ nav {
 
 
 
+@media screen and (max-width : 900px) and (min-width : 701px) 
+{
 
+    #mynavRight ul {
+        font-size: 17px;
+        column-gap: 0.4rem;
+    }
+
+    .navIcons {
+        width: 1.4rem;
+        height: 1.4rem;
+    }
+
+}
 
 
 
