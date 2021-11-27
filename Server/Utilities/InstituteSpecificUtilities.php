@@ -44,7 +44,6 @@
             // If the request is to Search a person in the Institute's Database //
             if( $request['task'] == 'Search Person' ){
                 
-                $databaseConnectionObject->select_db($request['instituteId']);
                 $relatedPersons = searchUsers($databaseConnectionObject, $request);
                 
                 $response = array(

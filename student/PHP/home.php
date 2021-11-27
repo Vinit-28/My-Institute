@@ -44,7 +44,7 @@
                 <li class="navIcons bx-tada-hover"><i class='bx bxs-moon '></i></li>
                 <li class="navIcons bx-tada-hover"><i class='bx bxs-bell '></i></li>
                 <li class="navIcons bx-tada-hover" id="logout"><i class='bx bx-exit  '></i></li>
-                <li class="navIcons"><img src="../IMAGES/profile.jpg" alt=""></li>
+                <li class="navIcons"><?php echo "<img src='" . $_SESSION['userProfile'] . "' alt=''>";?></li>
             </ul>
 
         </div>

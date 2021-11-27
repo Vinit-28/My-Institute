@@ -60,6 +60,9 @@
                 $_SESSION['isUserLogedIn'] = true;
                 $_SESSION['userId'] = $request["userId"];
                 $_SESSION['sessionId'] = $sessionId;
+
+                $databaseConnectionObject->select_db("App_Database");
+                $_SESSION['userProfile'] = getColumnValue($databaseConnectionObject, "SELECT * FROM AppUsers Where userId = ?", [$request["userId"]], "s", "profilePath");
                 
 
                 // Making the user Online and storing the session id in the database //

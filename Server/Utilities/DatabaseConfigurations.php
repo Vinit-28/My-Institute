@@ -74,7 +74,7 @@
     // Function to check whether the previously executed query has changed the Database or Not //
     function checkAffectedRows($stmt){
         if( $stmt->affected_rows <= 0 ){
-            die("SOME INTERNAL ERROR !!! Tip - Try with Unique Credentials");
+            die($stmt->error);
         }
     }
 ?>

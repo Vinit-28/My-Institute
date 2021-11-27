@@ -93,17 +93,17 @@
                     alert("Something Went Wrong!");
             }
             else{
-                this.responseText = this.responseText.replace(/(\r\n|\n|\r)/gm, "");
+                let responseText = this.responseText.replace(/(\r\n|\n|\r)/gm, "");
                 
-                if(this.responseText.includes("SOME INTERNAL ERROR !!!")){
-                    alert("Something Went Wrong!");
-                }
-                else{
-                    let response = JSON.parse(this.responseText);
+                if( responseText.includes("Failed") || responseText.includes("Success")){
+                    let response = JSON.parse(responseText);
                     alert(response.message);
                     if(response.result == "Success"){
                         window.location = "../index.php";
                     }
+                }
+                else{
+                    alert("Something Went Wrong!");
                 }
             }
         };

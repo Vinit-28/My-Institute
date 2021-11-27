@@ -10,8 +10,8 @@
         $password = password_hash($password, PASSWORD_BCRYPT);
         
         // Registering the Institute in the App Database //
-        $query = "INSERT INTO AppUsers(userId, password, email, instituteName, authority, emailVerified) VALUES(?,?,?,?,?,?);";
-        $result = runQuery($databaseConnectionObject, $query, [$instituteId, $password, $instituteEmail, $instituteName, "root", "false"], "ssssss", true);
+        $query = "INSERT INTO AppUsers(userId, password, email, instituteName, authority, emailVerified, profilePath) VALUES(?,?,?,?,?,?,?);";
+        $result = runQuery($databaseConnectionObject, $query, [$instituteId, $password, $instituteEmail, $instituteName, "root", "false", "http://localhost/Server/Profiles/noProfile.png"], "sssssss", true);
         
         $query = "INSERT INTO LoggedInUsers(userId, sessionId) VALUES(?,?);";
         $result = runQuery($databaseConnectionObject, $query, [$instituteId, "offline"], "ss", true);
@@ -40,7 +40,8 @@
         $query = "CREATE TABLE StudentInfo(
             studentId VARCHAR(100) PRIMARY kEY, 
             studentName VARCHAR(100), 
-            department VARCHAR(100), 
+            department VARCHAR(100),
+            designation VARCHAR(100), 
             class VARCHAR(100),
             email VARCHAR(100), 
             contact VARCHAR(100)
@@ -64,8 +65,9 @@
         $databaseConnectionObject->select_db("App_Database");
         
         // Registering the User in the App Database //
-        $query = "INSERT INTO AppUsers(userId, password, email, instituteName, authority, emailVerified) VALUES(?,?,?,?,?,?);";
-        runQuery($databaseConnectionObject, $query, [$userDetails['userId'], $userDetails['password'], $userDetails['email'], $userDetails['instituteName'], $userDetails['designation'], "false"], "ssssss", true);
+        $query = "INSERT INTO AppUsers(userId, password, email, instituteName, authority, emailVerified, profilePath) VALUES(?,?,?,?,?,?,?);";
+        runQuery($databaseConnectionObject, $query, [$userDetails['userId'], $userDetails['password'], $userDetails['email'], $userDetails['instituteName'], $userDetails['designation'], "false", "http://localhost/Server/Profiles/noProfile.png
+        "], "sssssss", true);
          
 
         $query = "INSERT INTO LoggedInUsers(userId, sessionId) VALUES(?,?);";
@@ -157,24 +159,32 @@
 
         $relatedPersons = array();
         $counter=1;
+        $databaseConnectionObject->select_db($request['instituteId']);
 
         // Searching for students //
-        $query = "SELECT * FROM StudentInfo WHERE studentId	= ? OR studentName = ? OR department = ?";
-        $result = runQuery($databaseConnectionObject, $query, [$request['searchKey'], $request['searchKey'], $request['searchKey']], "sss");
+        $query = "SELECT * FROM StudentInfo WHERE studentId	= ? OR studentName = ? OR department = ? OR designation = ?";
+        $result = runQuery($databaseConnectionObject, $query, [$request['searchKey'], $request['searchKey'], $request['searchKey'], $request['searchKey']], "ssss");
 
         if( $result && $result->num_rows ){
+            $databaseConnectionObject->select_db("App_Database");
+
             while($row = $result->fetch_assoc()){
-                $relatedPersons += [$counter=>$row];
+                $row += ["profilePath"=>getColumnValue($databaseConnectionObject, "SELECT * FROM AppUsers WHERE userId = ?;", [$row['userId']], "s", "profilePath")];
+                $relatedPersons += [("relatedPerson-".$counter)=>$row];
                 $counter+=1;
             }
         }
 
         // Searching for teachers //
-        $query = "SELECT * FROM TeacherInfo WHERE userId = ? OR name = ?";
-        $result = runQuery($databaseConnectionObject, $query, [$request['searchKey'], $request['searchKey']], "ss");
+        $databaseConnectionObject->select_db($request['instituteId']);
+        $query = "SELECT * FROM TeacherInfo WHERE userId = ? OR name = ? OR designation = ?";
+        $result = runQuery($databaseConnectionObject, $query, [$request['searchKey'], $request['searchKey'], $request['searchKey']], "sss");
 
         if( $result && $result->num_rows ){
-            while($row = $result->fetch_assoc()){
+            $databaseConnectionObject->select_db("App_Database");
+           
+            while($row = $result->fetch_assoc()){    
+                $row += ["profilePath"=>getColumnValue($databaseConnectionObject, "SELECT * FROM AppUsers WHERE userId = ?;", [$row['userId']], "s", "profilePath")];
                 $relatedPersons += [$counter=>$row];
                 $counter+=1;
             }

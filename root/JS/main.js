@@ -1,5 +1,9 @@
 
 
+// Declaring Some Global Varibales //
+relatedPersons = {};
+
+
 // ------------------------------- Add Person ------------------------------- // 
 
 // Fucntion to make a AJAX request to the server and Will add a new Person in the Database //
@@ -41,13 +45,9 @@ function addPersonInTheDatabase(e){
             alert("Something Went Wrong!");
         }
         else{
-            this.responseText = this.responseText.replace(/(\r\n|\n|\r)/gm, "");
-
-            if(this.responseText.includes("SOME INTERNAL ERROR !!!")){
-                alert(this.responseText);
-            }
-            else{
-                let response = JSON.parse(this.responseText);
+            let responseText = this.responseText.replace(/(\r\n|\n|\r)/gm, "");           
+            if( responseText.includes("Failed") || responseText.includes("Success") ){
+                let response = JSON.parse(responseText);
                 if(response.result.includes("Failed")){
                     alert(response.message);
                 }
@@ -56,13 +56,15 @@ function addPersonInTheDatabase(e){
                     document.getElementById("addstudentform").reset();
                 }
             }
+            else{
+                alert(responseText);
+            }
         }
     };
 
     // Making the Request //
     xhrObject.send("request="+JSON.stringify(personData));
 }
-
 
 // Binding the Function addPersonInTheDatabase to the button submitAddPersonForm //
 document.getElementById("submitAddPersonForm").addEventListener("click", addPersonInTheDatabase);
@@ -74,7 +76,7 @@ document.getElementById("submitAddPersonForm").addEventListener("click", addPers
 
 
 // Function that will make and return a card conatining Searched Person Information //
-function getPersonCard(personDetails){
+function getPersonCard(personDetails, key){
 
 
     // Creating Tags //
@@ -97,10 +99,12 @@ function getPersonCard(personDetails){
 
 
     // Adding content to the tags //
-    profile.src = "../IMAGES/profile.jpg";
+    profile.src = personDetails['profilePath'];
     suggestedPersonID.innerHTML = personDetails['userId'];
     suggestedPersonName.innerHTML = personDetails['name'];
     suggestedPersonDept.innerHTML = personDetails['designation'] + " ( Department )";
+
+    console.log(personDetails['profilePath']);
 
     // Wrapping the tags of the Person's Card //
     suggestedPersonProfile.appendChild(profile);
@@ -110,6 +114,8 @@ function getPersonCard(personDetails){
     suggestedPerson.appendChild(suggestedPersonProfile);
     suggestedPerson.appendChild(suggestedPersonDetails);
     
+    suggestedPerson.id = key;
+    suggestedPerson.onclick = showClickedCarProfile;
     return suggestedPerson;
 }
 
@@ -137,13 +143,10 @@ function searchPersonInTheDatabase(e){
             alert("Something Went Wrong!");
         }
         else{
-            this.responseText = this.responseText.replace(/(\r\n|\n|\r)/gm, "");
+            let responseText = this.responseText.replace(/(\r\n|\n|\r)/gm, "");
 
-            if(this.responseText.includes("SOME INTERNAL ERROR !!!")){
-                alert(this.responseText);
-            }
-            else{
-                let response = JSON.parse(this.responseText);
+            if( this.responseText.includes("Success") ){
+                let response = JSON.parse(responseText);
                 if(response.result.includes("Failed")){
                     alert(response.message);
                 }
@@ -152,9 +155,12 @@ function searchPersonInTheDatabase(e){
                     let searchResult = document.getElementById("searchResults");
                     searchResult.innerHTML = "";
                     searchResult.style.display = "block";
-                    for(let index in response.relatedPersons){
+                    relatedPersons = response.relatedPersons;
+
+                    for(let key in response.relatedPersons){
+                       
                         // Make a Person Card //
-                        searchResult.appendChild(getPersonCard(response.relatedPersons[index]));
+                        searchResult.appendChild(getPersonCard(response.relatedPersons[key], key));
                         totalPersons+=1;
                     }
                     
@@ -168,17 +174,24 @@ function searchPersonInTheDatabase(e){
                     }
                 }
             }
+            else{
+                alert(this.responseText);
+            }
         }
     };
 
     // Making the Request //
     xhrObject.send("request="+JSON.stringify(personData));
-
 }
-
-
-
-
 
 // Binding the Function searchPersonInTheDatabase to the button searchPerson //
 document.getElementById("searchPerson").addEventListener("click", searchPersonInTheDatabase);
+
+
+
+
+// Function to be executed When a Person's Card is Clicked //
+function showClickedCarProfile(){
+    console.log(relatedPersons[this.id]);
+    console.log();
+}
