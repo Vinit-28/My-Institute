@@ -95,8 +95,8 @@
             <div id="searchDiv">
 
                 <form id="searchForm" action="" method="POST" style="display: flex; column-gap: 0.2rem;">
-                    <input type="search" name="search" id="" placeholder="Search person..." autocomplete="OFF">
-                    <button type="submit"><i class='mynavigationItemIcon bx bx-search'></i></button>
+                    <input type="search" name="search" id="searchKey" placeholder="Search person..." autocomplete="OFF">
+                    <button id="searchPerson" type="submit"><i class='mynavigationItemIcon bx bx-search'></i></button>
                 </form>
 
                 <div id="searchResults" style="display: none;">

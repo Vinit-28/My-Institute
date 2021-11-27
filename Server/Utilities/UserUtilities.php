@@ -155,26 +155,27 @@
     function searchUsers($databaseConnectionObject, $request){
 
         $relatedPersons = array();
+        $counter=1;
 
         // Searching for students //
-        $query = "SELECT * FROM StudentInfo";
-        $result = runQuery($databaseConnectionObject, $query, [], "");
+        $query = "SELECT * FROM StudentInfo WHERE studentId	= ? OR studentName = ? OR department = ?";
+        $result = runQuery($databaseConnectionObject, $query, [$request['searchKey'], $request['searchKey'], $request['searchKey']], "sss");
 
         if( $result && $result->num_rows ){
             while($row = $result->fetch_assoc()){
-                if( str_contains($request['searchKey'], $row['studentId']) || str_contains($request['searchKey'], $row['studentName']) ||str_contains($request['searchKey'], $row['department']) )
-                    array_push($relatedPersons, $row);
+                $relatedPersons += [$counter=>$row];
+                $counter+=1;
             }
         }
 
         // Searching for teachers //
-        $query = "SELECT * FROM TeacherInfo";
-        $result = runQuery($databaseConnectionObject, $query, [], "");
+        $query = "SELECT * FROM TeacherInfo WHERE userId = ? OR name = ?";
+        $result = runQuery($databaseConnectionObject, $query, [$request['searchKey'], $request['searchKey']], "ss");
 
         if( $result && $result->num_rows ){
             while($row = $result->fetch_assoc()){
-                if( str_contains($request['searchKey'], $row['teacherId']) || str_contains($request['searchKey'], $row['teacherName']) ||str_contains($request['searchKey'], $row['department']) )
-                    array_push($relatedPersons, $row);
+                $relatedPersons += [$counter=>$row];
+                $counter+=1;
             }
         }
 
