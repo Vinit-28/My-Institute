@@ -102,20 +102,20 @@
                 <div id="searchResults" style="display: none;">
 
                     <!-- This is for when a person is found ! -->
-                    <div class="suggestedPerson">
+                    <!-- <div class="suggestedPerson">
                         <div class="suggestedPersonProfile"><img src="../IMAGES/profile.jpg" alt=""></div>
                         <div class="suggestedPersonDetails">
                             <span class="suggestedPersonID">1001</span>
                             <span class="suggestedPersonName">Aman Khushalani</span>
                             <span class="suggestedPersonDept">BCA 3rd. Yr. (Student)</span>
                         </div>
-                    </div>
+                    </div> -->
 
                     <!-- OR OR OR OR OR -->
 
                     <!-- This is for else part if could not found anything ! -->
-                    <div id="notFound" style="color: red;">Couldn't find anything ! (Try again using relevant keywords.)
-                    </div>
+                    <!-- <div id="notFound" style="color: red;">Couldn't find anything ! (Try again using relevant keywords.)
+                    </div> -->
                 </div>
 
                 <div id="selectedPersonProfile" class="selectedFormsDiv" style="width: 100%; display: none; ">

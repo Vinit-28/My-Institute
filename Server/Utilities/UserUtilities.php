@@ -26,6 +26,7 @@
             name VARCHAR(100), 
             email VARCHAR(100), 
             gender VARCHAR(100), 
+            designation VARCHAR(100), 
             phoneNo VARCHAR(100), 
             adharCardNo VARCHAR(100), 
             address VARCHAR(100), 
@@ -77,8 +78,8 @@
         // If the new User is a Teacher //
         if( $userDetails['designation'] == "teacher" || $userDetails['designation'] == "Teacher" ){
             
-            $query = "INSERT INTO TeacherInfo(userId, name, email, gender, phoneNo, adharCardNo, address, city, state, pinCode) VALUES(?,?,?,?,?,?,?,?,?,?);";
-            runQuery($databaseConnectionObject, $query, [ $userDetails['userId'], $userDetails['name'], $userDetails['email'], $userDetails['gender'], $userDetails['phoneNo'], $userDetails['adharCardNo'], $userDetails['address'], $userDetails['city'], $userDetails['state'], $userDetails['pinCode'] ], "ssssssssss", true);
+            $query = "INSERT INTO TeacherInfo(userId, name, email, gender, designation, phoneNo, adharCardNo, address, city, state, pinCode) VALUES(?,?,?,?,?,?,?,?,?,?,?);";
+            runQuery($databaseConnectionObject, $query, [ $userDetails['userId'], $userDetails['name'], $userDetails['email'], $userDetails['gender'], $userDetails['designation'], $userDetails['phoneNo'], $userDetails['adharCardNo'], $userDetails['address'], $userDetails['city'], $userDetails['state'], $userDetails['pinCode'] ], "sssssssssss", true);
         }
         // If the new User is a Student //
         else if( $userDetails['designation'] == "student" || $userDetails['designation'] == "Student" ){

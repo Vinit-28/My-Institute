@@ -73,7 +73,7 @@ document.getElementById("submitAddPersonForm").addEventListener("click", addPers
 // ------------------------------- Search Person ------------------------------- // 
 
 
-
+// Function that will make and return a card conatining Searched Person Information //
 function getPersonCard(personDetails){
 
 
@@ -100,14 +100,13 @@ function getPersonCard(personDetails){
     profile.src = "../IMAGES/profile.jpg";
     suggestedPersonID.innerHTML = personDetails['userId'];
     suggestedPersonName.innerHTML = personDetails['name'];
-    suggestedPersonDept.innerHTML = "Department";
+    suggestedPersonDept.innerHTML = personDetails['designation'] + " ( Department )";
 
     // Wrapping the tags of the Person's Card //
     suggestedPersonProfile.appendChild(profile);
     suggestedPersonDetails.appendChild(suggestedPersonID);
     suggestedPersonDetails.appendChild(suggestedPersonName);
     suggestedPersonDetails.appendChild(suggestedPersonDept);
-    
     suggestedPerson.appendChild(suggestedPersonProfile);
     suggestedPerson.appendChild(suggestedPersonDetails);
     
@@ -115,6 +114,7 @@ function getPersonCard(personDetails){
 }
 
 
+// Function to search a person in the database //
 function searchPersonInTheDatabase(e){
     e.preventDefault();
     // Creating the XHR Object //
