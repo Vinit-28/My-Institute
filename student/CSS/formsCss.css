@@ -1,0 +1,210 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200&display=swap');
+
+*, *:before, *:after {
+    box-sizing: border-box;
+    --fontFamily : Poppins, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    --backgroundColor : #edf2f9;
+    --navigationBarColor : rgb(209, 225, 248);
+    --textColor : #5e6e82;
+    --textHoverColor : #cad0d6;
+    --activeTextColor : #2864c5;
+    --hoverDarkColor : rgb(35, 43, 53);
+    --buttonColor : rgba(44, 124, 229, 0.844);
+    --buttonHover : rgb(44, 123, 229);
+    --formBorder : #d8e2ef;
+    --littleHeadings : #344050;
+    --backgroundDark : #0b1727;
+    --boxShadow : 0 .5rem 1rem rgba(0,0,0,.15) ;
+}
+
+
+
+
+
+
+
+
+/* Forms */
+
+.formsDiv *{
+    font-family: var(--fontFamily);
+}
+.formsDiv {
+    /* border: 2px solid red; */
+    box-shadow:  var(--boxShadow);
+    padding: 0.6rem;
+
+    margin-top: 1.2rem;
+    margin-left: 0.5rem;
+    margin: 1.2rem auto 0 auto;
+    height: max-content;
+    width: 80%;
+    background-color: #fff;
+    border-radius: 0.5rem;
+    
+}
+.boxHeading{
+    margin: 0.6rem;
+    font-size:x-large;
+    color: var(--littleHeadings);
+}
+
+
+
+
+
+
+
+
+.boxHeadingDiv{
+    text-align: center;
+}
+
+.forms{
+    padding: 0.6rem;
+    display: grid;
+    grid-template-columns: repeat(2, minmax( 3rem  , 22rem));
+    gap: 10px;
+    font-family: var(--fontFamily);
+}
+
+.forms *{
+    font-family: var(--fontFamily);
+}
+.forms ::placeholder{
+    font-family: var(--fontFamily);
+    font-size: 0.8rem;
+    font-weight: bold;
+}
+.forms input{
+    padding: 0.6rem ;
+    font-size: 0.9rem;
+    font-weight: 700;
+    border: 1px solid var(--formBorder);
+    background-color: #fff;
+    border-radius: 0.25rem;
+
+}
+.forms select {
+    padding: 0.6rem;
+    border: 1px solid var(--formBorder);
+    background-color: #fff;
+    border-radius: 0.25rem;
+    text-transform: none;
+    font-size: 0.9rem;
+    font-weight: 700;
+    
+}
+.forms .options{
+    padding: 0px 2px 1px;
+    font-size: 1rem;
+}
+.forms button{
+    padding: 0.6rem;
+    border-radius: 0.25rem;
+    border: none;
+    cursor: pointer;
+    background-color: var(--buttonColor);
+    color: white;
+    font-size: 0.8rem;
+    font-weight: bold;
+    transition: all 300ms ease;
+
+}
+.forms button:hover{
+    background-color: var(--buttonHover);
+}
+.forms input:active , .forms input:focus , .forms select:active , .forms select:focus ,  .forms button:active , .forms button:focus{
+    outline: none;
+}
+
+
+/* Forms */
+
+
+
+
+
+
+
+
+
+
+
+
+@media screen and (max-width : 6000px) and (min-width : 1200px) 
+{
+    .forms{
+        grid-template-columns: repeat(2, minmax( 3rem  , auto));
+    }
+}
+@media screen and (max-width : 1199px) and (min-width : 1001px) 
+{
+    .formsDiv{
+        width: 70%;
+    }
+    .forms{
+        grid-template-columns: repeat(2, minmax( 3rem  , auto));
+    }
+}
+
+
+
+@media screen and (max-width : 1000px) and (min-width : 850px) 
+{
+    .formsDiv{
+        width: 70%;
+    }
+    .forms{
+        grid-template-columns: repeat(2, minmax( 3rem  , auto));
+    }    
+
+    
+
+}
+@media screen and (max-width : 849px) and (min-width : 750px) 
+{
+    .formsDiv{
+        width: 70%;
+    }
+    .forms{
+        grid-template-columns: repeat(2, minmax( 3rem  , auto));
+    }    
+    
+}
+@media screen and (max-width : 749px) and (min-width : 701px) 
+{
+    .formsDiv{
+        width: 65%;
+    }
+    .forms{
+        grid-template-columns: repeat(2, minmax( 3rem  , auto));
+    }    
+    
+    
+}
+
+
+
+
+
+@media screen and (max-width : 700px) and (min-width:80px) 
+{
+
+    .formsDiv {
+        padding: 0.6rem;
+        margin-top: 1.2rem;
+        margin-left: 0.5rem;
+        margin-right: 0.5rem;        
+        width: 100%;
+    }
+
+    .forms{
+        grid-template-columns: repeat(1, minmax( 3rem  , auto));
+    }    
+    
+    
+
+
+    
+}

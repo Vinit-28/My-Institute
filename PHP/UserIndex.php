@@ -33,7 +33,7 @@
         header("Location: ../teacher/PHP/home.php");
     }
     // If the Logged In User is a Student //
-    if( $_SESSION['userDetails']['authority'] == "student" ){
+    else if( $_SESSION['userDetails']['authority'] == "student" ){
 
         header("Location: ../student/PHP/home.php");
     }

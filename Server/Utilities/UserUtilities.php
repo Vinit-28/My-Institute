@@ -85,9 +85,10 @@
         }
         // If the new User is a Student //
         else if( $userDetails['designation'] == "student" || $userDetails['designation'] == "Student" ){
-
+            
+            $query = "INSERT INTO StudentInfo(userId, name, email, gender, designation, phoneNo, adharCardNo, address, city, state, pinCode) VALUES(?,?,?,?,?,?,?,?,?,?,?);";
+            runQuery($databaseConnectionObject, $query, [ $userDetails['userId'], $userDetails['name'], $userDetails['email'], $userDetails['gender'], $userDetails['designation'], $userDetails['phoneNo'], $userDetails['adharCardNo'], $userDetails['address'], $userDetails['city'], $userDetails['state'], $userDetails['pinCode'] ], "sssssssssss", true);
         }
-        
     }
 
 
@@ -162,14 +163,15 @@
         $databaseConnectionObject->select_db($request['instituteId']);
 
         // Searching for students //
-        $query = "SELECT * FROM StudentInfo WHERE studentId	= ? OR studentName = ? OR department = ? OR designation = ?";
-        $result = runQuery($databaseConnectionObject, $query, [$request['searchKey'], $request['searchKey'], $request['searchKey'], $request['searchKey']], "ssss");
+        $query = "SELECT * FROM StudentInfo WHERE userId	= ? OR name = ? OR designation = ?";
+        $result = runQuery($databaseConnectionObject, $query, [$request['searchKey'], $request['searchKey'], $request['searchKey']], "sss");
 
         if( $result && $result->num_rows ){
             $databaseConnectionObject->select_db("App_Database");
 
             while($row = $result->fetch_assoc()){
-                $row += ["profilePath"=>getColumnValue($databaseConnectionObject, "SELECT * FROM AppUsers WHERE userId = ?;", [$row['userId']], "s", "profilePath")];
+                $row += ["profilePath"=>getColumnValue($databaseConnectionObject, "SELECT * FROM AppUsers WHERE userId = ?;", [$row['userId']], "s", "profilePath"), "authority"=>getColumnValue($databaseConnectionObject, "SELECT * FROM AppUsers WHERE userId = ?;", [$row['userId']], "s", "authority")];
+               
                 $relatedPersons += [("relatedPerson-".$counter)=>$row];
                 $counter+=1;
             }
@@ -184,7 +186,8 @@
             $databaseConnectionObject->select_db("App_Database");
            
             while($row = $result->fetch_assoc()){    
-                $row += ["profilePath"=>getColumnValue($databaseConnectionObject, "SELECT * FROM AppUsers WHERE userId = ?;", [$row['userId']], "s", "profilePath")];
+                $row += ["profilePath"=>getColumnValue($databaseConnectionObject, "SELECT * FROM AppUsers WHERE userId = ?;", [$row['userId']], "s", "profilePath"), "authority"=>getColumnValue($databaseConnectionObject, "SELECT * FROM AppUsers WHERE userId = ?;", [$row['userId']], "s", "authority")];
+
                 $relatedPersons += [$counter=>$row];
                 $counter+=1;
             }
@@ -195,7 +198,21 @@
 
 
 
+    // Upadte Person Details in the Institute's Database //
+    function updatePersonDetails($databaseConnectionObject, $request){
 
+        // $databaseConnectionObject->select_db($request['instituteId']);
+
+        // if( $request['authority'] == "teacher" || $request['authority'] == "Teacher" ){
+
+        //     $query = "UPDATE TeacherInfo name = ?, gender = ?, designation = ?, phoneNo = ?, adharCardNo = ?, address = ?, city = ?, state = ?, pinCode = ? WHERE userId = ?";
+
+        //     $result = runQuery($databaseConnectionObject, $query, [$request['name'], $request['gender'], $request['designation'], $request['phoneNo'], $request['adharCardNo'], $request['address'], $request['city'], $request['state'], $request['pinCode'], , $request['userId']], "ssssssssss", true);
+        // }
+        // else if( $request['authority'] == "student" || $request['authority'] == "Student" ){
+
+        // }
+    }
 
 
 

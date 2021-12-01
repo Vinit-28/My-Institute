@@ -1,0 +1,224 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200&display=swap');
+
+*, *:before, *:after {
+    box-sizing: border-box;
+    --fontFamily : Poppins, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    --backgroundColor : #edf2f9;
+    --navigationBarColor : rgb(209, 225, 248);
+    --textColor : #5e6e82;
+    --textHoverColor : #cad0d6;
+    --activeTextColor : #2864c5;
+    --hoverDarkColor : rgb(35, 43, 53);
+    --buttonColor : rgba(44, 124, 229, 0.844);
+    --buttonHover : rgb(44, 123, 229);
+    --formBorder : #d8e2ef;
+    --littleHeadings : #344050;
+    --backgroundDark : #0b1727;
+    --boxShadow : 0 .5rem 1rem rgba(0,0,0,.15) ;
+}
+
+
+
+
+
+
+
+
+/* Side Anchor */
+
+#mynavigationBar {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow-y: scroll;
+    background-color: var(--backgroundDark);
+    
+}
+
+/*
+#mynavigationBar {  
+    
+}
+
+*/
+
+#mynavigationBar::-webkit-scrollbar {
+    display: none;
+}
+
+
+
+
+
+
+
+.mynavigationItem{
+    margin: 5px 0px;
+    margin-left: 0.5rem;
+    position: relative;
+    cursor: pointer;
+    padding: 0.6rem 1rem;
+    color: #fff;
+    background-color: var(--backgroundDark);
+    display: flex;
+    align-items:center;
+    column-gap: 0.5rem;
+    font-weight: bold;
+    border-bottom-left-radius: 20px;
+    border-top-left-radius: 20px;
+    transition: background-color 300ms ease , color 200ms ease , transform 1000ms ease , opacity 700ms ease;
+}
+.mynavigationItem select:active , .mynavigationItem select:focus{
+    border: none;
+    outline: none;
+}
+
+
+.mynavigationItem select{
+    border: none;
+    background-color: transparent;
+    color: white;
+}
+
+
+
+.mynavigationItemIcon{
+    font-size: 1rem;
+    margin: 0;
+    padding: 0;
+    transition: color 200ms ease;   
+}
+
+
+
+
+
+.mynavigationItemName{
+    font-size: 0.7rem;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    opacity : 1;
+    transform : translateX(0);
+    font-family: var(--fontFamily);
+    transition: transform 700ms ease , color 200ms ease;
+}
+
+
+
+
+@media screen and (max-width : 6000px) and (min-width : 1501px) 
+{
+
+    html{
+        font-size: 150%;
+    }
+
+    #mynavigationBar {        
+        width: 13rem;
+        transition: width 300ms linear;
+        overflow: hidden;
+        transform: none;
+        position: relative;
+    }
+    
+    
+}
+@media screen and (max-width : 1500px) and (min-width : 1001px) 
+{
+
+    html{
+        font-size: 105%;
+    }
+    #mynavigationBar {        
+        width: 13rem;
+        transition: width 300ms linear;
+        overflow: hidden;
+        transform: none;
+        position: relative;
+    }
+    
+
+}
+@media screen and (max-width : 1000px) and (min-width : 850px) 
+{
+
+    #mynavigationBar {        
+        width: 13rem;
+        transition: width 300ms linear;
+        overflow: hidden;
+        transform: none;
+        position: relative;
+    }
+    
+    .mynavigationItemIcon {
+        font-size: 1.025rem;
+    }
+    
+    .mynavigationItemName{
+        font-size: 0.75rem;
+    }
+    
+}
+@media screen and (max-width : 849px) and (min-width : 701px) 
+{
+
+    #mynavigationBar {
+        width: 12rem;
+        transition: width 300ms linear;
+        overflow: hidden;
+        transform: none;
+        position: relative;
+    }
+    
+    .mynavigationItemIcon {
+        font-size: 0.9rem;
+    }
+    
+    .mynavigationItemName{
+        font-size: 0.6rem;
+    }
+    
+}
+
+
+
+
+
+
+@media screen and (max-width : 700px) and (min-width:80px) 
+{
+
+    #mynavigationBar {  
+        z-index: 500;  
+        width: 100%;
+        position: fixed;
+        overflow-y: hidden;
+        transform-origin: top;
+        height: 0;
+        background-color: var(--backgroundDark);
+        transform: translateY(-100%);
+        transition: height 700ms ease , transform 100ms ease;
+    }
+    
+    #mynavigationBar::-webkit-scrollbar {
+        display: none;
+    }
+    
+    .mynavigationItem{
+        border-bottom-left-radius: 20px;
+        border-top-left-radius: 20px;
+        background-color: var(--backgroundDark);
+    }
+
+}
+
+
+
+
+
+.activeItem{
+    color: #2864c5;
+    background-color: var(--backgroundColor);
+}
+

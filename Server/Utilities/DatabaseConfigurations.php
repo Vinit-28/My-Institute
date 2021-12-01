@@ -51,7 +51,7 @@
             $stmt->close();
             return $result;
         }
-        die("SOME INTERNAL ERROR !!!");
+        die("STATEMENT ERROR !!!");
     }
 
 
@@ -67,7 +67,7 @@
             }
         }
         else
-            die("SOME INTERNAL ERROR !!!");
+            die("COLUMN FETCHING ERROR !!!");
     }
 
 

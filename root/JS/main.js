@@ -1,7 +1,8 @@
 
 
 // Declaring Some Global Varibales //
-relatedPersons = {};
+let relatedPersons = {};
+let selectedProfile = undefined;
 
 
 // ------------------------------- Add Person ------------------------------- // 
@@ -145,7 +146,7 @@ function searchPersonInTheDatabase(e){
         else{
             let responseText = this.responseText.replace(/(\r\n|\n|\r)/gm, "");
 
-            if( this.responseText.includes("Success") ){
+            if( responseText.includes("Success") ){
                 let response = JSON.parse(responseText);
                 if(response.result.includes("Failed")){
                     alert(response.message);
@@ -175,8 +176,9 @@ function searchPersonInTheDatabase(e){
                 }
             }
             else{
-                alert(this.responseText);
+                alert(responseText);
             }
+            console.log(this.responseText);
         }
     };
 
@@ -184,14 +186,91 @@ function searchPersonInTheDatabase(e){
     xhrObject.send("request="+JSON.stringify(personData));
 }
 
+
+// Function to be executed When a Person's Card is Clicked //
+function showClickedCarProfile(){
+    console.log(relatedPersons[this.id]);
+    selectedProfile =  this.id;
+}
+
+
 // Binding the Function searchPersonInTheDatabase to the button searchPerson //
 document.getElementById("searchPerson").addEventListener("click", searchPersonInTheDatabase);
 
 
 
 
-// Function to be executed When a Person's Card is Clicked //
-function showClickedCarProfile(){
-    console.log(relatedPersons[this.id]);
-    console.log();
+// ------------------------------- Update Person Details ------------------------------- // 
+
+
+// Function to check whether the Details of a Person is Modified or not //
+function areTheDetailsModified(){
+
+    return true;
 }
+
+
+
+// Function to upadte the details of a person in the Institute Database //
+function updatePersonDetails(e){
+    
+    e.preventDefault();
+    
+    if( areTheDetailsModified() ){
+    
+        // Creating the XHR Object //
+        let xhrObject = new XMLHttpRequest();
+        xhrObject.open("POST", "../../Server/Utilities/InstituteSpecificUtilities.php");
+        xhrObject.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        
+
+        // Creating Some Variables //
+        let designation = document.getElementById("update-designation")
+        let gender = document.getElementById("update-gender")
+
+        let personData = {
+            "task" : "Update Person Details", 
+            "instituteId" : document.getElementById("userId").textContent, 
+            "sessionId" : document.getElementById("sessionId").textContent,
+            "userId" : relatedPersons[selectedProfile].userId,
+            "authority" : relatedPersons[selectedProfile].authority,
+            "name" : document.getElementById("update-name").value,
+            "gender" : gender.options[gender.selectedIndex].value,
+            "designation" : designation.options[designation.selectedIndex].value,
+            "phoneNo" : document.getElementById("update-phoneNo").value,
+            "adharCardNo" : document.getElementById("update-adharCardNo").value,
+            "address" : document.getElementById("update-address").value,
+            "state" : document.getElementById("update-state").value,
+            "city" : document.getElementById("update-city").value,
+            "pinCode" : document.getElementById("update-pinCode").value,
+        };
+
+        // After getting the Response from the Server this Function will be executed //
+        xhrObject.onload = function(){
+            
+            if( this.status != 200 ){
+                alert("Something Went Wrong!");
+            }
+            else{
+                let responseText = this.responseText.replace(/(\r\n|\n|\r)/gm, "");
+                if( responseText.includes("Success") ){
+                    alert("Person Details Upadted Successfully !!!");
+                }
+                else{
+                    alert(responseText);
+                }
+            }
+        };
+
+        // Making the Request //
+        xhrObject.send("request="+JSON.stringify(personData));
+    }
+    else{
+        alert("Nothing to be Updated !!!");
+    }
+}
+
+
+
+// Binding the Function searchPersonInTheDatabase to the button searchPerson //
+// document.getElementById("updatePersonDetails").addEventListener("click", updatePersonDetails);

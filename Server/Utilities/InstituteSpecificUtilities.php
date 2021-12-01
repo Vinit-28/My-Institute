@@ -42,13 +42,27 @@
 
 
             // If the request is to Search a person in the Institute's Database //
-            if( $request['task'] == 'Search Person' ){
+            else if( $request['task'] == 'Search Person' ){
                 
                 $relatedPersons = searchUsers($databaseConnectionObject, $request);
                 
                 $response = array(
                     "result"=>"Success",
                     "relatedPersons"=>$relatedPersons 
+                );
+                
+                // Sending the response //
+                echo json_encode($response);
+            }
+            
+            
+            // If the request is to Update a Person Details in the Institute's Database //
+            else if( $request['task'] == 'Update Person Details' ){
+                
+                updatePersonDetails($databaseConnectionObject, $request);
+
+                $response = array(
+                    "result"=>"Success",
                 );
                 
                 // Sending the response //

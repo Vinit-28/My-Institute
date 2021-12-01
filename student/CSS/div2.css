@@ -1,0 +1,290 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200&display=swap');
+
+
+*, *:before, *:after {
+    box-sizing: border-box;
+    --fontFamily : Poppins, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    --backgroundColor : #edf2f9;
+    --navigationBarColor : rgb(209, 225, 248);
+    --textColor : #5e6e82;
+    --textHoverColor : #cad0d6;
+    --activeTextColor : #2864c5;
+    --hoverDarkColor : rgb(35, 43, 53);
+    --buttonColor : rgba(44, 124, 229, 0.844);
+    --buttonHover : rgb(44, 123, 229);
+    --formBorder : #d8e2ef;
+    --littleHeadings : #344050;
+    --backgroundDark : #0b1727;
+    --boxShadow : 0 .5rem 1rem rgba(0,0,0,.15) ;
+}
+
+
+#div2{
+    font-family: var(--fontFamily);
+    box-shadow:  var(--boxShadow);
+    padding: 0.6rem;
+    margin-top: 1.2rem;
+    margin-left: 0.5rem;
+    background-color: #fff;
+    border-radius: 0.5rem;
+    overflow: hidden;
+}
+
+
+
+
+
+
+
+
+/* ///////////////////////////////////////////////////////////////////////////////////// */
+.selectedFormsDiv *{
+    font-family: var(--fontFamily);
+}
+.selectedFormsDiv{
+    padding: 0.6rem;    
+    margin-top: 1.2rem;
+    margin-left: 0.5rem;
+    margin: 1.2rem auto 0 auto;
+    height: max-content;
+    background-color: #fff;
+    border-radius: 0.5rem;
+    overflow-y: scroll;
+}
+.selectedFormsDiv::-webkit-scrollbar {
+    display: none;
+}
+
+
+
+
+#profileimgdiv{
+    display: flex;
+    align-items: center;
+    column-gap: 1.5rem;
+    cursor: pointer;
+}
+#studentName{
+    font-size: 1.4rem;
+    font-weight: bolder;
+}
+
+#selectedImgContainer{
+    position: relative;
+    width: 4.7rem;
+    height: 4.7rem;
+    border-radius: 50%;
+    overflow: hidden;
+}
+#selectedImg{
+    border-radius: 50%;
+    width: 4.7rem; 
+    
+    overflow: hidden;
+    transition: all 300ms ease;
+}
+
+
+
+ #selectedImgCamera{
+    position: absolute;
+    width: 100%;
+    height: 50%;
+    top: 70%;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.513);
+    display: flex;
+    color: white;
+    justify-content: center;
+}
+
+
+
+#selectedProfileFrom input , #selectedProfileFrom select {
+    font-size: 0.8rem;
+    padding: 0.4rem ;
+    /* font-size: 0.9rem; */
+    /* font-weight: 700; */
+    border: 1px solid var(--formBorder);
+    /* background-color: #fff; */
+    /* border-radius: 0.25rem; */
+    transition: 200ms ease;
+}
+
+#selectedProfileFrom input:focus{
+    border-color: #66afe9;
+    outline: 0;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 2px var(--activeTextColor);
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 2px var(--activeTextColor);
+}
+
+#selectedProfileFrom button{
+    padding: 0.5rem;
+    font-size: 0.6rem;
+    transition: all 300ms ease;
+
+}
+#selectedProfileFrom button:hover{
+    background-color: var(--buttonHover);
+}
+/* ///////////////////////////////////////////////////////////////////////////////////// */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@media screen and (max-width : 6000px) and (min-width : 1701px) 
+{
+    #div2{
+        width: 56rem;
+    }
+
+}
+
+@media screen and (max-width : 1700px) and (min-width : 1501px) 
+{
+    #div2{
+        width: 48rem;
+    }
+}
+
+@media screen and (max-width : 1500px) and (min-width : 1251px) 
+{
+    #div2{
+        width: 80%;
+    }
+}
+
+@media screen and (max-width : 1250px) and (min-width : 901px) 
+{
+    #div2{
+        width: 70%;
+    }
+    #selectedImg{
+        width: 4rem;
+    }
+    
+    #selectedImgContainer{
+        width: 4rem;
+        height: 4rem;
+    }
+    
+    #selectedImgCamera{
+        width: 100%;
+        height: 50%;
+        top: 70%;
+        left: 0;
+        font-size: 0.8rem;
+    }
+
+}
+
+@media screen and (max-width : 900px) and (min-width : 801px) 
+{
+    #div2{
+        width: 35rem;
+    }
+    #selectedImg{
+        width: 4rem;
+    }
+    #selectedImgContainer{
+        width: 4rem;
+        height: 4rem;
+    }
+    #personImageLabel{
+        font-size: 0.7rem;
+    }
+
+    #selectedImgCamera{
+        width: 100%;
+        height: 50%;
+        top: 65%;
+        left: 0;
+        font-size: 0.8rem;
+    }
+}
+@media screen and (max-width : 800px) and (min-width : 701px) 
+{
+    #div2{
+        width: 29rem;
+    }
+    #selectedImg{
+        width: 4rem;
+    }
+    #selectedImgContainer{
+        width: 4rem;
+        height: 4rem;
+    }
+    #selectedImgCamera{
+        width: 100%;
+        height: 50%;
+        top: 65%;
+        left: 0;
+        font-size: 0.8rem;
+    }
+    #personImageLabel{
+        font-size: 0.7rem;
+    }
+}
+
+
+
+@media screen and (max-width : 700px) and (min-width : 50px) 
+{
+
+    #div2{
+        /* border:2px solid red; */
+        width: 100%;
+        height: 100%;
+        margin-left: 0.8rem;
+        margin-right: 0.8rem;
+    }
+
+    #selectedImg{
+        width: 3rem;
+    }
+    #selectedImgContainer{
+        width:  3rem;
+        height: 3rem;
+    }
+
+    #studentName{
+        font-size: 1rem;
+    }
+    
+
+    #personImageLabel{
+        font-size: 0.7rem;
+    }
+    
+    #selectedImgCamera{
+        width: 100%;
+        height: 50%;
+        top: 70%;
+        left: 0;
+        font-size: 0.6rem;
+    }
+
+    #profileimgdiv{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        column-gap: 1rem;
+        /* text-align: center; */
+    }
+}

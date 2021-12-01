@@ -1,0 +1,299 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200&display=swap');
+
+
+*, *:before, *:after {
+    box-sizing: border-box;
+    --fontFamily : Poppins, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    --backgroundColor : #edf2f9;
+    --navigationBarColor : rgb(209, 225, 248);
+    --textColor : #5e6e82;
+    --textHoverColor : #cad0d6;
+    --activeTextColor : #2864c5;
+    --hoverDarkColor : rgb(35, 43, 53);
+    --buttonColor : rgba(44, 124, 229, 0.844);
+    --buttonHover : rgb(44, 123, 229);
+    --formBorder : #d8e2ef;
+    --littleHeadings : #344050;
+    --backgroundDark : #0b1727;
+    --boxShadow : 0 .5rem 1rem rgba(0,0,0,.15) ;
+}
+
+
+#div5 , #div6{
+    font-family: var(--fontFamily);
+    box-shadow:  var(--boxShadow);
+    padding: 0.6rem;
+    margin-top: 1.2rem;
+    margin-left: 0.5rem;
+    background-color: #fff;
+    border-radius: 0.5rem;
+    overflow-y: scroll;
+}
+
+
+
+#liveClassContainer{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 0.8rem;
+    margin-top: 0.4rem;
+    padding: 0.4rem;
+    overflow-y: scroll;
+}
+
+#div5::-webkit-scrollbar  , #div6::-webkit-scrollbar , #liveClassContainer::-webkit-scrollbar {
+    display: none;
+}
+
+
+.classSelector{
+    display: flex;
+    padding: 0.2rem;
+    border-radius: 0.2rem;
+    align-items: center;
+    justify-content: flex-start;
+    background-color: #fff;
+}
+
+.classHeading{
+    font-weight: bolder;
+    margin-left: 0.6rem;
+}
+
+.hostName{
+    font-size: 0.8rem;
+}
+
+
+
+
+.classItem{
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    row-gap: 0.8rem;
+    width: 270px;
+    height: max-content;
+    padding: 0.8rem;
+    padding-top: 1.4em;
+    padding-bottom: 1.4rem;
+    border-radius: 0.4rem;
+    background-color: var(--backgroundColor);
+    transition: box-shadow 200ms ease;
+}
+
+.classItem:hover{
+    box-shadow: var(--boxShadow);
+}
+
+
+.classDescription{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    /* border: 2px solid red; */
+}
+
+.classTitle{
+    font-weight: 700;
+}
+
+.classSubtopics{
+    margin-top: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    font-size: 0.8rem;
+    /* border: 2px solid red; */
+    list-style: none;
+}
+
+
+.classJoinButton{
+    width: 80%;
+    padding: 0.2rem;
+    border: none;
+    background-color: var(--buttonColor);
+    cursor: pointer;
+    color: white;
+    border-radius: 0.2rem;
+    transition: background-color 250ms ease;
+    text-decoration: none; 
+    font-weight: bolder;
+}
+
+.classJoinButton:active , .classJoinButton:focus{
+    outline: none;
+}
+.classJoinButton:hover{
+    background-color: var(--buttonHover);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#downloads{
+    border-radius: 0.4rem;
+    padding: 0.4rem;
+    height: max-content;
+}
+
+
+#downloadContainer::-webkit-scrollbar  {
+    display: none;
+}
+
+#downloadContainer{
+    background-color: var(--backgroundColor);
+    border-radius: 0.2rem;
+    padding: 0.4rem;
+    margin-top: 1rem;
+    overflow-y: scroll;
+    display: flex;
+    flex-direction: column;
+    cursor: pointer;
+    row-gap: 0.5rem;
+    
+}
+#downloadContainer .containerItem{
+    cursor: pointer;
+    border-radius: 0.2rem;
+    border: 1px solid var(--textColor);
+    background-color: white;
+    padding: 0.3rem;
+    transition: box-shadow 300ms ease;
+}
+
+#downloadContainer .containerItem:hover{
+    box-shadow: 0 .5rem 1rem rgba(0,0,0,0.20);
+}
+
+.containerItem a{
+    color: var(--littleHeadings);
+    text-decoration: none;
+    
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@media screen and (max-width : 6000px) and (min-width : 1701px) 
+{
+    #div5 , #div6{
+        width: 56rem;
+    }
+    #liveClassContainer{
+        grid-template-columns: 1fr 1fr 1fr 1fr;
+    }
+}
+
+@media screen and (max-width : 1700px) and (min-width : 1501px) 
+{
+    #div5 , #div6{
+        width: 48rem;
+    }
+    #liveClassContainer{
+        grid-template-columns: 1fr 1fr 1fr;
+    }
+}
+
+@media screen and (max-width : 1500px) and (min-width : 1251px) 
+{
+    #div5 , #div6{
+        width: 80%;
+    }
+    #liveClassContainer{
+        grid-template-columns: 1fr 1fr 1fr;
+    }
+}
+
+@media screen and (max-width : 1250px) and (min-width : 901px) 
+{
+    #div5 , #div6{
+        width: 70%;
+    }
+    #liveClassContainer{
+        grid-template-columns: 1fr 1fr ;
+    }
+}
+
+@media screen and (max-width : 900px) and (min-width : 701px) 
+{
+    #div5 ,#div6{
+        width: 30rem;
+    }
+    #liveClassContainer{
+        grid-template-columns: 1fr ;
+    }
+    /* #liveClassContainer .classItem{
+        margin: auto;
+    } */
+}
+
+
+
+@media screen and (max-width : 700px) and (min-width : 50px) 
+{
+
+    #div5 , #div6{
+        width: 100%;
+        height: 100%;
+        margin-left: 0.8rem;
+        margin-right: 0.8rem;
+    }
+
+
+    #downloadContainer form{
+        row-gap: 0.9rem;
+    }
+    
+    #liveClassContainer{
+        grid-template-columns: 1fr;
+        gap: 1rem;
+        margin-bottom: 1.2rem;
+    }
+
+    .classHeading{
+        font-size: 0.8rem;
+    }
+
+    .hostName{
+        font-size: 0.7rem;
+    }
+
+    .classItem{
+        width: auto;
+    }
+
+    .classJoinButton{
+        font-size: 0.8rem;
+        padding: 0.4rem;
+    }
+
+}

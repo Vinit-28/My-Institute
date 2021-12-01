@@ -1,0 +1,265 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200&display=swap');
+
+*, *:before, *:after {
+    box-sizing: border-box;
+    --fontFamily : Poppins, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    --backgroundColor : #edf2f9;
+    --navigationBarColor : rgb(209, 225, 248);
+    --textColor : #5e6e82;
+    --textHoverColor : #cad0d6;
+    --activeTextColor : #2864c5;
+    --hoverDarkColor : rgb(35, 43, 53);
+    --buttonColor : rgba(44, 124, 229, 0.844);
+    --buttonHover : rgb(44, 123, 229);
+    --formBorder : #d8e2ef;
+    --littleHeadings : #344050;
+    --backgroundDark : #0b1727;
+    --boxShadow : 0 .5rem 1rem rgba(0,0,0,.15) ;
+}
+
+
+nav {
+    position: sticky;
+    top: 0;
+    z-index: 10000;
+    width: 100%;
+    display: flex;
+    background-color: var(--backgroundColor);
+    justify-content: space-between;
+}
+
+#mynavbar{
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.900); 
+    padding: 0;
+    margin: 0;
+    
+}
+
+#mynavLeft {
+    display: flex;
+    align-items: center;
+    column-gap: 20px;
+    margin-left: 1%;
+}
+
+
+
+
+
+/* .nav-shadow{
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.900);    
+} */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Toggle Button ! */
+
+#mytoggleButton {
+    width: 38px;
+    height: 38px;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    border-radius: 50%;
+    transition: all 200ms ease-in-out;
+}
+
+#mytoggleButton:hover {
+    background-color: rgba(186, 212, 247, 0.898);
+}
+
+#mybar {
+    width: 20px;
+    height: 2px;
+    transition: all 100ms ease-in-out;
+    background-color: rgb(94, 110, 130);
+    border-radius: 5px;
+    
+}
+
+#mybar::after, #mybar::before {
+    content: '';
+    position: absolute;
+    width: 20px;
+    height: 2px;
+    transition: all 100ms linear;
+    background-color: rgb(94, 110, 130);
+    border-radius: 5px;
+}
+
+#mybar::after {
+    transform: translateY(-400%);
+}
+
+#mybar::before {
+    transform: translateY(400%);
+}
+
+#mytoggleButton:hover #mybar::after, #mytoggleButton:hover #mybar::before, #mytoggleButton:hover #mybar {
+    background-color: var(--hoverDarkColor);
+}
+
+#mytoggleButton.open #mybar {
+    transform: rotate(90deg);
+    background: transparent;
+}
+
+#mytoggleButton.open #mybar::before, #mytoggleButton.open #mybar::after {
+    transform: translate(0);
+    position: block;
+}
+
+#mytoggleButton.cross #mybar::before {
+    transform: rotate(45deg);
+}
+
+#mytoggleButton.cross #mybar::after {
+    transform: rotate(-45deg);
+}
+
+
+/* Toggle Button End ! */
+
+
+
+
+
+
+/* NavBar LEft and Right */
+#mynavLeft *{
+    font-family: var(--fontFamily);
+    font-weight: bolder;
+    font-size: 1.4rem;
+}
+#mynavLeft img {
+    width: 3.8rem;
+}
+
+#mynavRight {
+    display: flex;
+    align-items: center;
+    margin-right: 2%;
+}
+
+#mynavRight ul {
+    display: flex;
+    align-items: center;
+    list-style: none;
+    font-size: 20px;
+    column-gap: 10px;
+}
+
+.navIcons {
+    color: var(--textColor);
+    width: 30px;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 200ms ease-in-out;
+}
+
+.navIcons:hover {
+    color: var(--hoverDarkColor);
+    background-color: rgba(186, 212, 247, 0.898);
+}
+
+#mynavRight ul li img {
+    width: 30px;
+    border-radius: 50%;
+}
+
+/* NavBar LEft and Right End*/
+
+
+
+
+
+
+
+
+
+@media screen and (max-width : 900px) and (min-width : 701px) 
+{
+
+    #mynavRight ul {
+        font-size: 17px;
+        column-gap: 0.4rem;
+    }
+
+    .navIcons {
+        width: 1.4rem;
+        height: 1.4rem;
+    }
+
+}
+
+
+
+
+
+
+
+
+
+
+@media screen and (max-width : 700px) and (min-width:80px) 
+{
+
+
+
+    /* NavBar LEft and Right */
+
+    #mynavLeft {
+        column-gap: 0.4rem;
+        /* width: 48rem; */
+    }
+    #instituteName{
+        display: none;
+    }
+
+
+    #mynavLeft img {
+        width: 2.5rem;
+        margin-top: 0.4rem;
+    }
+
+
+    #mynavRight ul {
+        font-size: 1rem;
+        column-gap: 0.4rem;
+    }
+
+    .navIcons {
+        width: 1.2rem;
+        height: 1.2rem;
+    }
+
+    
+    #mynavRight ul li img {
+        width: 1.4rem;
+    }
+
+    /* NavBar LEft and Right End*/
+
+}
+
+
+
+
+
