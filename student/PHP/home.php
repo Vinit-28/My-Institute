@@ -94,7 +94,6 @@
 
 
 
-
         <div id="div2" style="display: none;">
             <div id="selectedPersonProfile" class="selectedFormsDiv" style="width: 100%;">
                 <div id="profileimgdiv">
@@ -140,14 +139,6 @@
         </div>
 
 
-
-
-
-
-
-
-
-
         <!-- Live Class Section -->
 
         <div id="div5" style="display: none;">
@@ -189,12 +180,6 @@
         <!-- Live Class Section END -->
 
 
-
-
-
-
-
-
         <!-- Download Section Div -->
         
         <div id="div6" style="display: none;">
@@ -214,7 +199,6 @@
         </div>
         
         <!-- Download Section Div End-->
-
 
 
         <!-- Download Section Div -->
@@ -250,19 +234,6 @@
         
         
         
-        
-
-        
-
-
-
-
-
-
-
-
-
-
         <!-- Resume maker Div -->
 
         <div id="div8" style="display: none;">
@@ -337,8 +308,6 @@
                     </div>
 
 
-
-
                     <div class="educationBlock">
                         <label class="heading" for="">Project Details (Optional)</label>
                         <input name="project1Name" class="tagname" required autocomplete="OFF" type="text" placeholder="Project 1 Name">
@@ -350,8 +319,6 @@
                         <input name="project3Name" class="tagname" required autocomplete="OFF" type="text" placeholder="Project 3 Name">
                         <textarea required name="project3summary" disabled  placeholder="*50 Words project 3 summary" maxlength="300"  cols="30" rows="3" ></textarea>
                     </div>
-
-
 
 
                     <div class="educationBlock">
@@ -373,32 +340,23 @@
                 </form>
             </div>
 
-
         </div>
-
-
-
         
         <!-- Resume maker Div END-->
 
-
-
     </div>
 
-
-
-
+    <p id="userId" style="display: none;"><?php echo $_SESSION["userId"];?></p>
 
 </body>
 
 </html>
 
 
-
 <script src="../JS/jquery.js"></script>
 
 
-<!-- FOr input tags -->
+<!-- FOR input tags -->
 <script>
         
         $(".tagname").on("input" , function(){
@@ -485,23 +443,6 @@
     }
 </script>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<!-- <script src="../JS/jquery.js"></script> -->
-<script src="../JS/jquery.js"></script>
 
 <script>
 
@@ -605,13 +546,6 @@
 
 
 
-
-    
-
-
-
-
-
     let position = false;
     let navBarWidth = $("#mynavigationBar").css("width");
     let btn = document.querySelector('#mytoggleButton');
@@ -686,58 +620,7 @@
 
     });
 
-
-
 </script>
-
-
-<!-- <div class="educationBlock">
-    <label class="heading" >Secondary Education *</label>
-    <div>
-        <input required autocomplete="OFF" type="text" placeholder="*Institute Name">
-    </div>
-    <div>
-        <label for="Secondarystatus">*Status</label>
-        <select name="collegestatus" required>
-            <option value="pursuing">Pursuing</option>
-            <option value="pursuing">Completed</option>
-        </select>
-    </div>
-    <div style="display: flex; flex-wrap: wrap; align-items: center; column-gap: 0.4rem;">
-        <label for="secondarystartdate">*Start Date</label>
-        <input type="date" name="secondarystartdate" required>
-    </div>
-    <div style="display: flex; flex-wrap: wrap; align-items: center; column-gap: 0.4rem;">
-        <label for="secondaryenddate">*End Date</label>
-        <input type="date" name="secondaryenddate" required>
-    </div>
-</div>
-
-
-<div class="educationBlock">
-    <label class="heading" >Education Profile</label>
-    <label class="heading" >Senior Secondary Education</label>
-    <div>
-        <input autocomplete="OFF" type="text" placeholder="Institue Name">
-    </div>
-    <div>
-        <label for="seniorsecondarystatus">Status</label>
-        <select name="seniorsecondarystatus" required>
-            <option value="pursuing">Pursuing</option>
-            <option value="pursuing">Completed</option>
-        </select>
-    </div>
-    <div style="display: flex; flex-wrap: wrap; align-items: center; column-gap: 0.4rem;">
-        <label for="seniorsecondarystartdate">Start Date</label>
-        <input type="date" name="seniorsecondarystartdate">
-    </div>
-    <div style="display: flex; flex-wrap: wrap; align-items: center; column-gap: 0.4rem;">
-        <label for="seniorsecondaryenddate">End Date</label>
-        <input type="date" name="seniorsecondaryenddate" >
-    </div>
-</div>
-
- -->
 
 <script>
 
@@ -768,40 +651,6 @@
 </script>
 
 
-
-
 <?php
     }
 ?>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
