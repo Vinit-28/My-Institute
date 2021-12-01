@@ -20,6 +20,9 @@
         // Making a seperate database for the  institute //
         $instituteDatabase = get_DatabaseConnectionObject($instituteId);
         
+
+        // -------------------- Creating Tables for a Institute in its Database -------------------- //
+
         // Making a TeacherInfo Table which will store all teachers related information // 
         $query = "CREATE TABLE TeacherInfo(
             userId VARCHAR(100) PRIMARY kEY, 
@@ -38,23 +41,29 @@
         
         // Making a StudentInfo Table which will store all students related information // 
         $query = "CREATE TABLE StudentInfo(
-            studentId VARCHAR(100) PRIMARY kEY, 
-            studentName VARCHAR(100), 
-            department VARCHAR(100),
-            designation VARCHAR(100), 
-            class VARCHAR(100),
+            userId VARCHAR(100) PRIMARY kEY, 
+            name VARCHAR(100), 
             email VARCHAR(100), 
-            contact VARCHAR(100)
+            gender VARCHAR(100), 
+            designation VARCHAR(100), 
+            phoneNo VARCHAR(100), 
+            adharCardNo VARCHAR(100), 
+            address VARCHAR(100), 
+            city VARCHAR(100), 
+            state VARCHAR(100),
+            pinCode VARCHAR(100),
+            feeSubmitted BIGINT(8)
             );";
         runQuery($instituteDatabase, $query, [], "");
         
 
-        // Making a InstituteConfig Table which will store all institute configurations related information // 
-        // $query = "CREATE TABLE InstituteConfig(
-        //     departments VARCHAR(100),
-        //     designations VARCHAR(100)
-        //     );";
-        // runQuery($instituteDatabase, $query, [], "");
+        // Making a StudentInfo Table which will store all students related information // 
+        $query = "CREATE TABLE Classes(
+            className VARCHAR(100) PRIMARY kEY, 
+            fees BIGINT(8)
+            );";
+        runQuery($instituteDatabase, $query, [], "");
+        
     }
 
     
@@ -86,8 +95,8 @@
         // If the new User is a Student //
         else if( $userDetails['designation'] == "student" || $userDetails['designation'] == "Student" ){
             
-            $query = "INSERT INTO StudentInfo(userId, name, email, gender, designation, phoneNo, adharCardNo, address, city, state, pinCode) VALUES(?,?,?,?,?,?,?,?,?,?,?);";
-            runQuery($databaseConnectionObject, $query, [ $userDetails['userId'], $userDetails['name'], $userDetails['email'], $userDetails['gender'], $userDetails['designation'], $userDetails['phoneNo'], $userDetails['adharCardNo'], $userDetails['address'], $userDetails['city'], $userDetails['state'], $userDetails['pinCode'] ], "sssssssssss", true);
+            $query = "INSERT INTO StudentInfo(userId, name, email, gender, designation, phoneNo, adharCardNo, address, city, state, pinCode, feeSubmitted) VALUES(?,?,?,?,?,?,?,?,?,?,?,?);";
+            runQuery($databaseConnectionObject, $query, [ $userDetails['userId'], $userDetails['name'], $userDetails['email'], $userDetails['gender'], $userDetails['designation'], $userDetails['phoneNo'], $userDetails['adharCardNo'], $userDetails['address'], $userDetails['city'], $userDetails['state'], $userDetails['pinCode'], 0], "sssssssssssi", true);
         }
     }
 
@@ -201,17 +210,17 @@
     // Upadte Person Details in the Institute's Database //
     function updatePersonDetails($databaseConnectionObject, $request){
 
-        // $databaseConnectionObject->select_db($request['instituteId']);
+        $databaseConnectionObject->select_db($request['instituteId']);
 
-        // if( $request['authority'] == "teacher" || $request['authority'] == "Teacher" ){
+        if( $request['authority'] == "teacher" || $request['authority'] == "Teacher" ){
 
-        //     $query = "UPDATE TeacherInfo name = ?, gender = ?, designation = ?, phoneNo = ?, adharCardNo = ?, address = ?, city = ?, state = ?, pinCode = ? WHERE userId = ?";
+            $query = "UPDATE TeacherInfo name = ?, gender = ?, designation = ?, phoneNo = ?, adharCardNo = ?, address = ?, city = ?, state = ?, pinCode = ? WHERE userId = ?";
 
-        //     $result = runQuery($databaseConnectionObject, $query, [$request['name'], $request['gender'], $request['designation'], $request['phoneNo'], $request['adharCardNo'], $request['address'], $request['city'], $request['state'], $request['pinCode'], , $request['userId']], "ssssssssss", true);
-        // }
-        // else if( $request['authority'] == "student" || $request['authority'] == "Student" ){
+            $result = runQuery($databaseConnectionObject, $query, [$request['name'], $request['gender'], $request['designation'], $request['phoneNo'], $request['adharCardNo'], $request['address'], $request['city'], $request['state'], $request['pinCode'], $request['userId']], "ssssssssss", true);
+        }
+        else if( $request['authority'] == "student" || $request['authority'] == "Student" ){
 
-        // }
+        }
     }
 
 

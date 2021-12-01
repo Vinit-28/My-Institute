@@ -4,6 +4,8 @@
     // Importing the required files //
     require "./DatabaseConfigurations.php";
     require "./UserUtilities.php";
+    require "./InstituteConfigurations.php";
+
 
     // Getting the database connection object //
     $databaseConnectionObject = get_DatabaseConnectionObject("App_Database");
@@ -66,6 +68,38 @@
                 );
                 
                 // Sending the response //
+                echo json_encode($response);
+            }
+
+
+            // If the request is to Update the Class in the Institute's Database //
+            else if( $request['task'] == 'Update Classes' ){
+                
+                $response = array();
+                $databaseConnectionObject->select_db($request['instituteId']);
+
+                if( $request['subtask'] == "Add Class" ){
+
+                    if( isClassExists($databaseConnectionObject, $request['className']) ){
+                        $response += ["result"=>"Failed", "message"=>"Class Already Exists !!!"];
+                    }
+                    else{
+                        addClass($databaseConnectionObject, $request);
+                        $response += ["result"=>"Success", "message"=>"Class Created Successfully !!!"];
+                    }
+                }
+                else if( $request['subtask'] == "Update Class" ){
+                    updateClass($databaseConnectionObject, $request);
+                    $response += ["result"=>"Success", "message"=>"Class Updated Successfully !!!"];
+                }
+                else if( $request['subtask'] == "Delete Class" ){ 
+                    DeleteClass($databaseConnectionObject, $request);
+                    $response += ["result"=>"Success", "message"=>"Class/Classes Deleted Successfully !!!"];
+                }
+                else if( $request['subtask'] == "Show Classes" ){
+                    $classes = getClasses($databaseConnectionObject);
+                    $response += ["result"=>"Success", "classes"=>$classes];
+                }
                 echo json_encode($response);
             }
 

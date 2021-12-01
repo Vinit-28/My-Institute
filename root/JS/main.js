@@ -5,6 +5,23 @@ let relatedPersons = {};
 let selectedProfile = undefined;
 
 
+// Function to make a AJAX request to the Server //
+function makeAJAXRequest(requesType, serverUrl, data, onLoadFunction){
+
+    // Creating the XHR Object //
+    let xhrObject = new XMLHttpRequest();
+    xhrObject.open(requesType, serverUrl);
+    xhrObject.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    
+    // After getting the Response from the Server this Function will be executed //
+    xhrObject.onload = onLoadFunction;
+
+    // Making the Request //
+    xhrObject.send("request="+JSON.stringify(data));
+}
+
+
+
 // ------------------------------- Add Person ------------------------------- // 
 
 // Fucntion to make a AJAX request to the server and Will add a new Person in the Database //
@@ -12,15 +29,10 @@ function addPersonInTheDatabase(e){
 
     e.preventDefault();
     
-    // Creating the XHR Object //
-    let xhrObject = new XMLHttpRequest();
-    xhrObject.open("POST", "../../Server/Utilities/InstituteSpecificUtilities.php");
-    xhrObject.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    
     // Creating Some Variables //
     let designation = document.getElementById("add-designation")
     let gender = document.getElementById("add-gender")
-
+    
     let personData = {
         "task" : "Add Teacher", 
         "instituteId" : document.getElementById("userId").textContent, 
@@ -38,9 +50,8 @@ function addPersonInTheDatabase(e){
         "city" : document.getElementById("add-city").value,
         "pinCode" : document.getElementById("add-pinCode").value,
     };
-
-    // After getting the Response from the Server this Function will be executed //
-    xhrObject.onload = function(){
+    
+    let onLoadFunction = function(){
         
         if( this.status != 200 ){
             alert("Something Went Wrong!");
@@ -62,9 +73,9 @@ function addPersonInTheDatabase(e){
             }
         }
     };
-
-    // Making the Request //
-    xhrObject.send("request="+JSON.stringify(personData));
+    
+    // Making the Request to the Server //
+    makeAJAXRequest("POST", "../../Server/Utilities/InstituteSpecificUtilities.php", personData, onLoadFunction);
 }
 
 // Binding the Function addPersonInTheDatabase to the button submitAddPersonForm //
@@ -123,11 +134,8 @@ function getPersonCard(personDetails, key){
 
 // Function to search a person in the database //
 function searchPersonInTheDatabase(e){
+   
     e.preventDefault();
-    // Creating the XHR Object //
-    let xhrObject = new XMLHttpRequest();
-    xhrObject.open("POST", "../../Server/Utilities/InstituteSpecificUtilities.php");
-    xhrObject.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     
     // Creating Some Variables //
     let personData = {
@@ -137,8 +145,7 @@ function searchPersonInTheDatabase(e){
         "searchKey" : document.getElementById("searchKey").value,
     };
 
-    // After getting the Response from the Server this Function will be executed //
-    xhrObject.onload = function(){
+    let onLoadFunction = function(){
         
         if( this.status != 200 ){
             alert("Something Went Wrong!");
@@ -182,8 +189,8 @@ function searchPersonInTheDatabase(e){
         }
     };
 
-    // Making the Request //
-    xhrObject.send("request="+JSON.stringify(personData));
+    // Making the Request to the Server //
+    makeAJAXRequest("POST", "../../Server/Utilities/InstituteSpecificUtilities.php", personData, onLoadFunction);
 }
 
 
@@ -217,12 +224,6 @@ function updatePersonDetails(e){
     e.preventDefault();
     
     if( areTheDetailsModified() ){
-    
-        // Creating the XHR Object //
-        let xhrObject = new XMLHttpRequest();
-        xhrObject.open("POST", "../../Server/Utilities/InstituteSpecificUtilities.php");
-        xhrObject.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-        
 
         // Creating Some Variables //
         let designation = document.getElementById("update-designation")
@@ -245,8 +246,7 @@ function updatePersonDetails(e){
             "pinCode" : document.getElementById("update-pinCode").value,
         };
 
-        // After getting the Response from the Server this Function will be executed //
-        xhrObject.onload = function(){
+        let onLoadFunction = function(){
             
             if( this.status != 200 ){
                 alert("Something Went Wrong!");
@@ -262,8 +262,8 @@ function updatePersonDetails(e){
             }
         };
 
-        // Making the Request //
-        xhrObject.send("request="+JSON.stringify(personData));
+        // Making the Request to the Server //
+         makeAJAXRequest("POST", "../../Server/Utilities/InstituteSpecificUtilities.php", personData, onLoadFunction);
     }
     else{
         alert("Nothing to be Updated !!!");
@@ -274,3 +274,13 @@ function updatePersonDetails(e){
 
 // Binding the Function searchPersonInTheDatabase to the button searchPerson //
 // document.getElementById("updatePersonDetails").addEventListener("click", updatePersonDetails);
+
+
+
+
+// ------------------------------- Updating Classes of the Institute ------------------------------- // 
+
+
+
+// Binding the Function searchPersonInTheDatabase to the button searchPerson //
+// document.getElementById("addClass-save").addEventListener("click", addClass);

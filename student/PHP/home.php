@@ -98,7 +98,8 @@
             <div id="selectedPersonProfile" class="selectedFormsDiv" style="width: 100%;">
                 <div id="profileimgdiv">
                     <div id="selectedImgContainer" onclick="file.click()" ondragdrop="file.dragdrop()">
-                        <img id="selectedImg" src="../IMAGES/profile.jpg" alt="">
+                        <!-- <img id="selectedImg" src="../IMAGES/profile.jpg" alt=""> -->
+                        <?php echo "<img id='selectedImg' src='" . $_SESSION['userProfile'] . "' alt=''>";?>
                         <div id="selectedImgCamera"><i class='bx bxs-camera' style="margin-top: 0.3rem;"></i></div>
                     </div>
                     <div id="studentName">Aman Khushalani</div>
