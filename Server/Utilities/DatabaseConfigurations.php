@@ -51,7 +51,7 @@
             $stmt->close();
             return $result;
         }
-        die("STATEMENT ERROR !!!");
+        die("STATEMENT ERROR !!!" . $query);
     }
 
 

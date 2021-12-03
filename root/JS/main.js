@@ -257,6 +257,7 @@ function updatePersonDetails(e){
                     alert("Person Details Upadted Successfully !!!");
                 }
                 else{
+                    let response = JSON.parse(responseText);
                     alert(responseText);
                 }
             }
@@ -281,6 +282,55 @@ function updatePersonDetails(e){
 // ------------------------------- Updating Classes of the Institute ------------------------------- // 
 
 
+function openAddClassForm(){
+
+
+    function addClassInTheDatabase(e){
+
+        e.preventDefault();
+        let data = {
+            "task" : "Update Classes", 
+            "subtask" : "Add Class", 
+            "instituteId" : document.getElementById("userId").textContent, 
+            "sessionId" : document.getElementById("sessionId").textContent,
+            "className" : document.getElementById("className").value,
+            "fees" : document.getElementById("fees").value,
+        };
+
+        let onLoadFunction = function(){
+
+            if( this.status != 200 ){
+                alert("Something Went Wrong!");
+            }
+            else{
+                let responseText = this.responseText.replace(/(\r\n|\n|\r)/gm, "");
+                if( responseText.includes("Success") || responseText.includes("Failed") ){
+                    let response = JSON.parse(responseText);
+                    alert(response.message);
+                    if( response.result == "Success" ){
+                        document.getElementById("className").value = "";
+                        document.getElementById("fees").value = "";
+                    }
+                }
+                else{
+                    alert(responseText);
+                }
+            }
+        }
+
+        makeAJAXRequest("POST", "../../Server/Utilities/InstituteSpecificUtilities.php", data, onLoadFunction)
+    }
+
+    document.getElementById("addClassForm").style.display = "block";
+    // Binding the Function searchPersonInTheDatabase to the button searchPerson //
+    document.getElementById("addClass-save").addEventListener("click", addClassInTheDatabase);
+
+}
+
+
+
+
+
 
 // Binding the Function searchPersonInTheDatabase to the button searchPerson //
-// document.getElementById("addClass-save").addEventListener("click", addClass);
+document.getElementById("addClass").addEventListener("click", openAddClassForm);

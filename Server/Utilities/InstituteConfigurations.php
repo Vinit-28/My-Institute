@@ -15,7 +15,7 @@
     // Function to Add a Class in the Institute's Database //
     function addClass($databaseConnectionObject, $request){
 
-        $query = "INSERT INTO Classes(className, fess) VALUES(?,?);";
+        $query = "INSERT INTO Classes(className, fees) VALUES(?,?);";
         runQuery($databaseConnectionObject, $query, [$request['className'], $request['fees']], "si", true);
     }
     
