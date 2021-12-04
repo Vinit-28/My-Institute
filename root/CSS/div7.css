@@ -37,6 +37,63 @@
 
 
 
+#ClassContainer::-webkit-scrollbar  {
+    display: none;
+}
+
+#ClassContainer{
+    background-color: var(--backgroundColor);
+    border-radius: 0.2rem;
+    padding: 0.4rem;
+    margin-top: 1rem;
+    overflow-y: scroll;
+    
+}
+#ClassContainer form {
+    display: flex;
+    flex-direction: column;
+    row-gap: 0.5rem;
+}
+#ClassContainer form input {
+    cursor: pointer;
+}
+#ClassContainer form input:focus , #ClassContainer form input:active
+{
+    outline: none;
+}
+
+#ClassContainer .containerItem{
+    cursor: pointer;
+    border-radius: 0.2rem;
+    border: 1px solid var(--textColor);
+    background-color: white;
+    padding: 0.3rem;
+    transition: box-shadow 300ms ease;
+}
+
+#ClassContainer .containerItem:hover{
+    box-shadow: 0 .5rem 1rem rgba(0,0,0,0.20);
+}
+
+.containerItem p{
+    color: var(--littleHeadings);
+    text-decoration: none;
+    
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 #addclasssection{
     border-radius: 0.4rem;
     padding: 0.4rem;
@@ -110,14 +167,14 @@
     
 }
 
-#addClassForm{
+#addClassForm, #updateClassForm{
     padding: 0.4rem;
     row-gap: 0.6rem;
     width: 100%;
     
 }
 
-#addClassForm input , #addFileForm select{
+#addClassForm input , #addFileForm select, #updateClassForm input{
     width: 100%;
     margin-bottom: 0.5rem;
     padding: 0.6rem;
@@ -128,9 +185,9 @@
     font-size: 0.9rem;
     transition: 200ms ease;
     cursor: pointer;
-    
 }
-#addClassForm button{
+
+#addClassForm button, #updateClassForm button{
     padding: 0.6rem;
 }
 

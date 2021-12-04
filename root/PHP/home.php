@@ -452,37 +452,50 @@ if (!(isset($_SESSION["isUserLogedIn"]) && isset($_SESSION["userId"]) && isset($
                 </div>
                 <div id="addclasssection">
                     <div id="addclasssectionContainer">
-                        <button id="addClass"class="downloadOptions" onclick="changeClassForm()" >Add Class</button>
-                        <button class="downloadOptions" onclick="changeClassForm()">Show Class</button>
-                        <button class="downloadOptions">Delete Class</button>
+                        <button id="addClass" class="downloadOptions" >Add Class</button>
+                        <button id="showClass" class="downloadOptions" >Show Class</button>
+                        <button id="deleteClass" class="downloadOptions">Delete Class</button>
+                        <button id="updateClass" class="downloadOptions">Update Class</button>
                     </div>
 
                     <div id="ClassContainer" >
 
-                        <form id="showClassForm" action="" method="post" style="display: none;">
+                        <!-- Add Class Form -->
+                        <!-- <form id="addClassForm" action="" method="post" style="display: none;">
 
-                            <div class="containerItem">
-                                <input type="checkbox" name="" id="">
-                                <a href="">Class 1</a>
-                            </div>
-                        </form>
+                            <input required id="className-add" required autocomplete="OFF" type="text" placeholder="Class Name">
+                            <input required id="fees-add" required autocomplete="OFF" type="text" placeholder="Class Fees">
+                            <button class="addClassButton" type="submit" id="addClass-save" >Create Class</button>
 
-                        <form id="addClassForm" action="" method="post" style="display: none;">
+                        </form> -->
 
-                            <input required id="className" required autocomplete="OFF" type="text" placeholder="Class Name">
-                            <input required id="fees" required autocomplete="OFF" type="text" placeholder="Class Fees">
-                            <button type="submit" id="addClass-save" >Create Class</button>
 
-                        </form>
+                        <!-- Show Class Form -->
+                        <!-- <form id="showClassForm" action="" method="post" style="display: none;"> -->
+                           
+                            <!-- Class Card -->
+                            <!-- <div class="containerItem">
+                                <input type="checkbox" name="" id="classname">
+                                <p>Class Name &nbsp;&nbsp;&nbsp;CLass Fees</p>
+                            </div> -->
+                            
+                        <!-- </form> -->
 
+
+                        <!-- Update Class Form -->
+                        <!-- <form id="updateClassForm" action="" method="post" style="display: none;">
+                            <input required id="className-update" required autocomplete="OFF" type="text" placeholder="Updated Class Name">
+                            <input required id="fees-update" required autocomplete="OFF" type="text" placeholder="Updated Class Fees">
+                            <button class="saveUpdatedClassInfo" type="submit" id="saveUpdatedClassInfo" >Save Changes</button>
+                        </form> -->
+
+                        
                     </div>
 
                 </div>
 
             </div>
             <!-- add class Section Div end -->
-
-
 
 
         </div>

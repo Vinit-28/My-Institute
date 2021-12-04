@@ -2,6 +2,7 @@
 
 // Declaring Some Global Varibales //
 let relatedPersons = {};
+let instituteClasses = {};
 let selectedProfile = undefined;
 
 
@@ -282,7 +283,36 @@ function updatePersonDetails(e){
 // ------------------------------- Updating Classes of the Institute ------------------------------- // 
 
 
+// function to handle Add Class Functionality //
 function openAddClassForm(){
+
+    // Getting the ClassContainer //
+    let ClassContainer = document.getElementById("ClassContainer");
+
+    // Creating the Tags //
+    let form = document.createElement("form");
+    let inputClassName = document.createElement("input");
+    let inputFees = document.createElement("input");
+    let button = document.createElement("button");
+    
+    // Giving values to their Attributes //
+    ClassContainer.innerHTML = "";
+    form.id = "addClassForm";
+    form.method = "POST";
+    inputClassName.id = "className-add";
+    inputFees.id = "fees-add";
+    inputFees.placeholder = "Class Fees";
+    inputClassName.placeholder = "Class Name";
+    button.id = "addClass-save";
+    button.type = "submit";
+    button.innerText = "Create Class";
+    button.classList.add("addClassButton");
+
+    // Wrapping up the Tags //
+    form.appendChild(inputClassName);
+    form.appendChild(inputFees);
+    form.appendChild(button);
+    ClassContainer.appendChild(form);
 
 
     function addClassInTheDatabase(e){
@@ -293,8 +323,8 @@ function openAddClassForm(){
             "subtask" : "Add Class", 
             "instituteId" : document.getElementById("userId").textContent, 
             "sessionId" : document.getElementById("sessionId").textContent,
-            "className" : document.getElementById("className").value,
-            "fees" : document.getElementById("fees").value,
+            "className" : document.getElementById("className-add").value,
+            "fees" : document.getElementById("fees-add").value,
         };
 
         let onLoadFunction = function(){
@@ -308,8 +338,10 @@ function openAddClassForm(){
                     let response = JSON.parse(responseText);
                     alert(response.message);
                     if( response.result == "Success" ){
-                        document.getElementById("className").value = "";
-                        document.getElementById("fees").value = "";
+
+                        // document.getElementById("className-add").value = "";
+                        // document.getElementById("fees-add").value = "";
+                        showClasses();
                     }
                 }
                 else{
@@ -318,19 +350,269 @@ function openAddClassForm(){
             }
         }
 
+        // Making the AJAX Request //
         makeAJAXRequest("POST", "../../Server/Utilities/InstituteSpecificUtilities.php", data, onLoadFunction)
     }
 
-    document.getElementById("addClassForm").style.display = "block";
     // Binding the Function searchPersonInTheDatabase to the button searchPerson //
     document.getElementById("addClass-save").addEventListener("click", addClassInTheDatabase);
-
 }
 
 
 
+// function to get a Class Card //
+function getClassCard(classData){
+
+    // Creating tags //
+    let containerItem = document.createElement("div");
+    let inputCheckBox = document.createElement("input");
+    let className = document.createElement("p");
+
+    // Giving values to their Attributes //
+    containerItem.classList.add("containerItem");
+    inputCheckBox.type = "checkbox";
+    inputCheckBox.name = "showClassesCard";
+    // inputCheckBox.id = classData.className;
+    inputCheckBox.value = classData.className;
+    className.innerText = classData.className + " ( " + classData.fees + " )";
+
+
+    // Wrapping the Tag //
+    containerItem.appendChild(inputCheckBox);
+    containerItem.appendChild(className);
+    return containerItem;
+}
 
 
 
-// Binding the Function searchPersonInTheDatabase to the button searchPerson //
+// function to handle Show Classes Functionality //
+function showClasses(){
+
+    // Getting the ClassContainer //
+    let ClassContainer = document.getElementById("ClassContainer")
+    ClassContainer.innerHTML = "";
+
+    let data = {
+        "task" : "Update Classes", 
+        "subtask" : "Show Classes", 
+        "instituteId" : document.getElementById("userId").textContent, 
+        "sessionId" : document.getElementById("sessionId").textContent,
+    };
+
+    let onLoadFunction = function(){
+
+        if( this.status != 200 ){
+            alert("Something Went Wrong!");
+        }
+        else{
+            let responseText = this.responseText.replace(/(\r\n|\n|\r)/gm, "");
+            if( responseText.includes("Success") || responseText.includes("Failed") ){
+                let response = JSON.parse(responseText);
+                if( response.result == "Success" ){
+                    
+                    // Creating the Form Tag for (Checkboxes) //
+                    let showClassForm = document.createElement("form");
+                    showClassForm.id = "showClassForm";
+                    instituteClasses = response.classes;
+
+                    for(let key in response.classes){
+                        // Appending the new Class in the Form tag as Checkbox //
+                        showClassForm.appendChild(getClassCard(response.classes[key]));
+                    }
+                    // Appending the Form in the ClassContainer //
+                    ClassContainer.appendChild(showClassForm);
+                }
+            }
+            else{
+                alert(responseText);
+            }
+        }
+    }
+
+    // Making the AJAX Request //
+    makeAJAXRequest("POST", "../../Server/Utilities/InstituteSpecificUtilities.php", data, onLoadFunction)
+}
+
+
+// Function to get the Selected Classes from the Form Menu (Checkboxes) //
+function getSelectedClasses(){
+
+    let checkboxes = document.getElementsByName('showClassesCard');
+    let selectedClasses= [];
+    for (var checkbox of checkboxes)
+    {
+        if (checkbox.checked) {
+            selectedClasses.push(checkbox.value);
+        }
+    }
+    return selectedClasses;
+}
+
+
+
+// Function to delete the Selected Classes //
+function deleteClass(){
+    
+    let selectedClasses = getSelectedClasses();
+
+    // If a User has Selected the Classes //
+    if( selectedClasses.length ){
+
+        let data = {
+            "task" : "Update Classes", 
+            "subtask" : "Delete Classes", 
+            "instituteId" : document.getElementById("userId").textContent, 
+            "sessionId" : document.getElementById("sessionId").textContent,
+            "selectedClasses" : selectedClasses
+        };
+    
+        let onLoadFunction = function(){
+    
+            if( this.status != 200 ){
+                alert("Something Went Wrong!");
+            }
+            else{
+                let responseText = this.responseText.replace(/(\r\n|\n|\r)/gm, "");
+                if( responseText.includes("Success") || responseText.includes("Failed") ){
+                    let response = JSON.parse(responseText);
+                    alert(response.message);
+                    showClasses();
+                }
+                else{
+                    alert(responseText);
+                }
+            }
+        }
+    
+        // Making the AJAX Request //
+        makeAJAXRequest("POST", "../../Server/Utilities/InstituteSpecificUtilities.php", data, onLoadFunction)
+
+    }
+    else{
+        alert("Please select atleast one class !!!");
+    }
+}
+
+
+
+// Function to get the Class Details using its Name //
+function getClassDetails(className){
+
+    for(let classDetails in instituteClasses){
+        if( instituteClasses[classDetails].className == className )
+            return instituteClasses[classDetails];
+    }
+}
+
+
+
+// Function to Update the Class Details(Fees) //
+function updateClass(){
+    
+    let selectedClasses = getSelectedClasses();
+
+    // If the user has selected only one Class then it will only be updated //
+    if( selectedClasses.length == 1 ){
+
+        // Getting the Selected Class //
+        let selectedClass = getClassDetails(selectedClasses[0]);
+
+        // Getting the ClassContainer //
+        let ClassContainer = document.getElementById("ClassContainer");
+
+        // Creating the Tags //
+        let form = document.createElement("form");
+        let inputClassName = document.createElement("input");
+        let inputClassFess = document.createElement("input");
+        let upadteButton = document.createElement("button");
+        
+
+        // Giving values to their Attributes //
+        form.id = "updateClassForm";
+        form.method = "POST";
+        inputClassName.id = "className-update";
+        inputClassFess.id = "fees-update";
+        inputClassName.placeholder = "Updated Class Name";
+        inputClassFess.placeholder = "Updated Class Fees";
+        inputClassName.placeholder = "Class Name";
+        upadteButton.id = "saveUpdatedClassInfo";
+        upadteButton.type = "submit";
+        upadteButton.innerText = "Save Changes";
+        upadteButton.classList.add("saveUpdatedClassInfo-button");
+        
+        ClassContainer.innerHTML = "";
+        inputClassName.value = selectedClass.className;
+        inputClassFess.value = selectedClass.fees;
+        
+
+        // Wrapping up the Tags //
+        form.appendChild(inputClassName);
+        form.appendChild(inputClassFess);
+        form.appendChild(upadteButton);
+        ClassContainer.appendChild(form);
+
+
+        // Function to be executed when the user has enetered the updated Details //
+        function updateClassInfoInTheDatabase(e){
+            e.preventDefault();
+
+            let updatedClassName = document.getElementById("className-update").value;
+            let updatedClassFees = document.getElementById("fees-update").value;
+
+            // If nothing has to be updated //
+            if( selectedClass.className == updatedClassName && selectedClass.fees == updatedClassFees ){
+                alert("Please Update Something !!!");
+                return;
+            }
+
+            let data = {
+                "task" : "Update Classes", 
+                "subtask" : "Update Class", 
+                "instituteId" : document.getElementById("userId").textContent, 
+                "sessionId" : document.getElementById("sessionId").textContent,
+                "updatedClassInfo" : {"updatedClassName" : updatedClassName, "updatedFees" : updatedClassFees, "className" : selectedClass.className}
+            };
+            
+            let onLoadFunction = function(e){
+                e.preventDefault();
+                
+                if( this.status != 200 ){
+                    alert("Something Went Wrong!");
+                }
+                else{
+                    let responseText = this.responseText.replace(/(\r\n|\n|\r)/gm, "");
+                    if( responseText.includes("Success") || responseText.includes("Failed") ){
+                        let response = JSON.parse(responseText);
+                        console.log(response);
+                        alert(response.message);
+                        showClasses();
+                    }
+                    else{
+                        alert(responseText);
+                    }
+                }
+            }
+
+            // Making the AJAX Request //
+            makeAJAXRequest("POST", "../../Server/Utilities/InstituteSpecificUtilities.php", data, onLoadFunction)
+        }
+        // Binding the Save Changes Button with the updateClassInfoInTheDatabase Function //
+        document.getElementById("saveUpdatedClassInfo").addEventListener("click", updateClassInfoInTheDatabase);
+    }
+    else{
+        // If user has Selected more than 1 class //
+        if( selectedClasses.length > 1 )
+            alert("Please select only one class !!!");
+        // If user has not even selected a single class // 
+        else 
+            alert("Please select a class !!!");
+    }
+}
+
+
+
+// Binding the Update Classes Function  //
 document.getElementById("addClass").addEventListener("click", openAddClassForm);
+document.getElementById("showClass").addEventListener("click", showClasses);
+document.getElementById("deleteClass").addEventListener("click", deleteClass);
+document.getElementById("updateClass").addEventListener("click", updateClass);

@@ -92,8 +92,8 @@
                     updateClass($databaseConnectionObject, $request);
                     $response += ["result"=>"Success", "message"=>"Class Updated Successfully !!!"];
                 }
-                else if( $request['subtask'] == "Delete Class" ){ 
-                    DeleteClass($databaseConnectionObject, $request);
+                else if( $request['subtask'] == "Delete Classes" ){ 
+                    DeleteClasses($databaseConnectionObject, $request);
                     $response += ["result"=>"Success", "message"=>"Class/Classes Deleted Successfully !!!"];
                 }
                 else if( $request['subtask'] == "Show Classes" ){

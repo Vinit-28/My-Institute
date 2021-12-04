@@ -23,16 +23,16 @@
     // Function to Update a Class in the Institute's Database //
     function updateClass($databaseConnectionObject, $request){
 
-        $query = "UPDATE Classes SET fees = ? WHERE className = ?;";
-        runQuery($databaseConnectionObject, $query, [$request['fees'], $request['className']], "is", true);
+        $query = "UPDATE Classes SET className = ?, fees = ? WHERE className = ?;";
+        runQuery($databaseConnectionObject, $query, [$request['updatedClassInfo']['updatedClassName'], $request['updatedClassInfo']['updatedFees'], $request['updatedClassInfo']['className']], "sis", true);
     }
     
     
     // Function to Delete a Class from the Institute's Database //
-    function DeleteClass($databaseConnectionObject, $request){
+    function DeleteClasses($databaseConnectionObject, $request){
 
         for($i=0; $i<count($request['selectedClasses']); $i++){
-            $query = "DELETE Classes WHERE className = ?;";
+            $query = "DELETE FROM Classes WHERE className = ?;";
             runQuery($databaseConnectionObject, $query, [$request['selectedClasses'][$i]], "s", true);
         }
     }
@@ -47,6 +47,7 @@
         $result = runQuery($databaseConnectionObject, $query, [], "");
         while($row = $result->fetch_assoc()){
             $classes += ["'$counter'" => $row];
+            $counter+=1;
         }
         return $classes;
     }
