@@ -21,8 +21,8 @@
         // If the user is a Valid Person //
         if( isUserOnline($databaseConnectionObject, $request['instituteId'], $request['sessionId']) ){
 
-            // If the request is to Add a teacher in the Institute's Database //
-            if( $request['task'] == 'Add Teacher' ){
+            // If the request is to Add a Person(Student/Teacher) in the Institute's Database //
+            if( $request['task'] == 'Add Person' ){
                 
                 $request['password'] = password_hash($request['password'], PASSWORD_BCRYPT);
                 $databaseConnectionObject->select_db("App_Database");
@@ -99,6 +99,25 @@
                 else if( $request['subtask'] == "Show Classes" ){
                     $classes = getClasses($databaseConnectionObject);
                     $response += ["result"=>"Success", "classes"=>$classes];
+                }
+                echo json_encode($response);
+            }
+
+            else if($request['task'] == "Upload File"){
+
+                if( isset($_FILES['fileToBeUploaded']) ){
+
+                    uploadFileInTheDatabase($databaseConnectionObject, $request, $_FILES['fileToBeUploaded']['name'], $_FILES['fileToBeUploaded']['tmp_name']);
+                    $response =array(
+                        "result"=>"Success",
+                        "message"=>"File Uploaded Successfully !!!"
+                    );
+                }
+                else{
+                    $response =array(
+                        "result"=>"Failed",
+                        "message"=>"Please Select a File to Upload !!!"
+                    );
                 }
                 echo json_encode($response);
             }

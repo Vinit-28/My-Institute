@@ -46,6 +46,7 @@
             email VARCHAR(100), 
             gender VARCHAR(100), 
             designation VARCHAR(100), 
+            class VARCHAR(100), 
             phoneNo VARCHAR(100), 
             adharCardNo VARCHAR(100), 
             address VARCHAR(100), 
@@ -57,12 +58,32 @@
         runQuery($instituteDatabase, $query, [], "");
         
 
-        // Making a StudentInfo Table which will store all students related information // 
+        // Making a Classes Table which will store all Classes related information // 
         $query = "CREATE TABLE Classes(
             className VARCHAR(100) PRIMARY kEY, 
             fees BIGINT(8)
             );";
         runQuery($instituteDatabase, $query, [], "");
+
+
+
+        // Making a UploadedFiles Table which will store all Uploaded Files related information // 
+        $query = "CREATE TABLE UploadedFiles(
+            fileTitle VARCHAR(100), 
+            filePath VARCHAR(1000),
+            fileVisibility VARCHAR(1000),
+            uploadDateTime VARCHAR(100),
+            uploadedBy VARCHAR(100)
+            );";
+        runQuery($instituteDatabase, $query, [], "");
+
+
+
+        // Making the Institute Folder in the Server //
+        $path = getcwd();
+        $path = str_replace("Server", "InstituteFolders/" . $instituteId, $path);
+        mkdir($path);
+        mkdir($path . "/uploadedFiles");
         
     }
 
@@ -95,8 +116,8 @@
         // If the new User is a Student //
         else if( $userDetails['designation'] == "student" || $userDetails['designation'] == "Student" ){
             
-            $query = "INSERT INTO StudentInfo(userId, name, email, gender, designation, phoneNo, adharCardNo, address, city, state, pinCode, feeSubmitted) VALUES(?,?,?,?,?,?,?,?,?,?,?,?);";
-            runQuery($databaseConnectionObject, $query, [ $userDetails['userId'], $userDetails['name'], $userDetails['email'], $userDetails['gender'], $userDetails['designation'], $userDetails['phoneNo'], $userDetails['adharCardNo'], $userDetails['address'], $userDetails['city'], $userDetails['state'], $userDetails['pinCode'], 0], "sssssssssssi", true);
+            $query = "INSERT INTO StudentInfo(userId, name, email, gender, designation, class, phoneNo, adharCardNo, address, city, state, pinCode, feeSubmitted) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?);";
+            runQuery($databaseConnectionObject, $query, [ $userDetails['userId'], $userDetails['name'], $userDetails['email'], $userDetails['gender'], $userDetails['designation'], $userDetails['class'], $userDetails['phoneNo'], $userDetails['adharCardNo'], $userDetails['address'], $userDetails['city'], $userDetails['state'], $userDetails['pinCode'], 0], "ssssssssssssi", true);
         }
     }
 
@@ -221,6 +242,22 @@
         else if( $request['authority'] == "student" || $request['authority'] == "Student" ){
 
         }
+    }
+
+
+    // Function to upload files into the institute's database //
+    function uploadFileInTheDatabase($databaseConnectionObject, $request, $fileName, $fileTempName){
+
+        $filePath =  ("InstituteFolders/" . $request['instituteId'] . "/uploadedFiles" . "/" . $request['uploadedBy'] . $request['uploadDateTime'] . $fileName);
+        $newPath = getcwd();
+        $newPath = str_replace("Server/Utilities", $filePath, $newPath);
+        
+        move_uploaded_file($fileTempName, $newPath);
+        $databaseConnectionObject->select_db($request['instituteId']);
+        
+        $query = "INSERT INTO UploadedFiles(fileTitle, filePath, fileVisibility, uploadDateTime, uploadedBy) VALUES(?,?,?,?,?);";
+        
+        runQuery($databaseConnectionObject, $query, [$request['fileTitle'], "http://localhost/" . $filePath, $request['fileVisibility'], $request['uploadDateTime'], $request['uploadedBy']], "sssss", true);
     }
 
 

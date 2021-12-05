@@ -25,6 +25,9 @@
 
         $query = "UPDATE Classes SET className = ?, fees = ? WHERE className = ?;";
         runQuery($databaseConnectionObject, $query, [$request['updatedClassInfo']['updatedClassName'], $request['updatedClassInfo']['updatedFees'], $request['updatedClassInfo']['className']], "sis", true);
+       
+        $query = "UPDATE StudentInfo SET class = ?  WHERE class = ?;";
+        runQuery($databaseConnectionObject, $query, [$request['updatedClassInfo']['updatedClassName'], $request['updatedClassInfo']['className']], "ss", true);
     }
     
     

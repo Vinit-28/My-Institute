@@ -94,7 +94,6 @@
                         alert("Something Went Wrong!");
                     }
                 }
-                console.log(this.responseText);
             };
 
             // Making the Request //

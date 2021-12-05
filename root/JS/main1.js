@@ -23,6 +23,7 @@ function makeAJAXRequest(requesType, serverUrl, data, onLoadFunction){
 
 
 
+
 // ------------------------------- Add Person ------------------------------- // 
 
 // Fucntion to make a AJAX request to the server and Will add a new Person in the Database //
@@ -31,11 +32,29 @@ function addPersonInTheDatabase(e){
     e.preventDefault();
     
     // Creating Some Variables //
-    let designation = document.getElementById("add-designation")
-    let gender = document.getElementById("add-gender")
+    let designation = document.getElementById("add-designation");
+    let gender = document.getElementById("add-gender");
+    let Class = document.getElementById("add-class");
     
+    
+    // If the Person's Gender is not defined //
+    if( gender.options[gender.selectedIndex].value.toLowerCase() == "gender"){
+        alert("Please Select the Gender of the Person !!!");
+        return;
+    }
+    // If the Person's Designation is not defined //
+    if( designation.options[designation.selectedIndex].value.toLowerCase() == "designation" ){
+        alert("Please Select the Designation of the Person !!!");
+        return;
+    }
+    // If the Student Class is not defined //
+    if( designation.options[designation.selectedIndex].value.toLowerCase() != "teacher" && Class.options[Class.selectedIndex].value.toLowerCase() == "class" ){
+        alert("Please Select a Class Or Make a Class !!!");
+        return;
+    }
+
     let personData = {
-        "task" : "Add Teacher", 
+        "task" : "Add Person", 
         "instituteId" : document.getElementById("userId").textContent, 
         "sessionId" : document.getElementById("sessionId").textContent,
         "userId" : document.getElementById("add-personId").value,
@@ -44,6 +63,7 @@ function addPersonInTheDatabase(e){
         "email" : document.getElementById("add-email").value,
         "gender" : gender.options[gender.selectedIndex].value,
         "designation" : designation.options[designation.selectedIndex].value,
+        "class" : Class.options[Class.selectedIndex].value,
         "phoneNo" : document.getElementById("add-phoneNo").value,
         "adharCardNo" : document.getElementById("add-adharCardNo").value,
         "address" : document.getElementById("add-address").value,
@@ -115,7 +135,11 @@ function getPersonCard(personDetails, key){
     profile.src = personDetails['profilePath'];
     suggestedPersonID.innerHTML = personDetails['userId'];
     suggestedPersonName.innerHTML = personDetails['name'];
-    suggestedPersonDept.innerHTML = personDetails['designation'] + " ( Department )";
+    suggestedPersonDept.innerHTML = personDetails['designation'];
+
+    if( personDetails['designation'].toLowerCase() == "student" ){
+        suggestedPersonDept.innerHTML += " ( " + personDetails['class'] +" )";
+    }
 
     console.log(personDetails['profilePath']);
 
@@ -186,7 +210,6 @@ function searchPersonInTheDatabase(e){
             else{
                 alert(responseText);
             }
-            console.log(this.responseText);
         }
     };
 
@@ -220,57 +243,57 @@ function areTheDetailsModified(){
 
 
 // Function to upadte the details of a person in the Institute Database //
-function updatePersonDetails(e){
+// function updatePersonDetails(e){
     
-    e.preventDefault();
+//     e.preventDefault();
     
-    if( areTheDetailsModified() ){
+//     if( areTheDetailsModified() ){
 
-        // Creating Some Variables //
-        let designation = document.getElementById("update-designation")
-        let gender = document.getElementById("update-gender")
+//         // Creating Some Variables //
+//         let designation = document.getElementById("update-designation")
+//         let gender = document.getElementById("update-gender")
 
-        let personData = {
-            "task" : "Update Person Details", 
-            "instituteId" : document.getElementById("userId").textContent, 
-            "sessionId" : document.getElementById("sessionId").textContent,
-            "userId" : relatedPersons[selectedProfile].userId,
-            "authority" : relatedPersons[selectedProfile].authority,
-            "name" : document.getElementById("update-name").value,
-            "gender" : gender.options[gender.selectedIndex].value,
-            "designation" : designation.options[designation.selectedIndex].value,
-            "phoneNo" : document.getElementById("update-phoneNo").value,
-            "adharCardNo" : document.getElementById("update-adharCardNo").value,
-            "address" : document.getElementById("update-address").value,
-            "state" : document.getElementById("update-state").value,
-            "city" : document.getElementById("update-city").value,
-            "pinCode" : document.getElementById("update-pinCode").value,
-        };
+//         let personData = {
+//             "task" : "Update Person Details", 
+//             "instituteId" : document.getElementById("userId").textContent, 
+//             "sessionId" : document.getElementById("sessionId").textContent,
+//             "userId" : relatedPersons[selectedProfile].userId,
+//             "authority" : relatedPersons[selectedProfile].authority,
+//             "name" : document.getElementById("update-name").value,
+//             "gender" : gender.options[gender.selectedIndex].value,
+//             "designation" : designation.options[designation.selectedIndex].value,
+//             "phoneNo" : document.getElementById("update-phoneNo").value,
+//             "adharCardNo" : document.getElementById("update-adharCardNo").value,
+//             "address" : document.getElementById("update-address").value,
+//             "state" : document.getElementById("update-state").value,
+//             "city" : document.getElementById("update-city").value,
+//             "pinCode" : document.getElementById("update-pinCode").value,
+//         };
 
-        let onLoadFunction = function(){
+//         let onLoadFunction = function(){
             
-            if( this.status != 200 ){
-                alert("Something Went Wrong!");
-            }
-            else{
-                let responseText = this.responseText.replace(/(\r\n|\n|\r)/gm, "");
-                if( responseText.includes("Success") ){
-                    alert("Person Details Upadted Successfully !!!");
-                }
-                else{
-                    let response = JSON.parse(responseText);
-                    alert(responseText);
-                }
-            }
-        };
+//             if( this.status != 200 ){
+//                 alert("Something Went Wrong!");
+//             }
+//             else{
+//                 let responseText = this.responseText.replace(/(\r\n|\n|\r)/gm, "");
+//                 if( responseText.includes("Success") ){
+//                     alert("Person Details Upadted Successfully !!!");
+//                 }
+//                 else{
+//                     let response = JSON.parse(responseText);
+//                     alert(responseText);
+//                 }
+//             }
+//         };
 
-        // Making the Request to the Server //
-         makeAJAXRequest("POST", "../../Server/Utilities/InstituteSpecificUtilities.php", personData, onLoadFunction);
-    }
-    else{
-        alert("Nothing to be Updated !!!");
-    }
-}
+//         // Making the Request to the Server //
+//          makeAJAXRequest("POST", "../../Server/Utilities/InstituteSpecificUtilities.php", personData, onLoadFunction);
+//     }
+//     else{
+//         alert("Nothing to be Updated !!!");
+//     }
+// }
 
 
 
@@ -616,3 +639,103 @@ document.getElementById("addClass").addEventListener("click", openAddClassForm);
 document.getElementById("showClass").addEventListener("click", showClasses);
 document.getElementById("deleteClass").addEventListener("click", deleteClass);
 document.getElementById("updateClass").addEventListener("click", updateClass);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Function to Create or Append or Edit the Class Dropdown Menu int the Add Person Pannel //
+function appendClassDropdownMenu(){
+        
+    // Getting the ClassContainer //
+    let classDropdownMenu = document.getElementById("add-class")
+    classDropdownMenu.innerHTML = "";
+
+    // Default Menu Option //
+    {
+        // Creating an option tag With the value of ClassName //
+        let option = document.createElement("option");
+        option.value = option.innerText = "Class";
+        option.classList.add("options");
+        // Appending the option in the Class Dropdown Menu //
+        classDropdownMenu.appendChild(option);
+    }
+
+
+    let data = {
+        "task" : "Update Classes", 
+        "subtask" : "Show Classes", 
+        "instituteId" : document.getElementById("userId").textContent, 
+        "sessionId" : document.getElementById("sessionId").textContent,
+    };
+
+    let onLoadFunction = function(){
+
+        if( this.status != 200 ){
+            alert("Something Went Wrong!");
+        }
+        else{
+            let responseText = this.responseText.replace(/(\r\n|\n|\r)/gm, "");
+            if( responseText.includes("Success") || responseText.includes("Failed") ){
+                let response = JSON.parse(responseText);
+                instituteClasses = response.classes;
+                if(response.result == "Success"){
+                    for(let key in response.classes){    
+                        // Creating an option tag With the value of ClassName //
+                        let option = document.createElement("option");
+                        option.value = option.innerText = response.classes[key].className;
+                        option.classList.add("options");
+                        // Appending the option in the Class Dropdown Menu //
+                        classDropdownMenu.appendChild(option);
+                    }
+                }
+            }
+            else{
+                alert(responseText);
+            }
+        }
+    }
+
+    // Making the AJAX Request //
+    makeAJAXRequest("POST", "../../Server/Utilities/InstituteSpecificUtilities.php", data, onLoadFunction)
+}
+
+
+// Function to make Class Dropdown Menu disabled/enabled according to the designation Selected //
+function changeDesignation(){
+
+    let designation = document.getElementById("add-designation");
+    let designationValue = designation.options[designation.selectedIndex].value;
+    let Class = document.getElementById("add-class");
+    Class.selectedIndex = 0;
+    if( designationValue.toLowerCase() == "teacher" ){
+        Class.disabled = true;
+    }
+    else{
+        Class.disabled = false;
+    }
+}
+
+
+
+
+
+
+
+// Making ready the institute Classes List //
+appendClassDropdownMenu();

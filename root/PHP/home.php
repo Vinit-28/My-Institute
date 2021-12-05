@@ -184,6 +184,11 @@ if (!(isset($_SESSION["isUserLogedIn"]) && isset($_SESSION["userId"]) && isset($
                         <option class="options" value="teacher">Teacher</option>
                         <option class="options" value="student">Student</option>
                     </select>
+                    <select id="add-class" name="studentClass">
+                        <option class="options" value="Class" selected="selected">Class</option>
+                        <!-- <option class="options" value="teacher">Teacher</option>
+                        <option class="options" value="student">Student</option> -->
+                    </select>
 
                     <input required autocomplete="off" id="add-phoneNo" type="number" placeholder="*Phone No.">
                     <input required autocomplete="off" id="add-adharCardNo" type="number" placeholder="*Aadhar Card No.">
@@ -401,32 +406,35 @@ if (!(isset($_SESSION["isUserLogedIn"]) && isset($_SESSION["userId"]) && isset($
                 </div>
                 <div id="downloads">
                     <div id="downloadOptionContainer">
-                        <button id="addFileButton" onclick="changeForm()" class="downloadOptions">Add File</button>
+                        <button id="addFileButton" class="downloadOptions">Add File</button>
                         <button class="downloadOptions" onclick="changeForm()">Show Files</button>
                         <button class="downloadOptions">Delete File</button>
                     </div>
                     <div id="downloadContainer">
 
-                        <form id="downloadFileForm" action="" method="post">
+                        <!-- Add File Form -->
+                        <!-- <form id="addFileForm" method="post" style="display: none;">
 
-                            <div class="containerItem">
+                            <input required autocomplete="OFF" type="text" id="fileTitle" placeholder="File Title">
+                            <input type="file" id="uploadedFile">
+                            <select name="fileVisibility" id="fileVisibility">
+                                <option selected value="all">Everyone</option>
+                                <option value="All Teacher">All Teachers</option>
+                                <option value="All Students">All Students</option>
+                            </select>
+                            <button type="submit" id="uploadButton">Upload File</button>
+
+                        </form> -->
+
+
+                        <!-- Show Download File Form (Checkboxes)-->
+                        <!-- <form id="downloadFileForm" action="" method="post"> -->
+                            <!-- Download File Card -->
+                            <!-- <div class="containerItem">
                                 <input type="checkbox" name="" id="">
                                 <a href="">File 1</a>
-                            </div>
-                        </form>
-
-                        <form id="addFileForm" action="" method="post" style="display: none;">
-
-                            <input required autocomplete="OFF" type="text" placeholder="File Title">
-                            <input type="file">
-                            <select name="visibleTo" id="">
-                                <option selected value="all">Everyone</option>
-                                <option value="teachers">Only Teachers</option>
-                                <option value="students">Only Students</option>
-                            </select>
-                            <button type="submit">Upload File</button>
-
-                        </form>
+                            </div> -->
+                        <!-- </form> -->
 
                     </div>
 
@@ -508,10 +516,9 @@ if (!(isset($_SESSION["isUserLogedIn"]) && isset($_SESSION["userId"]) && isset($
 
     </html>
 
-
-
     <script src="../JS/jquery.js"></script>
-    <script src="../JS/main.js"></script>
+    <script src="../JS/main1.js"></script>
+    <script src="../JS/main2.js"></script>
 
     <script>
         let windowWidth = $(window).width();
@@ -568,7 +575,13 @@ if (!(isset($_SESSION["isUserLogedIn"]) && isset($_SESSION["userId"]) && isset($
             $(person).addClass("activeItem");
             $($(person).attr("value")).css("display", "block");
 
+            // If Add Person Pannel is Active then Reload the Available Classes from the Database // 
+            if( $(person).attr("value") == "#div4" ){
 
+                appendClassDropdownMenu();
+                document.getElementById("add-designation").onchange = changeDesignation;
+            }
+            
             lastActiveItem = $(person);
         }
         $(".mynavigationItem").click(function() {
@@ -720,8 +733,6 @@ if (!(isset($_SESSION["isUserLogedIn"]) && isset($_SESSION["userId"]) && isset($
 
         document.getElementById('logout').addEventListener('click', logoutUser);
     </script>
-
-    <script src="../JS/main.js"></script>
 
 <?php
 }
