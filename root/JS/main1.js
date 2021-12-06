@@ -235,10 +235,10 @@ document.getElementById("searchPerson").addEventListener("click", searchPersonIn
 
 
 // Function to check whether the Details of a Person is Modified or not //
-function areTheDetailsModified(){
+// function areTheDetailsModified(){
 
-    return true;
-}
+//     return true;
+// }
 
 
 

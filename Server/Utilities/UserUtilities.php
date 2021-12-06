@@ -69,8 +69,10 @@
 
         // Making a UploadedFiles Table which will store all Uploaded Files related information // 
         $query = "CREATE TABLE UploadedFiles(
+            fileId BIGINT(8) AUTO_INCREMENT PRIMARY kEY, 
             fileTitle VARCHAR(100), 
-            filePath VARCHAR(1000),
+            filePathHref VARCHAR(1000),
+            filePathMachine VARCHAR(1000),
             fileVisibility VARCHAR(1000),
             uploadDateTime VARCHAR(100),
             uploadedBy VARCHAR(100)
@@ -255,13 +257,44 @@
         move_uploaded_file($fileTempName, $newPath);
         $databaseConnectionObject->select_db($request['instituteId']);
         
-        $query = "INSERT INTO UploadedFiles(fileTitle, filePath, fileVisibility, uploadDateTime, uploadedBy) VALUES(?,?,?,?,?);";
+        $query = "INSERT INTO UploadedFiles(fileTitle, filePathHref, filePathMachine, fileVisibility, uploadDateTime, uploadedBy) VALUES(?,?,?,?,?,?);";
         
-        runQuery($databaseConnectionObject, $query, [$request['fileTitle'], "http://localhost/" . $filePath, $request['fileVisibility'], $request['uploadDateTime'], $request['uploadedBy']], "sssss", true);
+        runQuery($databaseConnectionObject, $query, [$request['fileTitle'], "http://localhost/" . $filePath, $newPath, $request['fileVisibility'], $request['uploadDateTime'], $request['uploadedBy']], "ssssss", true);
     }
 
 
+    // Function to get the Uploaded Files from the Institute's Database //
+    function getUploadedFiles($databaseConnectionObject, $request){
+        
+        $databaseConnectionObject->select_db($request['instituteId']);
+        $uploadedFiles = array();
+        $query = "SELECT * FROM UploadedFiles;";
+        $result = runQuery($databaseConnectionObject, $query, [], "");
+        $counter=1;
+        while($row = $result->fetch_assoc()){
+            $uploadedFiles += ["'$counter'"=>$row];
+            $counter+=1;
+        }
+        return $uploadedFiles;
+    }
 
+
+    // Function to Delete the Selected Files from the Institute's Database //
+    function deleteUploadedFiles($databaseConnectionObject, $request){
+        
+        $databaseConnectionObject->select_db($request['instituteId']);
+        $query1 = "DELETE FROM UploadedFiles WHERE fileId = ?;";
+        $query2 = "SELECT * FROM UploadedFiles WHERE fileId = ?;";
+
+        for($i=0; $i<count($request['selectedFiles']); $i++){
+            $filePathMachine = getColumnValue($databaseConnectionObject, $query2, [$request['selectedFiles'][$i]], "s", "filePathMachine");
+            
+            if(!unlink($filePathMachine)){
+                die("Something Went Wrong.... Error While Deleting File " . $filePathMachine);
+            }
+            runQuery($databaseConnectionObject, $query1, [$request['selectedFiles'][$i]], "i", true);
+        }
+    }
 
 
 

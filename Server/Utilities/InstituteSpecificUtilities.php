@@ -122,6 +122,28 @@
                 echo json_encode($response);
             }
 
+            else if($request['task'] == "Show Uploaded Files"){
+
+                $uploadedFiles = getUploadedFiles($databaseConnectionObject, $request);
+                $response =array(
+                    "result"=>"Success",
+                    "uploadedFiles"=>$uploadedFiles
+                );
+                echo json_encode($response);
+            }
+
+            else if($request['task'] == "Delete Uploaded Files"){
+
+                deleteUploadedFiles($databaseConnectionObject, $request);
+                
+                $response =array(
+                    "result"=>"Success",
+                    "message"=>"File/Files Deleted Successfully !!!",
+                );
+
+                echo json_encode($response);
+            }
+
         }
         // If the user is not a Valid Person //
         else{

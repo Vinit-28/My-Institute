@@ -407,8 +407,8 @@ if (!(isset($_SESSION["isUserLogedIn"]) && isset($_SESSION["userId"]) && isset($
                 <div id="downloads">
                     <div id="downloadOptionContainer">
                         <button id="addFileButton" class="downloadOptions">Add File</button>
-                        <button class="downloadOptions" onclick="changeForm()">Show Files</button>
-                        <button class="downloadOptions">Delete File</button>
+                        <button id="showFilesButton" class="downloadOptions">Show Files</button>
+                        <button id="deleteFilesButton" class="downloadOptions">Delete File</button>
                     </div>
                     <div id="downloadContainer">
 
@@ -429,12 +429,12 @@ if (!(isset($_SESSION["isUserLogedIn"]) && isset($_SESSION["userId"]) && isset($
 
                         <!-- Show Download File Form (Checkboxes)-->
                         <!-- <form id="downloadFileForm" action="" method="post"> -->
-                            <!-- Download File Card -->
+                            <!-- Upload File Card -->
                             <!-- <div class="containerItem">
                                 <input type="checkbox" name="" id="">
-                                <a href="">File 1</a>
-                            </div> -->
-                        <!-- </form> -->
+                                <a href="">File 1 <sup>Uploaded by Root</sup> </a>
+                            </div>
+                        </form> -->
 
                     </div>
 
