@@ -34,9 +34,11 @@
     // Function to Delete a Class from the Institute's Database //
     function DeleteClasses($databaseConnectionObject, $request){
 
+        $query1 = "DELETE FROM Classes WHERE className = ?;";
+        $query2 = "UPDATE StudentInfo SET class = ? WHERE class = ?;";
         for($i=0; $i<count($request['selectedClasses']); $i++){
-            $query = "DELETE FROM Classes WHERE className = ?;";
-            runQuery($databaseConnectionObject, $query, [$request['selectedClasses'][$i]], "s", true);
+            runQuery($databaseConnectionObject, $query1, [$request['selectedClasses'][$i]], "s", true);
+            runQuery($databaseConnectionObject, $query2, ["Class", $request['selectedClasses'][$i]], "ss");
         }
     }
     

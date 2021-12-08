@@ -75,7 +75,7 @@ if (!(isset($_SESSION["isUserLogedIn"]) && isset($_SESSION["userId"]) && isset($
                     <input disabled style="display: none;" required autocomplete="off" id="remainingFees" type="text" placeholder="*PIN Code">
 
                     <!-- <button type="button" id="updateDetails" >Update Details</button> -->
-                    <button type="button" id="closeModal" >Go Back</button>
+                    <!-- <button type="button" id="closeModal" >Go Back</button> -->
                 </form>
 
             </div>
@@ -647,9 +647,6 @@ if (!(isset($_SESSION["isUserLogedIn"]) && isset($_SESSION["userId"]) && isset($
 
         // Modal Configurations //
         document.getElementById("selectedPersonProfileContainer").style.height = ($(window).height() > $(document).height()) ? $(window).height() : $(document).height() +"px";
-        document.getElementById("closeModal").onclick = function(){
-            document.getElementById("selectedPersonProfileContainer").style.display = "none";
-        }
 
     </script>
 

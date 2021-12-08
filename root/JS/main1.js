@@ -3,7 +3,6 @@
 // Declaring Some Global Varibales //
 let relatedPersons = {};
 let instituteClasses = {};
-let selectedProfile = undefined;
 
 
 // Function to make a AJAX request to the Server //
@@ -159,7 +158,7 @@ function getPersonCard(personDetails, key){
 // Function to search a person in the database //
 function searchPersonInTheDatabase(e){
    
-    if( e!=undefined ) e.preventDefault();
+    if( e!=undefined && e!=null ) e.preventDefault();
     
     // Creating Some Variables //
     let personData = {
@@ -188,7 +187,6 @@ function searchPersonInTheDatabase(e){
                     searchResult.innerHTML = "";
                     searchResult.style.display = "block";
                     relatedPersons = response.relatedPersons;
-
                     for(let key in response.relatedPersons){
                        
                         // Make a Person Card //
@@ -225,7 +223,7 @@ document.getElementById("searchPerson").addEventListener("click", searchPersonIn
 
 // ------------------------------- Update Person Details ------------------------------- // 
 
-
+// Function to return the index value of search key found in the Listitems //
 function getIndexOfValue(listItems, find){
     for(let i=0;i<listItems.length;i++){
         if( find == listItems[i].value ) return i;   
@@ -234,6 +232,7 @@ function getIndexOfValue(listItems, find){
 }  
 
 
+// Function to get the total fees of a Class //
 function getTotalFees(className){
     for(let key in instituteClasses){
         if( instituteClasses[key].className == className ) return instituteClasses[key].fees;
@@ -241,6 +240,7 @@ function getTotalFees(className){
 }
 
 
+// Function to check whether the details of the selected person is Modified or not //
 function isDataModified(updatedData, selectedPerson){
 
     if( selectedPerson.designation.toLowerCase() == "student" && updatedData.class != selectedPerson.class) return true;
@@ -249,12 +249,23 @@ function isDataModified(updatedData, selectedPerson){
 }
 
 
+// Function to close the modal //
+function closeModal(){
+
+    let modal = document.getElementById("selectedPersonProfileContainer");
+    let updateDetailsButton = document.getElementById("updateDetailsButton");
+    let closeModalButton = document.getElementById("closeModalButton");
+
+    updateDetailsButton.remove();
+    closeModalButton.remove();
+    modal.style.display = "none";
+}
 
 
+// Function to open the Modal to display the Selected Person's Details and Root/Teacher can modify it too //
 function openModalForSelectedPerson(selectedPerson){
     // Getting the information of the Selected Person //
-    selectedPerson =  relatedPersons[this.id];
-
+    let selectedPersonProfile =  relatedPersons[this.id];
     // Getting Tags //
     let modal = document.getElementById("selectedPersonProfileContainer");
     let modalForm = document.getElementById("modalForm");
@@ -274,46 +285,58 @@ function openModalForSelectedPerson(selectedPerson){
     let depositedFees = document.getElementById("depositedFees");
     let remainingFees = document.getElementById("remainingFees");
     let updateDetailsButton = document.createElement("button");
-   
+    let closeModalButton = document.createElement("button");
+
+
+    
     // Assigning data to their Attributes //
-    updateDetailsButton.type = "button";
+    updateDetailsButton.type = closeModalButton.type =  "button";
     updateDetailsButton.innerText = "Update Details";
+    updateDetailsButton.id = "updateDetailsButton";
+    closeModalButton.id = "closeModalButton";
+    closeModalButton.innerText = "Go Back";
     appendClassDropdownMenu("update-class", ()=>{
-        updateClass.selectedIndex =  getIndexOfValue(updateClass.options, selectedPerson.class);
+        updateClass.selectedIndex =  getIndexOfValue(updateClass.options, selectedPersonProfile.class);
     });
     modal.style.display = "flex";
-    selectedImg.src = selectedPerson.profilePath;
-    updatePersonId.value = selectedPerson.userId;
+    selectedImg.src = selectedPersonProfile.profilePath;
+    updatePersonId.value = selectedPersonProfile.userId;
     updatePersonId.disabled = true;
     updateEmail.disabled = true;
-    updateName.value =  selectedPerson.name;
-    updateEmail.value =  selectedPerson.email;
-    updateName.value =  selectedPerson.name;
-    updateGender.selectedIndex =  getIndexOfValue(updateGender.options, selectedPerson.gender);
-    updateDesignation.selectedIndex =  getIndexOfValue(updateDesignation.options, selectedPerson.designation);
+    updateName.value = selectedPersonProfile.name;
+    updateEmail.value = selectedPersonProfile.email;
+    updateName.value = selectedPersonProfile.name;
+    updateGender.selectedIndex = getIndexOfValue(updateGender.options, selectedPersonProfile.gender);
+    updateDesignation.selectedIndex = getIndexOfValue(updateDesignation.options, selectedPersonProfile.designation);
     updateDesignation.disabled =  true;
-    updatePhoneNo.value = selectedPerson.phoneNo;
-    updateAdharCardNo.value = selectedPerson.adharCardNo;
-    updateAddress.value = selectedPerson.address;
-    updateCity.value = selectedPerson.city;
-    updateState.value = selectedPerson.state;
-    updatePinCode.value = selectedPerson.pinCode;
-    updateDetailsButton.id = "updateDetails";
+    updatePhoneNo.value = selectedPersonProfile.phoneNo;
+    updateAdharCardNo.value = selectedPersonProfile.adharCardNo;
+    updateAddress.value = selectedPersonProfile.address;
+    updateCity.value = selectedPersonProfile.city;
+    updateState.value = selectedPersonProfile.state;
+    updatePinCode.value = selectedPersonProfile.pinCode;
+    modalForm.appendChild(closeModalButton);
+    modalForm.appendChild(updateDetailsButton);
 
 
-
-    if( selectedPerson.designation.toLowerCase() == "student" ){
+    // If the Selected Person is a student //
+    if( selectedPersonProfile.designation.toLowerCase() == "student" ){
         depositedFees.style.display = remainingFees.style.display = "block";
-        depositedFees.value = (selectedPerson.feeSubmitted + " ( Deposited Fees ) " );
-        let totalFee = getTotalFees(selectedPerson.class);
-        remainingFees.value = (totalFee-selectedPerson.feeSubmitted + " ( Remaining Fees ) " );
+        depositedFees.value = (selectedPersonProfile.feeSubmitted + " ( Deposited Fees ) " );
+        let totalFee = getTotalFees(selectedPersonProfile.class);
+        remainingFees.value = (totalFee-selectedPersonProfile.feeSubmitted + " ( Remaining Fees ) " );
     }
+    // Otherwise class dropdown menu will be disabled //
     else{
+        depositedFees.style.display = "none";
+        remainingFees.style.display = "none";
         updateClass.disabled = true;
     }
 
+    // Function to update details of the selected person //
     function updateDetailsOfSelectedPerson(){
         
+        // Creating the Updated data variable //
         let updatedData = {
             "task" : "Update Person Details", 
             "instituteId" : document.getElementById("userId").textContent, 
@@ -331,9 +354,11 @@ function openModalForSelectedPerson(selectedPerson){
             "city" : updateCity.value,
             "pinCode" : updatePinCode.value,
         };
-
-        if( isDataModified(updatedData, selectedPerson) ){
+        
+        // If data is modified //
+        if( isDataModified(updatedData, selectedPersonProfile) ){
             
+            // Onload Function to be executed When request is made and got the response //
             let onLoadFunction = function(){
                 
                 if( this.status != 200 ){
@@ -346,6 +371,7 @@ function openModalForSelectedPerson(selectedPerson){
                         alert(response.message);
                         document.getElementById("selectedPersonProfileContainer").style.display = "none";
                         updateDetailsButton.remove();
+                        closeModalButton.remove();
                         searchPersonInTheDatabase();
                     }
                     else{
@@ -357,87 +383,16 @@ function openModalForSelectedPerson(selectedPerson){
             // Making the Request to the Server //
             makeAJAXRequest("POST", "../../Server/Utilities/InstituteSpecificUtilities.php", updatedData, onLoadFunction);
         }
+        // If Data is not Modified //
         else{
             alert("Nothing to update !!!");
         }
     }
 
-    if( modalForm.children[modalForm.length-1].id != updateDetailsButton.id ){
         
-        modalForm.appendChild(updateDetailsButton);
-        updateDetailsButton.addEventListener("click", updateDetailsOfSelectedPerson);
-    }
-        
+    updateDetailsButton.addEventListener("click", updateDetailsOfSelectedPerson);
+    closeModalButton.addEventListener("click", closeModal);
 }
-
-
-// Function to check whether the Details of a Person is Modified or not //
-// function areTheDetailsModified(){
-
-//     return true;
-// }
-
-
-
-// Function to upadte the details of a person in the Institute Database //
-// function updatePersonDetails(e){
-    
-//     e.preventDefault();
-    
-//     if( areTheDetailsModified() ){
-
-//         // Creating Some Variables //
-//         let designation = document.getElementById("update-designation")
-//         let gender = document.getElementById("update-gender")
-
-//         let personData = {
-//             "task" : "Update Person Details", 
-//             "instituteId" : document.getElementById("userId").textContent, 
-//             "sessionId" : document.getElementById("sessionId").textContent,
-//             "userId" : relatedPersons[selectedProfile].userId,
-//             "authority" : relatedPersons[selectedProfile].authority,
-//             "name" : document.getElementById("update-name").value,
-//             "gender" : gender.options[gender.selectedIndex].value,
-//             "designation" : designation.options[designation.selectedIndex].value,
-//             "phoneNo" : document.getElementById("update-phoneNo").value,
-//             "adharCardNo" : document.getElementById("update-adharCardNo").value,
-//             "address" : document.getElementById("update-address").value,
-//             "state" : document.getElementById("update-state").value,
-//             "city" : document.getElementById("update-city").value,
-//             "pinCode" : document.getElementById("update-pinCode").value,
-//         };
-
-//         let onLoadFunction = function(){
-            
-//             if( this.status != 200 ){
-//                 alert("Something Went Wrong!");
-//             }
-//             else{
-//                 let responseText = this.responseText.replace(/(\r\n|\n|\r)/gm, "");
-//                 if( responseText.includes("Success") ){
-//                     alert("Person Details Upadted Successfully !!!");
-//                 }
-//                 else{
-//                     let response = JSON.parse(responseText);
-//                     alert(responseText);
-//                 }
-//             }
-//         };
-
-//         // Making the Request to the Server //
-//          makeAJAXRequest("POST", "../../Server/Utilities/InstituteSpecificUtilities.php", personData, onLoadFunction);
-//     }
-//     else{
-//         alert("Nothing to be Updated !!!");
-//     }
-// }
-
-
-
-// Binding the Function searchPersonInTheDatabase to the button searchPerson //
-// document.getElementById("updatePersonDetails").addEventListener("click", updatePersonDetails);
-
-
 
 
 // ------------------------------- Updating Classes of the Institute ------------------------------- // 
@@ -830,7 +785,6 @@ function appendClassDropdownMenu(classDropdownMenuId, callback=null){
             if( responseText.includes("Success") || responseText.includes("Failed") ){
                 let response = JSON.parse(responseText);
                 instituteClasses = response.classes;
-                // console.log(instituteClasses);  
                 if(response.result == "Success"){
                     for(let key in response.classes){    
                         // Creating an option tag With the value of ClassName //
