@@ -8,6 +8,9 @@
         $databaseConnectionObject->select_db("App_Database");
 
         $password = password_hash($password, PASSWORD_BCRYPT);
+
+        // Making a seperate database for the  institute //
+        $instituteDatabase = get_DatabaseConnectionObject($instituteId);
         
         // Registering the Institute in the App Database //
         $query = "INSERT INTO AppUsers(userId, password, email, instituteName, authority, emailVerified, profilePath) VALUES(?,?,?,?,?,?,?);";
@@ -17,8 +20,7 @@
         $result = runQuery($databaseConnectionObject, $query, [$instituteId, "offline"], "ss", true);
         
         
-        // Making a seperate database for the  institute //
-        $instituteDatabase = get_DatabaseConnectionObject($instituteId);
+
         
 
         // -------------------- Creating Tables for a Institute in its Database -------------------- //
