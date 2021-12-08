@@ -35,7 +35,59 @@ if (!(isset($_SESSION["isUserLogedIn"]) && isset($_SESSION["userId"]) && isset($
         <title>Root Dashboard</title>
     </head>
 
-    <body>
+    <body style="position:relative;">
+
+        <!-- THIS IS VERY IMPORTANT BOX, IT CONTAINS THE INFORMATION OF THE SELECTED PERSON FORM SEARCH BAR (Modal) -->
+
+        <div id="selectedPersonProfileContainer" style="display: none;">
+            <div id="selectedPersonProfile" class="selectedFormsDiv">
+                <div id="profileimgdiv">
+                    <img id="selectedImg" src="../IMAGES/profile.jpg" alt="">
+                </div>
+                <form id="modalForm" method="post" class="forms">
+                    <input required autocomplete="off" id="update-personId" type="text" placeholder="*Person ID">
+                    <input required autocomplete="off" id="update-name" type="text" placeholder="*Person Name">
+                    <input required autocomplete="off" id="update-email" type="email" placeholder="*Person Email">
+
+                    <select id="update-gender" name="personGender">
+                        <option class="options" value="gender" selected="selected">Gender</option>
+                        <option class="options" value="male">Male</option>
+                        <option class="options" value="female">Female</option>
+                        <option class="options" value="other">Other</option>
+                    </select>
+                    <select id="update-designation" name="personRole">
+                        <option class="options" value="designation"  selected="selected">Designation</option>
+                        <option class="options" value="teacher">Teacher</option>
+                        <option class="options" value="student">Student</option>
+                    </select>
+                    <select id="update-class" name="updateStudentClass">
+                        <option class="options" value="Class" selected="selected">Class</option>
+                    </select>
+
+                    <input required autocomplete="off" id="update-phoneNo" type="number" placeholder="*Phone No.">
+                    <input required autocomplete="off" id="update-adharCardNo" type="number" placeholder="*Aadhar Card No.">
+                    <input required autocomplete="off" id="update-address" type="text" placeholder="*Address">
+                    <input required autocomplete="off" id="update-city" type="text" placeholder="*City">
+                    <input required autocomplete="off" id="update-state" type="text" placeholder="*State">
+                    <input required autocomplete="off" id="update-pinCode" type="number" placeholder="*PIN Code">
+                    
+                    <input disabled style="display: none;" required autocomplete="off" id="depositedFees" type="text" placeholder="*State">
+                    <input disabled style="display: none;" required autocomplete="off" id="remainingFees" type="text" placeholder="*PIN Code">
+
+                    <!-- <button type="button" id="updateDetails" >Update Details</button> -->
+                    <button type="button" id="closeModal" >Go Back</button>
+                </form>
+
+            </div>
+  
+        </div>
+
+
+        </div>
+
+
+        <!-- THIS IS VERY IMPORTANT BOX, IT CONTAINS THE INFORMATION OF THE SELECTED PERSON FORM SEARCH BAR (Modal) -->
+
 
         <nav id="mynavbar">
 
@@ -65,17 +117,17 @@ if (!(isset($_SESSION["isUserLogedIn"]) && isset($_SESSION["userId"]) && isset($
         <div id="mydashboardContainer">
 
             <div id="mynavigationBar">
-                <div class="mynavigationItem  activeItem" id="item1">
+                <!-- <div class="mynavigationItem  activeItem" id="item1">
                     <i class='mynavigationItemIcon bx bx-home'></i>
                     <span class="mynavigationItemName">Dashboard</span>
+                </div> -->
+                <div class="mynavigationItem">
+                    <i class='mynavigationItemIcon bx bxs-user'></i>
+                    <span class="mynavigationItemName">Profile</span>
                 </div>
                 <div class="mynavigationItem" value="#div2">
                     <i class='mynavigationItemIcon bx bx-search'></i>
                     <span class="mynavigationItemName">Search Person</span>
-                </div>
-                <div class="mynavigationItem">
-                    <i class='mynavigationItemIcon bx bxs-user'></i>
-                    <span class="mynavigationItemName">Profile</span>
                 </div>
                 <div class="mynavigationItem" value="#div4">
                     <i class='mynavigationItemIcon bx bxs-user-rectangle'></i>
@@ -83,15 +135,15 @@ if (!(isset($_SESSION["isUserLogedIn"]) && isset($_SESSION["userId"]) && isset($
                 </div>
                 <div class="mynavigationItem" value="#div5">
                     <i class='mynavigationItemIcon bx bx-laptop'></i>
-                    <span class="mynavigationItemName">Launch Class</span>
+                    <span class="mynavigationItemName">Launch Live Class</span>
                 </div>
                 <div class="mynavigationItem" value="#div6">
                     <i class='mynavigationItemIcon bx bx-download'></i>
-                    <span class="mynavigationItemName">Download</span>
+                    <span class="mynavigationItemName">Upload Files</span>
                 </div>
                 <div class="mynavigationItem" value="#div7">
                     <i class='mynavigationItemIcon bx bx-download'></i>
-                    <span class="mynavigationItemName">Class</span>
+                    <span class="mynavigationItemName">Institute's Classes</span>
                 </div>
             </div>
 
@@ -107,23 +159,23 @@ if (!(isset($_SESSION["isUserLogedIn"]) && isset($_SESSION["userId"]) && isset($
 
                         <!-- This is for when a person is found ! -->
                         <!-- <div class="suggestedPerson">
-                        <div class="suggestedPersonProfile"><img src="../IMAGES/profile.jpg" alt=""></div>
-                        <div class="suggestedPersonDetails">
-                            <span class="suggestedPersonID">1001</span>
-                            <span class="suggestedPersonName">Aman Khushalani</span>
-                            <span class="suggestedPersonDept">BCA 3rd. Yr. (Student)</span>
-                        </div>
-                    </div> -->
+                            <div class="suggestedPersonProfile"><img src="../IMAGES/profile.jpg" alt=""></div>
+                            <div class="suggestedPersonDetails">
+                                <span class="suggestedPersonID">1001</span>
+                                <span class="suggestedPersonName">Aman Khushalani</span>
+                                <span class="suggestedPersonDept">BCA 3rd. Yr. (Student)</span>
+                            </div>
+                        </div> -->
 
                         <!-- OR OR OR OR OR -->
 
                         <!-- This is for else part if could not found anything ! -->
                         <!-- <div id="notFound" style="color: red;">Couldn't find anything ! (Try again using relevant keywords.)
-                    </div> -->
+                        </div> -->
                     </div>
 
                     <div id="selectedPersonProfile" class="selectedFormsDiv" style="width: 100%; display: none; ">
-                        <div id="profileimgdiv">
+                        <div id="modalImg">
                             <img id="selectedImg" src="../IMAGES/profile.jpg" alt="">
                         </div>
                         <form action="" method="post" class="forms">
@@ -186,8 +238,6 @@ if (!(isset($_SESSION["isUserLogedIn"]) && isset($_SESSION["userId"]) && isset($
                     </select>
                     <select id="add-class" name="studentClass">
                         <option class="options" value="Class" selected="selected">Class</option>
-                        <!-- <option class="options" value="teacher">Teacher</option>
-                        <option class="options" value="student">Student</option> -->
                     </select>
 
                     <input required autocomplete="off" id="add-phoneNo" type="number" placeholder="*Phone No.">
@@ -210,22 +260,27 @@ if (!(isset($_SESSION["isUserLogedIn"]) && isset($_SESSION["userId"]) && isset($
                 <div class="boxHeadingDiv">
                     <h3 class="boxHeading">Live Classes</h3>
                 </div>
-                <div id="downloads">
-                    <div id="downloadOptionContainer">
-                        <button onclick="changeLiveClassForm()" class="downloadOptions">Launch Class</button>
-                        <button class="downloadOptions">Delete Class</button>
-                    </div>
 
-                    <div id="liveClassContainer">
+                <div id="downloadOptionContainer">
+                    <button id="launchClass" class="downloadOptions">Launch Class</button>
+                    <button id="showHostedClasses" class="downloadOptions">Hosted Classes</button>
+                    <button id="deleteHostedClasses" class="downloadOptions">Delete Class</button>
+                </div>
 
-                        <!-- This is a whole live class form -->
-                        <form class="classItem" action="" method="post">
+                <div id="liveClassSection">
+
+                    <!-- <div id="liveClassContainer"> -->
+
+                    <!-- This is a whole live class form -->
+                    <!-- <form class="classItem" action="" method="post">
+                            
                             <div class="classSelector">
-                                <input type="checkbox" name="">
+                                <input  type="checkbox" name="">
                                 <div class="classHeading">C++</div>
                                 &nbsp;&nbsp;&nbsp;
                                 <div class="hostName">(Tarun Sharma)</div>
                             </div>
+
                             <div class="classDescription">
                                 <div class="classTitle">Oop's</div>
                                 <ul class="classSubtopics">
@@ -235,136 +290,17 @@ if (!(isset($_SESSION["isUserLogedIn"]) && isset($_SESSION["userId"]) && isset($
                                 </ul>
                             </div>
 
-                            <div style=" display: flex; text-align: center; justify-content: center;">
+                            <div class="joinClassButton">
                                 <a href="" class="classJoinButton">Join Class</a>
                             </div>
-                        </form>
-                        <form class="classItem" action="" method="post">
-                            <div class="classSelector">
-                                <input type="checkbox" name="">
-                                <div class="classHeading">C++</div>
-                                &nbsp;&nbsp;&nbsp;
-                                <div class="hostName">(Tarun Sharma)</div>
-                            </div>
-                            <div class="classDescription">
-                                <div class="classTitle">Oop's</div>
-                                <ul class="classSubtopics">
-                                    <p>Polymorphism, Encapsulation , Objects</p>
-                                    <div class="classDate">Date :- 25-Nov-2021</div>
-                                    <div class="classTime">Timing :- 10:00 AM to 11:00 AM</div>
-                                </ul>
-                            </div>
+                            
+                        </form> -->
 
-                            <div style=" display: flex; text-align: center; justify-content: center;">
-                                <a href="" class="classJoinButton">Join Class</a>
-                            </div>
-                        </form>
-                        <form class="classItem" action="" method="post">
-                            <div class="classSelector">
-                                <input type="checkbox" name="">
-                                <div class="classHeading">C++</div>
-                                &nbsp;&nbsp;&nbsp;
-                                <div class="hostName">(Tarun Sharma)</div>
-                            </div>
-                            <div class="classDescription">
-                                <div class="classTitle">Oop's</div>
-                                <ul class="classSubtopics">
-                                    <p>Polymorphism, Encapsulation , Objects</p>
-                                    <div class="classDate">Date :- 25-Nov-2021</div>
-                                    <div class="classTime">Timing :- 10:00 AM to 11:00 AM</div>
-                                </ul>
-                            </div>
-
-                            <div style=" display: flex; text-align: center; justify-content: center;">
-                                <a href="" class="classJoinButton">Join Class</a>
-                            </div>
-                        </form>
-                        <form class="classItem" action="" method="post">
-                            <div class="classSelector">
-                                <input type="checkbox" name="">
-                                <div class="classHeading">C++</div>
-                                &nbsp;&nbsp;&nbsp;
-                                <div class="hostName">(Tarun Sharma)</div>
-                            </div>
-                            <div class="classDescription">
-                                <div class="classTitle">Oop's</div>
-                                <ul class="classSubtopics">
-                                    <p>Polymorphism, Encapsulation , Objects</p>
-                                    <div class="classDate">Date :- 25-Nov-2021</div>
-                                    <div class="classTime">Timing :- 10:00 AM to 11:00 AM</div>
-                                </ul>
-                            </div>
-
-                            <div style=" display: flex; text-align: center; justify-content: center;">
-                                <a href="" class="classJoinButton">Join Class</a>
-                            </div>
-                        </form>
-                        <form class="classItem" action="" method="post">
-                            <div class="classSelector">
-                                <input type="checkbox" name="">
-                                <div class="classHeading">C++</div>
-                                &nbsp;&nbsp;&nbsp;
-                                <div class="hostName">(Tarun Sharma)</div>
-                            </div>
-                            <div class="classDescription">
-                                <div class="classTitle">Oop's</div>
-                                <ul class="classSubtopics">
-                                    <p>Polymorphism, Encapsulation , Objects</p>
-                                    <div class="classDate">Date :- 25-Nov-2021</div>
-                                    <div class="classTime">Timing :- 10:00 AM to 11:00 AM</div>
-                                </ul>
-                            </div>
-
-                            <div style=" display: flex; text-align: center; justify-content: center;">
-                                <a href="" class="classJoinButton">Join Class</a>
-                            </div>
-                        </form>
-                        <form class="classItem" action="" method="post">
-                            <div class="classSelector">
-                                <input type="checkbox" name="">
-                                <div class="classHeading">C++</div>
-                                &nbsp;&nbsp;&nbsp;
-                                <div class="hostName">(Tarun Sharma)</div>
-                            </div>
-                            <div class="classDescription">
-                                <div class="classTitle">Oop's</div>
-                                <ul class="classSubtopics">
-                                    <p>Polymorphism, Encapsulation , Objects</p>
-                                    <div class="classDate">Date :- 25-Nov-2021</div>
-                                    <div class="classTime">Timing :- 10:00 AM to 11:00 AM</div>
-                                </ul>
-                            </div>
-
-                            <div style=" display: flex; text-align: center; justify-content: center;">
-                                <a href="" class="classJoinButton">Join Class</a>
-                            </div>
-                        </form>
-                        <form class="classItem" action="" method="post">
-                            <div class="classSelector">
-                                <input type="checkbox" name="">
-                                <div class="classHeading">C++</div>
-                                &nbsp;&nbsp;&nbsp;
-                                <div class="hostName">(Tarun Sharma)</div>
-                            </div>
-                            <div class="classDescription">
-                                <div class="classTitle">Oop's</div>
-                                <ul class="classSubtopics">
-                                    <p>Polymorphism, Encapsulation , Objects</p>
-                                    <div class="classDate">Date :- 25-Nov-2021</div>
-                                    <div class="classTime">Timing :- 10:00 AM to 11:00 AM</div>
-                                </ul>
-                            </div>
-
-                            <div style=" display: flex; text-align: center; justify-content: center;">
-                                <a href="" class="classJoinButton">Join Class</a>
-                            </div>
-                        </form>
-                        <!-- This is a whole live class form End-->
-
-                    </div>
+                    <!-- </div> -->
 
 
-                    <div id="liveClassLaunchContainer" style="display: none;">
+                    <!-- Launch/Create Live Class Section -->
+                    <!-- <div id="liveClassLaunchContainer" style="display: none;">
 
                         <form action="" class="forms">
                             <input required autocomplete="OFF" type="text" placeholder="Host Name" name="hostName">
@@ -389,7 +325,7 @@ if (!(isset($_SESSION["isUserLogedIn"]) && isset($_SESSION["userId"]) && isset($
                             <button type="submit">Upload</button>
                         </form>
 
-                    </div>
+                    </div> -->
 
                 </div>
 
@@ -429,8 +365,8 @@ if (!(isset($_SESSION["isUserLogedIn"]) && isset($_SESSION["userId"]) && isset($
 
                         <!-- Show Download File Form (Checkboxes)-->
                         <!-- <form id="downloadFileForm" action="" method="post"> -->
-                            <!-- Upload File Card -->
-                            <!-- <div class="containerItem">
+                        <!-- Upload File Card -->
+                        <!-- <div class="containerItem">
                                 <input type="checkbox" name="" id="">
                                 <a href="">File 1 <sup>Uploaded by Root</sup> </a>
                             </div>
@@ -460,13 +396,13 @@ if (!(isset($_SESSION["isUserLogedIn"]) && isset($_SESSION["userId"]) && isset($
                 </div>
                 <div id="addclasssection">
                     <div id="addclasssectionContainer">
-                        <button id="addClass" class="downloadOptions" >Add Class</button>
-                        <button id="showClass" class="downloadOptions" >Show Class</button>
+                        <button id="addClass" class="downloadOptions">Add Class</button>
+                        <button id="showClass" class="downloadOptions">Show Class</button>
                         <button id="deleteClass" class="downloadOptions">Delete Class</button>
                         <button id="updateClass" class="downloadOptions">Update Class</button>
                     </div>
 
-                    <div id="ClassContainer" >
+                    <div id="ClassContainer">
 
                         <!-- Add Class Form -->
                         <!-- <form id="addClassForm" action="" method="post" style="display: none;">
@@ -480,13 +416,13 @@ if (!(isset($_SESSION["isUserLogedIn"]) && isset($_SESSION["userId"]) && isset($
 
                         <!-- Show Class Form -->
                         <!-- <form id="showClassForm" action="" method="post" style="display: none;"> -->
-                           
-                            <!-- Class Card -->
-                            <!-- <div class="containerItem">
+
+                        <!-- Class Card -->
+                        <!-- <div class="containerItem">
                                 <input type="checkbox" name="" id="classname">
                                 <p>Class Name &nbsp;&nbsp;&nbsp;CLass Fees</p>
                             </div> -->
-                            
+
                         <!-- </form> -->
 
 
@@ -497,7 +433,7 @@ if (!(isset($_SESSION["isUserLogedIn"]) && isset($_SESSION["userId"]) && isset($
                             <button class="saveUpdatedClassInfo" type="submit" id="saveUpdatedClassInfo" >Save Changes</button>
                         </form> -->
 
-                        
+
                     </div>
 
                 </div>
@@ -533,6 +469,7 @@ if (!(isset($_SESSION["isUserLogedIn"]) && isset($_SESSION["userId"]) && isset($
 
             $("#downloads").height($(window).height() * 65 / 100);
             $("#downloadContainer").height($("#downloads").height() * 95 / 100);
+            $("#liveClassSection").height($("#downloads").height() * 95 / 100);
             $("#searchResults").height($(window).height() * 65 / 100);
         } else {
             $($("#mynavigationBar").children()[0]).css("margin-top", $("#mynavbar").height() * 23 / 100);
@@ -576,12 +513,13 @@ if (!(isset($_SESSION["isUserLogedIn"]) && isset($_SESSION["userId"]) && isset($
             $($(person).attr("value")).css("display", "block");
 
             // If Add Person Pannel is Active then Reload the Available Classes from the Database // 
-            if( $(person).attr("value") == "#div4" ){
+            if ($(person).attr("value") == "#div4") {
 
-                appendClassDropdownMenu();
-                document.getElementById("add-designation").onchange = changeDesignation;
+                appendClassDropdownMenu("add-class");
+                document.getElementById("add-designation").onchange = ()=>{changeDesignation("add-designation", "add-class");};
             }
             
+
             lastActiveItem = $(person);
         }
         $(".mynavigationItem").click(function() {
@@ -589,8 +527,7 @@ if (!(isset($_SESSION["isUserLogedIn"]) && isset($_SESSION["userId"]) && isset($
         });
 
 
-
-
+        
         // Download File Button Handeler
         let currentForm = "#downloadFileForm";
         let previousForm = "#addFileForm";
@@ -707,6 +644,13 @@ if (!(isset($_SESSION["isUserLogedIn"]) && isset($_SESSION["userId"]) && isset($
             }
 
         });
+
+        // Modal Configurations //
+        document.getElementById("selectedPersonProfileContainer").style.height = ($(window).height() > $(document).height()) ? $(window).height() : $(document).height() +"px";
+        document.getElementById("closeModal").onclick = function(){
+            document.getElementById("selectedPersonProfileContainer").style.display = "none";
+        }
+
     </script>
 
 

@@ -141,7 +141,6 @@ function getPersonCard(personDetails, key){
         suggestedPersonDept.innerHTML += " ( " + personDetails['class'] +" )";
     }
 
-    console.log(personDetails['profilePath']);
 
     // Wrapping the tags of the Person's Card //
     suggestedPersonProfile.appendChild(profile);
@@ -152,7 +151,7 @@ function getPersonCard(personDetails, key){
     suggestedPerson.appendChild(suggestedPersonDetails);
     
     suggestedPerson.id = key;
-    suggestedPerson.onclick = showClickedCarProfile;
+    suggestedPerson.onclick = openModalForSelectedPerson;
     return suggestedPerson;
 }
 
@@ -160,7 +159,7 @@ function getPersonCard(personDetails, key){
 // Function to search a person in the database //
 function searchPersonInTheDatabase(e){
    
-    e.preventDefault();
+    if( e!=undefined ) e.preventDefault();
     
     // Creating Some Variables //
     let personData = {
@@ -218,13 +217,6 @@ function searchPersonInTheDatabase(e){
 }
 
 
-// Function to be executed When a Person's Card is Clicked //
-function showClickedCarProfile(){
-    console.log(relatedPersons[this.id]);
-    selectedProfile =  this.id;
-}
-
-
 // Binding the Function searchPersonInTheDatabase to the button searchPerson //
 document.getElementById("searchPerson").addEventListener("click", searchPersonInTheDatabase);
 
@@ -232,6 +224,151 @@ document.getElementById("searchPerson").addEventListener("click", searchPersonIn
 
 
 // ------------------------------- Update Person Details ------------------------------- // 
+
+
+function getIndexOfValue(listItems, find){
+    for(let i=0;i<listItems.length;i++){
+        if( find == listItems[i].value ) return i;   
+    } 
+    return 0;
+}  
+
+
+function getTotalFees(className){
+    for(let key in instituteClasses){
+        if( instituteClasses[key].className == className ) return instituteClasses[key].fees;
+    }
+}
+
+
+function isDataModified(updatedData, selectedPerson){
+
+    if( selectedPerson.designation.toLowerCase() == "student" && updatedData.class != selectedPerson.class) return true;
+    
+    return (updatedData.name != selectedPerson.name || updatedData.phoneNo != selectedPerson.phoneNo || updatedData.address != selectedPerson.address || updatedData.city != selectedPerson.city || updatedData.pinCode != selectedPerson.pinCode || updatedData.state != selectedPerson.state || updatedData.adharCardNo != selectedPerson.adharCardNo || updatedData.gender != selectedPerson.gender || updatedData.designation != selectedPerson.designation);
+}
+
+
+
+
+function openModalForSelectedPerson(selectedPerson){
+    // Getting the information of the Selected Person //
+    selectedPerson =  relatedPersons[this.id];
+
+    // Getting Tags //
+    let modal = document.getElementById("selectedPersonProfileContainer");
+    let modalForm = document.getElementById("modalForm");
+    let selectedImg = document.getElementById("selectedImg");
+    let updatePersonId = document.getElementById("update-personId");
+    let updateName = document.getElementById("update-name");
+    let updateEmail = document.getElementById("update-email");
+    let updateGender = document.getElementById("update-gender");
+    let updateDesignation = document.getElementById("update-designation");
+    let updateClass = document.getElementById("update-class");
+    let updatePhoneNo = document.getElementById("update-phoneNo");
+    let updateAdharCardNo = document.getElementById("update-adharCardNo");
+    let updateAddress = document.getElementById("update-address");
+    let updateCity = document.getElementById("update-city");
+    let updateState = document.getElementById("update-state");
+    let updatePinCode = document.getElementById("update-pinCode");
+    let depositedFees = document.getElementById("depositedFees");
+    let remainingFees = document.getElementById("remainingFees");
+    let updateDetailsButton = document.createElement("button");
+   
+    // Assigning data to their Attributes //
+    updateDetailsButton.type = "button";
+    updateDetailsButton.innerText = "Update Details";
+    appendClassDropdownMenu("update-class", ()=>{
+        updateClass.selectedIndex =  getIndexOfValue(updateClass.options, selectedPerson.class);
+    });
+    modal.style.display = "flex";
+    selectedImg.src = selectedPerson.profilePath;
+    updatePersonId.value = selectedPerson.userId;
+    updatePersonId.disabled = true;
+    updateEmail.disabled = true;
+    updateName.value =  selectedPerson.name;
+    updateEmail.value =  selectedPerson.email;
+    updateName.value =  selectedPerson.name;
+    updateGender.selectedIndex =  getIndexOfValue(updateGender.options, selectedPerson.gender);
+    updateDesignation.selectedIndex =  getIndexOfValue(updateDesignation.options, selectedPerson.designation);
+    updateDesignation.disabled =  true;
+    updatePhoneNo.value = selectedPerson.phoneNo;
+    updateAdharCardNo.value = selectedPerson.adharCardNo;
+    updateAddress.value = selectedPerson.address;
+    updateCity.value = selectedPerson.city;
+    updateState.value = selectedPerson.state;
+    updatePinCode.value = selectedPerson.pinCode;
+    updateDetailsButton.id = "updateDetails";
+
+
+
+    if( selectedPerson.designation.toLowerCase() == "student" ){
+        depositedFees.style.display = remainingFees.style.display = "block";
+        depositedFees.value = (selectedPerson.feeSubmitted + " ( Deposited Fees ) " );
+        let totalFee = getTotalFees(selectedPerson.class);
+        remainingFees.value = (totalFee-selectedPerson.feeSubmitted + " ( Remaining Fees ) " );
+    }
+    else{
+        updateClass.disabled = true;
+    }
+
+    function updateDetailsOfSelectedPerson(){
+        
+        let updatedData = {
+            "task" : "Update Person Details", 
+            "instituteId" : document.getElementById("userId").textContent, 
+            "sessionId" : document.getElementById("sessionId").textContent,
+            "userId" : updatePersonId.value,
+            "name" : updateName.value,
+            "email" : updateEmail.value,
+            "gender" : updateGender.options[updateGender.selectedIndex].value,
+            "designation" : updateDesignation.options[updateDesignation.selectedIndex].value,
+            "class" : updateClass.options[updateClass.selectedIndex].value,
+            "phoneNo" : updatePhoneNo.value,
+            "adharCardNo" : updateAdharCardNo.value,
+            "address" : updateAddress.value,
+            "state" : updateState.value,
+            "city" : updateCity.value,
+            "pinCode" : updatePinCode.value,
+        };
+
+        if( isDataModified(updatedData, selectedPerson) ){
+            
+            let onLoadFunction = function(){
+                
+                if( this.status != 200 ){
+                    alert("Something Went Wrong!");
+                }
+                else{
+                    let responseText = this.responseText.replace(/(\r\n|\n|\r)/gm, "");           
+                    if( responseText.includes("Success") ){
+                        let response = JSON.parse(responseText);
+                        alert(response.message);
+                        document.getElementById("selectedPersonProfileContainer").style.display = "none";
+                        updateDetailsButton.remove();
+                        searchPersonInTheDatabase();
+                    }
+                    else{
+                        alert(responseText);
+                    }
+                }
+            }
+
+            // Making the Request to the Server //
+            makeAJAXRequest("POST", "../../Server/Utilities/InstituteSpecificUtilities.php", updatedData, onLoadFunction);
+        }
+        else{
+            alert("Nothing to update !!!");
+        }
+    }
+
+    if( modalForm.children[modalForm.length-1].id != updateDetailsButton.id ){
+        
+        modalForm.appendChild(updateDetailsButton);
+        updateDetailsButton.addEventListener("click", updateDetailsOfSelectedPerson);
+    }
+        
+}
 
 
 // Function to check whether the Details of a Person is Modified or not //
@@ -321,6 +458,7 @@ function openAddClassForm(){
     // Giving values to their Attributes //
     ClassContainer.innerHTML = "";
     form.id = "addClassForm";
+    form.classList.add("forms");
     form.method = "POST";
     inputClassName.id = "className-add";
     inputFees.id = "fees-add";
@@ -437,7 +575,6 @@ function showClasses(){
                     let showClassForm = document.createElement("form");
                     showClassForm.id = "showClassForm";
                     instituteClasses = response.classes;
-
                     for(let key in response.classes){
                         // Appending the new Class in the Form tag as Checkbox //
                         showClassForm.appendChild(getClassCard(response.classes[key]));
@@ -547,21 +684,22 @@ function updateClass(){
         let form = document.createElement("form");
         let inputClassName = document.createElement("input");
         let inputClassFess = document.createElement("input");
-        let upadteButton = document.createElement("button");
+        let updateButton = document.createElement("button");
         
 
         // Giving values to their Attributes //
         form.id = "updateClassForm";
+        form.classList.add("forms");
         form.method = "POST";
         inputClassName.id = "className-update";
         inputClassFess.id = "fees-update";
         inputClassName.placeholder = "Updated Class Name";
         inputClassFess.placeholder = "Updated Class Fees";
         inputClassName.placeholder = "Class Name";
-        upadteButton.id = "saveUpdatedClassInfo";
-        upadteButton.type = "submit";
-        upadteButton.innerText = "Save Changes";
-        upadteButton.classList.add("saveUpdatedClassInfo-button");
+        updateButton.id = "saveUpdatedClassInfo";
+        updateButton.type = "submit";
+        updateButton.innerText = "Save Changes";
+        updateButton.classList.add("saveUpdatedClassInfo-button");
         
         ClassContainer.innerHTML = "";
         inputClassName.value = selectedClass.className;
@@ -571,7 +709,7 @@ function updateClass(){
         // Wrapping up the Tags //
         form.appendChild(inputClassName);
         form.appendChild(inputClassFess);
-        form.appendChild(upadteButton);
+        form.appendChild(updateButton);
         ClassContainer.appendChild(form);
 
 
@@ -598,7 +736,6 @@ function updateClass(){
             
             let onLoadFunction = function(e){
                 e.preventDefault();
-                
                 if( this.status != 200 ){
                     alert("Something Went Wrong!");
                 }
@@ -606,7 +743,6 @@ function updateClass(){
                     let responseText = this.responseText.replace(/(\r\n|\n|\r)/gm, "");
                     if( responseText.includes("Success") || responseText.includes("Failed") ){
                         let response = JSON.parse(responseText);
-                        console.log(response);
                         alert(response.message);
                         showClasses();
                     }
@@ -660,10 +796,10 @@ document.getElementById("updateClass").addEventListener("click", updateClass);
 
 
 // Function to Create or Append or Edit the Class Dropdown Menu int the Add Person Pannel //
-function appendClassDropdownMenu(){
-        
+function appendClassDropdownMenu(classDropdownMenuId, callback=null){
+    
     // Getting the ClassContainer //
-    let classDropdownMenu = document.getElementById("add-class")
+    let classDropdownMenu = document.getElementById(classDropdownMenuId)
     classDropdownMenu.innerHTML = "";
 
     // Default Menu Option //
@@ -694,6 +830,7 @@ function appendClassDropdownMenu(){
             if( responseText.includes("Success") || responseText.includes("Failed") ){
                 let response = JSON.parse(responseText);
                 instituteClasses = response.classes;
+                // console.log(instituteClasses);  
                 if(response.result == "Success"){
                     for(let key in response.classes){    
                         // Creating an option tag With the value of ClassName //
@@ -703,6 +840,9 @@ function appendClassDropdownMenu(){
                         // Appending the option in the Class Dropdown Menu //
                         classDropdownMenu.appendChild(option);
                     }
+                    // Calling the callback function if any //
+                    if( callback != null )
+                        callback();
                 }
             }
             else{
@@ -712,16 +852,16 @@ function appendClassDropdownMenu(){
     }
 
     // Making the AJAX Request //
-    makeAJAXRequest("POST", "../../Server/Utilities/InstituteSpecificUtilities.php", data, onLoadFunction)
+    makeAJAXRequest("POST", "../../Server/Utilities/InstituteSpecificUtilities.php", data, onLoadFunction);
 }
 
 
 // Function to make Class Dropdown Menu disabled/enabled according to the designation Selected //
-function changeDesignation(){
+function changeDesignation(designationId, classId){
 
-    let designation = document.getElementById("add-designation");
+    let designation = document.getElementById(designationId);
     let designationValue = designation.options[designation.selectedIndex].value;
-    let Class = document.getElementById("add-class");
+    let Class = document.getElementById(classId);
     Class.selectedIndex = 0;
     if( designationValue.toLowerCase() == "teacher" ){
         Class.disabled = true;
@@ -738,4 +878,4 @@ function changeDesignation(){
 
 
 // Making ready the institute Classes List //
-appendClassDropdownMenu();
+appendClassDropdownMenu("add-class");

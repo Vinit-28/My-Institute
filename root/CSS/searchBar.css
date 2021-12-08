@@ -20,6 +20,7 @@
 
 
 #div2{
+    position: relative;
     font-family: var(--fontFamily);
     box-shadow:  var(--boxShadow);
     padding: 0.6rem;

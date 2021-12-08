@@ -190,7 +190,7 @@
 {
 
     #mynavigationBar {  
-        z-index: 500;  
+        z-index: 201;  
         width: 100%;
         position: fixed;
         overflow-y: hidden;

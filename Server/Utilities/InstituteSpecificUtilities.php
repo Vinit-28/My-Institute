@@ -65,6 +65,7 @@
 
                 $response = array(
                     "result"=>"Success",
+                    "message"=>"Person Details Updated Successfully !!!"
                 );
                 
                 // Sending the response //
@@ -103,6 +104,7 @@
                 echo json_encode($response);
             }
 
+            // If the request is to Upload Files in the Institute's Database //
             else if($request['task'] == "Upload File"){
 
                 if( isset($_FILES['fileToBeUploaded']) ){
@@ -122,6 +124,7 @@
                 echo json_encode($response);
             }
 
+            // If the request is to Get the Uploaded Files from the Institute's Database //
             else if($request['task'] == "Show Uploaded Files"){
 
                 $uploadedFiles = getUploadedFiles($databaseConnectionObject, $request);
@@ -132,6 +135,7 @@
                 echo json_encode($response);
             }
 
+            // If the request is to Delete Uploaded File/Files From the Institute's Database //
             else if($request['task'] == "Delete Uploaded Files"){
 
                 deleteUploadedFiles($databaseConnectionObject, $request);
@@ -139,6 +143,48 @@
                 $response =array(
                     "result"=>"Success",
                     "message"=>"File/Files Deleted Successfully !!!",
+                );
+
+                echo json_encode($response);
+            }
+
+            // If the request is to Create a Live Class //
+            else if($request['task'] == "Create Live Class"){
+
+                $databaseConnectionObject->select_db($request['instituteId']);
+                createLiveClass($databaseConnectionObject, $request);
+                
+                $response =array(
+                    "result"=>"Success",
+                    "message"=>"Live Class Created Successfully !!!",
+                );
+
+                echo json_encode($response);
+            }
+
+            // If the request is to Get all the Hosted Classes by the User //
+            else if($request['task'] == "Get Hosted Classes"){
+
+                $databaseConnectionObject->select_db($request['instituteId']);
+                $liveClasses = getHostedClasses($databaseConnectionObject, $request);
+                
+                $response =array(
+                    "result"=>"Success",
+                    "liveClasses"=>$liveClasses,
+                );
+
+                echo json_encode($response);
+            }
+
+            // If the request is to Delete the Hosted Classes by the User //
+            else if($request['task'] == "Delete Live Classes"){
+
+                $databaseConnectionObject->select_db($request['instituteId']);
+                deleteLiveClasses($databaseConnectionObject, $request);
+
+                $response =array(
+                    "result"=>"Success",
+                    "message"=>"Live Class/Classes Deleted successfully !!!",
                 );
 
                 echo json_encode($response);

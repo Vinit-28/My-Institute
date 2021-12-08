@@ -66,7 +66,6 @@
         runQuery($instituteDatabase, $query, [], "");
 
 
-
         // Making a UploadedFiles Table which will store all Uploaded Files related information // 
         $query = "CREATE TABLE UploadedFiles(
             fileId BIGINT(8) AUTO_INCREMENT PRIMARY kEY, 
@@ -76,6 +75,23 @@
             fileVisibility VARCHAR(1000),
             uploadDateTime VARCHAR(100),
             uploadedBy VARCHAR(100)
+            );";
+        runQuery($instituteDatabase, $query, [], "");
+
+
+        // Making a LiveClasses Table which will store all Live Classes related information // 
+        $query = "CREATE TABLE LiveClasses(
+            liveClassId BIGINT(8) AUTO_INCREMENT PRIMARY kEY, 
+            hostName VARCHAR(100), 
+            teacherName VARCHAR(100), 
+            subjectName VARCHAR(100),
+            topicName VARCHAR(100),
+            topicDescription VARCHAR(500),
+            startingTime VARCHAR(100),
+            endingTime VARCHAR(100),
+            classDate VARCHAR(100),
+            joiningLink VARCHAR(1000),
+            liveClassVisibility VARCHAR(1000)
             );";
         runQuery($instituteDatabase, $query, [], "");
 
@@ -235,14 +251,19 @@
 
         $databaseConnectionObject->select_db($request['instituteId']);
 
-        if( $request['authority'] == "teacher" || $request['authority'] == "Teacher" ){
+        if( strtolower($request['designation']) == "teacher" ){
 
-            $query = "UPDATE TeacherInfo name = ?, gender = ?, designation = ?, phoneNo = ?, adharCardNo = ?, address = ?, city = ?, state = ?, pinCode = ? WHERE userId = ?";
+            $query = "UPDATE TeacherInfo SET name = ?, gender = ?, phoneNo = ?, adharCardNo = ?, address = ?, city = ?, state = ?, pinCode = ? WHERE userId = ?";
 
-            $result = runQuery($databaseConnectionObject, $query, [$request['name'], $request['gender'], $request['designation'], $request['phoneNo'], $request['adharCardNo'], $request['address'], $request['city'], $request['state'], $request['pinCode'], $request['userId']], "ssssssssss", true);
+            $result = runQuery($databaseConnectionObject, $query, [$request['name'], $request['gender'], $request['phoneNo'], $request['adharCardNo'], $request['address'], $request['city'], $request['state'], $request['pinCode'], $request['userId']], "sssssssss", true);
+        
         }
-        else if( $request['authority'] == "student" || $request['authority'] == "Student" ){
+        else if( strtolower($request['designation']) == "student" ){
+            
+            $query = "UPDATE StudentInfo SET name = ?, gender = ?, phoneNo = ?, adharCardNo = ?, address = ?, city = ?, state = ?, pinCode = ?, class = ? WHERE userId = ?";
 
+            $result = runQuery($databaseConnectionObject, $query, [$request['name'], $request['gender'], $request['phoneNo'], $request['adharCardNo'], $request['address'], $request['city'], $request['state'], $request['pinCode'], $request['class'], $request['userId']], "ssssssssss", true);
+        
         }
     }
 
