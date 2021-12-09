@@ -121,7 +121,7 @@ if (!(isset($_SESSION["isUserLogedIn"]) && isset($_SESSION["userId"]) && isset($
                     <i class='mynavigationItemIcon bx bx-home'></i>
                     <span class="mynavigationItemName">Dashboard</span>
                 </div> -->
-                <div class="mynavigationItem">
+                <div class="mynavigationItem" value="#rootProfileDiv">
                     <i class='mynavigationItemIcon bx bxs-user'></i>
                     <span class="mynavigationItemName">Profile</span>
                 </div>
@@ -142,10 +142,52 @@ if (!(isset($_SESSION["isUserLogedIn"]) && isset($_SESSION["userId"]) && isset($
                     <span class="mynavigationItemName">Upload Files</span>
                 </div>
                 <div class="mynavigationItem" value="#div7">
-                    <i class='mynavigationItemIcon bx bx-download'></i>
+                    <i class='mynavigationItemIcon bx bx-grid-alt'></i>
                     <span class="mynavigationItemName">Institute's Classes</span>
                 </div>
             </div>
+
+
+
+
+
+            <!-- Add Person Div -->
+
+            <div id="rootProfileDiv"  class="formsDiv" style="display:none;">
+                <div class="boxHeadingDiv">
+                    <h3 class="boxHeading">Personl Profile</h3>
+                </div>
+                <div id="profileimgdiv">
+                    <img id="selectedImg" src="../IMAGES/profile.jpg" alt="">
+                </div>
+                <form id="rootProfileForm" action="" method="post" class="forms">
+                    <input required autocomplete="off" id="root-personId" type="text" placeholder="*Person ID">
+                    <input required autocomplete="off" id="root-name" type="text" placeholder="*Person Name">
+
+                    <input required autocomplete="off" id="root-email" type="email" placeholder="*Person Email">
+
+                    <select id="add-gender" name="personGender">
+                        <option class="options" value="gender" selected="selected">Gender</option>
+                        <option class="options" value="male">Male</option>
+                        <option class="options" value="female">Female</option>
+                        <option class="options" value="other">Other</option>
+                    </select>
+
+                    <input required autocomplete="off" id="root-phoneNo" type="number" placeholder="*Phone No.">
+                    <input required autocomplete="off" id="root-adharCardNo" type="number" placeholder="*Aadhar Card No.">
+                    <input required autocomplete="off" id="root-address" type="text" placeholder="*Address">
+                    <input required autocomplete="off" id="root-city" type="text" placeholder="*City">
+                    <input required autocomplete="off" id="root-state" type="text" placeholder="*State">
+                    <input required autocomplete="off" id="root-pinCode" type="number" placeholder="*PIN Code">
+                    <button type="submit" name="submitPerson" id="submitAddPersonForm">Submit Details</button>
+                </form>
+            </div>
+
+            <!-- Add Person Div End -->
+
+
+
+
 
             <div id="div2" style="display: none;">
                 <div id="searchDiv">
@@ -269,7 +311,10 @@ if (!(isset($_SESSION["isUserLogedIn"]) && isset($_SESSION["userId"]) && isset($
 
                 <div id="liveClassSection">
 
+
                     <!-- <div id="liveClassContainer"> -->
+
+                        
 
                     <!-- This is a whole live class form -->
                     <!-- <form class="classItem" action="" method="post">
@@ -517,6 +562,12 @@ if (!(isset($_SESSION["isUserLogedIn"]) && isset($_SESSION["userId"]) && isset($
 
                 appendClassDropdownMenu("add-class");
                 document.getElementById("add-designation").onchange = ()=>{changeDesignation("add-designation", "add-class");};
+            }
+            else if ($(person).attr("value") == "#div5") {
+                showHostedClasses();
+            }
+            else if ($(person).attr("value") == "#div6") {
+                showUploadedFiles();
             }
             
 

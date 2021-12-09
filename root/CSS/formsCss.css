@@ -188,7 +188,7 @@
     display: none;
 }
 
-#selectedImg{
+#selectedImg ,#rootImg{
     width: 4.7rem; 
     border-radius: 50%;
 }
@@ -260,12 +260,10 @@
         grid-template-columns: repeat(2, minmax( 3rem  , auto));
     }    
 
-    #selectedImg{
+    #selectedImg , #modalImg , #rootImg{
         width: 3rem;
     }
-    #modalImg{
-        width: 3rem;
-    }
+
 
 }
 @media screen and (max-width : 849px) and (min-width : 780px) 
@@ -276,12 +274,10 @@
     .forms{
         grid-template-columns: repeat(2, minmax( 3rem  , auto));
     }    
-    #selectedImg{
+    #selectedImg , #modalImg , #rootImg{
         width: 3rem;
     }
-    #modalImg{
-        width: 3rem;
-    }
+
 }
 @media screen and (max-width : 779px) and (min-width : 701px) 
 {
@@ -291,12 +287,10 @@
     .forms{
         grid-template-columns: repeat(2, minmax( 3rem  , auto));
     }    
-    #selectedImg{
+    #selectedImg , #modalImg, #rootImg{
         width: 2.7rem;
     }
-    #modalImg{
-        width: 2.7rem;
-    }
+
 }
 
 

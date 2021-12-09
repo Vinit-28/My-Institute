@@ -104,16 +104,21 @@
 
 
 .classJoinButton{
-    width: 80%;
+    
     padding: 0.2rem;
     border: none;
     background-color: var(--buttonColor);
     cursor: pointer;
+    text-align: center;
     color: white;
     border-radius: 0.2rem;
-    transition: background-color 250ms ease;
+    transition: background-color 300ms ease;
     text-decoration: none; 
     font-weight: bolder;
+}
+.classJoinButton a{
+    text-decoration: none;
+    color: white;
 }
 
 .classJoinButton:active , .classJoinButton:focus{
