@@ -265,6 +265,7 @@ if (!(isset($_SESSION["isUserLogedIn"]) && isset($_SESSION["userId"]) && isset($
                     <button id="launchClass" class="downloadOptions">Launch Class</button>
                     <button id="showHostedClasses" class="downloadOptions">Hosted Classes</button>
                     <button id="deleteHostedClasses" class="downloadOptions">Delete Class</button>
+                    <button id="allLiveClasses" class="downloadOptions">All Live Class</button>
                 </div>
 
                 <div id="liveClassSection">
@@ -447,6 +448,8 @@ if (!(isset($_SESSION["isUserLogedIn"]) && isset($_SESSION["userId"]) && isset($
 
         <p id="userId" style="display: none;"><?php echo $_SESSION['userId']; ?></p>
         <p id="sessionId" style="display: none;"><?php echo $_SESSION['sessionId']; ?></p>
+        <p id="instituteId" style="display: none;"><?php echo $_SESSION['instituteId']; ?></p>
+        <p id="authority" style="display: none;"><?php echo $_SESSION['authority']; ?></p>
 
     </body>
 

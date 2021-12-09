@@ -1,0 +1,345 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200&display=swap');
+
+*, *:before, *:after {
+    box-sizing: border-box;
+    --fontFamily : Poppins, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    --backgroundColor : #edf2f9;
+    --navigationBarColor : rgb(209, 225, 248);
+    --textColor : #5e6e82;
+    --textHoverColor : #cad0d6;
+    --activeTextColor : #2864c5;
+    --hoverDarkColor : rgb(35, 43, 53);
+    --buttonColor : rgba(44, 124, 229, 0.844);
+    --buttonHover : rgb(44, 123, 229);
+    --formBorder : #d8e2ef;
+    --littleHeadings : #344050;
+    --backgroundDark : #0b1727;
+    --boxShadow : 0 .5rem 1rem rgba(0,0,0,.15) ;
+}
+
+
+
+
+
+
+
+
+/* Forms */
+
+.formsDiv *{
+    font-family: var(--fontFamily);
+}
+.formsDiv {
+    /* border: 2px solid red; */
+    box-shadow:  var(--boxShadow);
+    padding: 0.6rem;
+    margin-top: 1.2rem;
+    margin-left: 0.5rem;
+    margin: 1.2rem auto 0 auto;
+    height: max-content;
+    width: 80%;
+    background-color: #fff;
+    border-radius: 0.5rem;
+    
+}
+.boxHeading{
+    margin: 0.6rem;
+    font-size:x-large;
+    color: var(--littleHeadings);
+}
+
+
+
+
+
+
+
+
+.boxHeadingDiv{
+    text-align: center;
+}
+
+.forms{
+    padding: 0.6rem;
+    display: grid;
+    grid-template-columns: repeat(2, minmax( 3rem  , 18rem));
+    gap: 10px;
+    font-family: var(--fontFamily);
+}
+
+.forms *{
+    font-family: var(--fontFamily);
+}
+.forms ::placeholder{
+    font-family: var(--fontFamily);
+    font-size: 0.8rem;
+    font-weight: bold;
+}
+.forms input{
+    padding: 0.6rem ;
+    font-size: 0.9rem;
+    font-weight: 700;
+    border: 1px solid var(--formBorder);
+    background-color: #fff;
+    border-radius: 0.25rem;
+
+}
+.forms select {
+    padding: 0.6rem;
+    border: 1px solid var(--formBorder);
+    background-color: #fff;
+    border-radius: 0.25rem;
+    text-transform: none;
+    font-size: 0.9rem;
+    font-weight: 700;
+    
+}
+.forms .options{
+    padding: 0px 2px 1px;
+    font-size: 1rem;
+}
+.forms button{
+    padding: 0.6rem;
+    border-radius: 0.25rem;
+    border: none;
+    cursor: pointer;
+    background-color: var(--buttonColor);
+    color: white;
+    font-size: 0.8rem;
+    font-weight: bold;
+    transition: all 300ms ease;
+
+}
+.forms button:hover{
+    background-color: var(--buttonHover);
+}
+.forms input:active , .forms input:focus , .forms select:active , .forms select:focus ,  .forms button:active , .forms button:focus{
+    outline: none;
+}
+
+
+/* Forms */
+
+
+
+
+
+
+
+/* ///////////////////////////////////////////////////////////////////////////////////// */
+
+#selectedPersonProfileContainer{
+    display: flex;
+    background-color: #5e6e829e;
+
+    justify-content: center;
+    position: absolute;
+    width: 100%;
+    z-index: 203;
+    top: 0;
+    left: 0;
+}
+
+#selectedPersonProfile{
+    position: relative;
+    top:5%;
+
+}
+#closeButton{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    right: 3%;
+    top: 2%;
+    margin-top: 3px;
+    position: absolute;
+    justify-self: flex-end;
+    font-size: 2vw;
+    cursor: pointer;
+    background-color: white;
+    border-radius: 50%;
+}
+
+.selectedFormsDiv{
+    padding: 0.6rem;    
+    margin-top: 1.2rem;
+    margin-left: 0.5rem;
+    margin: 1.2rem auto 0 auto;
+    height: max-content;
+    background-color: #fff;
+    border-radius: 0.5rem;
+    overflow-y: scroll;
+}
+
+.selectedFormsDiv *{
+    font-family: var(--fontFamily);
+}
+.selectedFormsDiv{
+    padding: 0.6rem;
+    margin-top: 1.2rem;
+    margin-left: 0.5rem;
+    margin: 1.2rem auto 0 auto;
+    height: max-content;
+    background-color: #fff;
+    border-radius: 0.5rem;
+    overflow-y: scroll;
+}
+.selectedFormsDiv::-webkit-scrollbar {
+    display: none;
+}
+
+#selectedImg{
+    width: 4.7rem; 
+    border-radius: 50%;
+}
+#modalImg{
+    width: 4.7rem; 
+    border-radius: 50%;
+}
+
+#selectedProfileFrom input , #selectedProfileFrom select {
+    font-size: 0.8rem;
+    padding: 0.4rem ;
+    /* font-size: 0.9rem; */
+    /* font-weight: 700; */
+    border: 1px solid var(--formBorder);
+    /* background-color: #fff; */
+    /* border-radius: 0.25rem; */
+    transition: 200ms ease;
+}
+
+#selectedProfileFrom input:focus{
+    border-color: #66afe9;
+    outline: 0;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 2px var(--activeTextColor);
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 2px var(--activeTextColor);
+}
+
+#selectedProfileFrom button{
+    padding: 0.5rem;
+    font-size: 0.6rem;
+    transition: all 300ms ease;
+
+}
+#selectedProfileFrom button:hover{
+    background-color: var(--buttonHover);
+}
+/* ///////////////////////////////////////////////////////////////////////////////////// */
+
+/* <div id="selectedPersonProfile"  class="selectedFormsDiv"> */
+
+
+
+
+
+@media screen and (max-width : 6000px) and (min-width : 1200px) 
+{
+    .formsDiv{
+        width: 67%;
+    }
+    .forms{
+        grid-template-columns: repeat(2, minmax( 3rem  , auto));
+    }
+}
+@media screen and (max-width : 1199px) and (min-width : 1001px) 
+{
+    .formsDiv{
+        width: 70%;
+    }
+    .forms{
+        grid-template-columns: repeat(2, minmax( 3rem  , auto));
+    }
+}
+
+@media screen and (max-width : 1000px) and (min-width : 850px) 
+{
+    .formsDiv{
+        width: 70%;
+    }
+    .forms{
+        grid-template-columns: repeat(2, minmax( 3rem  , auto));
+    }    
+
+    #selectedImg{
+        width: 3rem;
+    }
+    #modalImg{
+        width: 3rem;
+    }
+
+}
+@media screen and (max-width : 849px) and (min-width : 780px) 
+{
+    .formsDiv{
+        width: 70%;
+    }
+    .forms{
+        grid-template-columns: repeat(2, minmax( 3rem  , auto));
+    }    
+    #selectedImg{
+        width: 3rem;
+    }
+    #modalImg{
+        width: 3rem;
+    }
+}
+@media screen and (max-width : 779px) and (min-width : 701px) 
+{
+    .formsDiv{
+        width: 65%;
+    }
+    .forms{
+        grid-template-columns: repeat(2, minmax( 3rem  , auto));
+    }    
+    #selectedImg{
+        width: 2.7rem;
+    }
+    #modalImg{
+        width: 2.7rem;
+    }
+}
+
+
+
+
+
+
+@media screen and (max-width : 700px) and (min-width:80px) 
+{
+
+    #selectedPersonProfile{
+        top:3%;
+    }
+    #closeButton{
+        top: 2%;
+        font-size: 4vw;
+    }
+    
+
+    .formsDiv {
+        padding: 0.6rem;
+        margin-top: 1.2rem;
+        margin-left: 0.5rem;
+        margin-right: 0.5rem;        
+        width: 100%;
+    }
+
+    .forms{
+        grid-template-columns: repeat(1, minmax( 3rem  , auto));
+    }    
+    
+    #profileimgdiv{
+        display: flex;
+        justify-content: center;
+        /* text-align: center; */
+    }
+}
+
+
+@media screen and (max-width : 400px) and (min-width:80px) 
+{
+    #closeButton{
+        top: 0%;
+        font-size: 15px;
+    }
+}

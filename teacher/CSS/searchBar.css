@@ -1,0 +1,246 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200&display=swap');
+
+
+*, *:before, *:after {
+    box-sizing: border-box;
+    --fontFamily : Poppins, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    --backgroundColor : #edf2f9;
+    --navigationBarColor : rgb(209, 225, 248);
+    --textColor : #5e6e82;
+    --textHoverColor : #cad0d6;
+    --activeTextColor : #2864c5;
+    --hoverDarkColor : rgb(35, 43, 53);
+    --buttonColor : rgba(44, 124, 229, 0.844);
+    --buttonHover : rgb(44, 123, 229);
+    --formBorder : #d8e2ef;
+    --littleHeadings : #344050;
+    --backgroundDark : #0b1727;
+    --boxShadow : 0 .5rem 1rem rgba(0,0,0,.15) ;
+}
+
+
+#div2{
+    position: relative;
+    font-family: var(--fontFamily);
+    box-shadow:  var(--boxShadow);
+    padding: 0.6rem;
+    margin-top: 1.2rem;
+    margin-left: 0.5rem;
+    background-color: #fff;
+    border-radius: 0.5rem;
+    overflow: hidden;
+}
+
+
+#searchDiv{
+    position: relative;
+    padding: 0.2rem;
+}
+
+
+#searchDiv input:active , #searchDiv input:focus , #searchDiv button:active , #searchDiv button:focus{
+    outline: none;
+}
+#searchDiv input{
+    width: 100%;
+    padding: 0.4rem;
+    font-size: 1rem;
+    /* border: none; */
+}
+#searchForm input{
+    border: none;
+    border-bottom: 2px solid var(--textColor);    
+}
+#searchForm button{
+    cursor: pointer;
+    width: 3rem;
+    font-size: 1.6rem;
+    color: black;
+    background-color: transparent;
+    border-radius: 0.2rem;
+    border: none;
+    transition: all 300ms ease;
+}
+#searchForm button i{
+    transition: all 100ms ease;
+}
+
+#searchForm button:hover{
+    color: #fff;
+    background-color: var(--buttonHover);
+
+}
+
+
+
+#searchResults{
+    position: relative;
+    width: 100%;
+    top: 100%;
+    left: 0;
+    margin-top: 0.8rem;
+    padding: 0.6rem;
+    /* background-color: var(--backgroundColor); */
+    border-radius: 0.6rem;
+    overflow-y: scroll;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#searchResults::-webkit-scrollbar {
+    display: none;
+}
+
+.suggestedPerson{
+    cursor: pointer;
+    width: 95%;
+    padding: 0.4rem;
+    border-radius: 0.4rem;
+    background-color: #fff;
+    font-size: 0.8rem;
+    box-shadow: 0 .5rem 1rem rgba(0,0,0,0.40) ;
+    display: flex;
+    column-gap: 0.8rem;
+    margin-bottom: 0.8rem;
+    transition: all 300ms ease;
+}
+
+
+.suggestedPersonID{
+    font-weight: bolder;
+}
+
+.suggestedPersonProfile {
+    margin-left: 0.4rem;
+    display: flex;
+    align-items: center;
+}
+.suggestedPersonProfile img{
+    width: 2.5rem;
+    border-radius: 50%;
+}
+.suggestedPersonDetails{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@media screen and (max-width : 6000px) and (min-width : 1701px) 
+{
+    #div2{
+        width: 56rem;
+    }
+}
+
+@media screen and (max-width : 1700px) and (min-width : 1501px) 
+{
+    #div2{
+        width: 48rem;
+    }
+}
+
+@media screen and (max-width : 1500px) and (min-width : 1251px) 
+{
+    #div2{
+        width: 80%;
+    }
+}
+
+@media screen and (max-width : 1250px) and (min-width : 901px) 
+{
+    #div2{
+        width: 70%;
+    }
+}
+
+@media screen and (max-width : 900px) and (min-width : 801px) 
+{
+    #div2{
+        width: 35rem;
+    }
+    #notFound{
+        font-size: 15px;
+    }
+}
+@media screen and (max-width : 800px) and (min-width : 701px) 
+{
+    #div2{
+        width: 29rem;
+    }
+    #notFound{
+        font-size: 15px;
+    }
+    .suggestedPersonDetails{
+        /* color: red; */
+        font-size: 0.7rem;
+    }
+}
+
+
+
+@media screen and (max-width : 700px) and (min-width : 50px) 
+{
+
+    #div2{
+        /* border:2px solid red; */
+        width: 100%;
+        height: 100%;
+        margin-left: 0.8rem;
+        margin-right: 0.8rem;
+    }
+
+    #notFound{
+        font-size: 15px;
+    }
+    
+    
+    #searchDiv{
+        position: relative;
+        padding: 0rem;
+    }
+    
+    #searchDiv input{
+        font-size: 0.9rem;
+        border: none;
+    }    
+
+    
+    
+    .suggestedPerson{
+        cursor: pointer;
+        padding: 0.2rem 0.4rem;
+
+    }
+    
+    
+    .suggestedPersonProfile img{
+        width: 1.8rem;
+    }
+    
+    .suggestedPersonDetails{
+        font-size: 0.8rem;
+    }
+    
+}
