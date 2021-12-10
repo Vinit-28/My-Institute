@@ -54,8 +54,10 @@ function addPersonInTheDatabase(e){
 
     let personData = {
         "task" : "Add Person", 
+        "loggedInUser" : document.getElementById("userId").textContent, 
         "instituteId" : document.getElementById("userId").textContent, 
         "sessionId" : document.getElementById("sessionId").textContent,
+        "authority" : document.getElementById("authority").textContent,
         "userId" : document.getElementById("add-personId").value,
         "name" : document.getElementById("add-name").value,
         "password" : document.getElementById("add-password").value,
@@ -163,7 +165,9 @@ function searchPersonInTheDatabase(e){
     // Creating Some Variables //
     let personData = {
         "task" : "Search Person", 
+        "loggedInUser" : document.getElementById("userId").textContent, 
         "instituteId" : document.getElementById("userId").textContent, 
+        "authority" : document.getElementById("authority").textContent,
         "sessionId" : document.getElementById("sessionId").textContent,
         "searchKey" : document.getElementById("searchKey").value,
     };
@@ -339,7 +343,9 @@ function openModalForSelectedPerson(selectedPerson){
         // Creating the Updated data variable //
         let updatedData = {
             "task" : "Update Person Details", 
+            "loggedInUser" : document.getElementById("userId").textContent, 
             "instituteId" : document.getElementById("userId").textContent, 
+            "authority" : document.getElementById("authority").textContent,
             "sessionId" : document.getElementById("sessionId").textContent,
             "userId" : updatePersonId.value,
             "name" : updateName.value,
@@ -437,7 +443,9 @@ function openAddClassForm(){
         let data = {
             "task" : "Update Classes", 
             "subtask" : "Add Class", 
+            "loggedInUser" : document.getElementById("userId").textContent, 
             "instituteId" : document.getElementById("userId").textContent, 
+            "authority" : document.getElementById("authority").textContent,
             "sessionId" : document.getElementById("sessionId").textContent,
             "className" : document.getElementById("className-add").value,
             "fees" : document.getElementById("fees-add").value,
@@ -511,6 +519,8 @@ function showClasses(){
     let data = {
         "task" : "Update Classes", 
         "subtask" : "Show Classes", 
+        "loggedInUser" : document.getElementById("userId").textContent, 
+        "authority" : document.getElementById("authority").textContent,
         "instituteId" : document.getElementById("userId").textContent, 
         "sessionId" : document.getElementById("sessionId").textContent,
     };
@@ -576,7 +586,9 @@ function deleteClass(){
         let data = {
             "task" : "Update Classes", 
             "subtask" : "Delete Classes", 
+            "loggedInUser" : document.getElementById("userId").textContent, 
             "instituteId" : document.getElementById("userId").textContent, 
+            "authority" : document.getElementById("authority").textContent,
             "sessionId" : document.getElementById("sessionId").textContent,
             "selectedClasses" : selectedClasses
         };
@@ -684,7 +696,9 @@ function updateClass(){
             let data = {
                 "task" : "Update Classes", 
                 "subtask" : "Update Class", 
+                "loggedInUser" : document.getElementById("userId").textContent, 
                 "instituteId" : document.getElementById("userId").textContent, 
+                "authority" : document.getElementById("authority").textContent,
                 "sessionId" : document.getElementById("sessionId").textContent,
                 "updatedClassInfo" : {"updatedClassName" : updatedClassName, "updatedFees" : updatedClassFees, "className" : selectedClass.className}
             };
@@ -771,6 +785,7 @@ function appendClassDropdownMenu(classDropdownMenuId, callback=null){
     let data = {
         "task" : "Update Classes", 
         "subtask" : "Show Classes", 
+        "loggedInUser" : document.getElementById("userId").textContent, 
         "instituteId" : document.getElementById("userId").textContent, 
         "sessionId" : document.getElementById("sessionId").textContent,
     };

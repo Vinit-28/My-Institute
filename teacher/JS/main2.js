@@ -65,9 +65,9 @@ function openUploadFileForm(){
         let data = {
             "task" : "Upload File", 
             "loggedInUser" : document.getElementById("userId").textContent, 
-            "instituteId" : document.getElementById("userId").textContent, 
-            "authority" : document.getElementById("authority").textContent,
+            "instituteId" : document.getElementById("instituteId").textContent,  
             "sessionId" : document.getElementById("sessionId").textContent,
+            "authority" : document.getElementById("authority").textContent,
             "fileTitle" : document.getElementById("fileTitle").value,
             "file" : document.getElementById("fileTitle").value,
             "fileVisibility" : fileVisibility.options[fileVisibility.selectedIndex].value,
@@ -155,8 +155,7 @@ function showUploadedFiles(){
     let data = {
         "task" : "Show Uploaded Files", 
         "loggedInUser" : document.getElementById("userId").textContent, 
-        "instituteId" : document.getElementById("userId").textContent, 
-        "authority" : document.getElementById("authority").textContent,
+        "instituteId" : document.getElementById("instituteId").textContent,   
         "sessionId" : document.getElementById("sessionId").textContent,
     };
 
@@ -174,11 +173,8 @@ function showUploadedFiles(){
                     // Appending the Input Tags (Checkboxes) in the form //
                     form.appendChild(getUploadFileCard(response.uploadedFiles[key]));
                 }
-                
-                // If no files to show !
                 if(response.uploadedFiles.length == 0){
-                    form.innerHTML = `<div style="color: red; text-align:center; margin-top:10px">No files to show !</div>`;
-                    // alert("No Files to Show !!!");
+                    alert("No Files to Show !!!");
                 }
             }
             else{
@@ -220,9 +216,9 @@ function deleteUploadedFiles(){
         let data = {
             "task" : "Delete Uploaded Files", 
             "loggedInUser" : document.getElementById("userId").textContent, 
-            "instituteId" : document.getElementById("userId").textContent, 
-            "sessionId" : document.getElementById("sessionId").textContent,
+            "instituteId" : document.getElementById("instituteId").textContent,  
             "authority" : document.getElementById("authority").textContent,
+            "sessionId" : document.getElementById("sessionId").textContent,
             "selectedFiles" : selectedFiles
         };
 
@@ -370,8 +366,6 @@ function getLiveClassCreatorForm(){
 // Function to open a Launch Live Class Section //
 function openLaunchClassForm(){
 
-    window.open("https:/www.meet.new");
-
     // Getting The Live Class Section Tag //
     let liveClassSection = document.getElementById("liveClassSection");
     liveClassSection.innerHTML = "";
@@ -388,7 +382,7 @@ function openLaunchClassForm(){
         let data = {
             "task" : "Create Live Class", 
             "loggedInUser" : document.getElementById("userId").textContent, 
-            "instituteId" : document.getElementById("userId").textContent, 
+            "instituteId" : document.getElementById("instituteId").textContent,   
             "authority" : document.getElementById("authority").textContent,
             "sessionId" : document.getElementById("sessionId").textContent,
             "hostName" : document.getElementById("userId").textContent,
@@ -403,7 +397,6 @@ function openLaunchClassForm(){
             "liveClassVisibility" : liveClassVisibility.options[liveClassVisibility.selectedIndex].value,
         };
 
-        // console.log(data);
         let onLoadFunction = function(){
             if( this.status != 200 ){
                 alert("Something Went Wrong!");
@@ -414,14 +407,13 @@ function openLaunchClassForm(){
                     let response = JSON.parse(responseText);
                     alert(response.message);
                     if( response.result == "Success" ){
-                        showHostedClasses();
+                        showLiveClasses("hosted");
                     }
                 }
                 else{
                     alert(responseText);
                 }
             }
-            // console.log(this.responseText);
         }
 
         // Making AJAX Request //
@@ -434,7 +426,7 @@ function openLaunchClassForm(){
 
 
 // Function to Make a Live Class Card //
-function getLiveClassCard(liveClassDetails, disabled){
+function getLiveClassCard(liveClassDetails, inputDisabled=false){
 
     // Creating Tags //
     let form = document.createElement("form");
@@ -456,16 +448,16 @@ function getLiveClassCard(liveClassDetails, disabled){
     form.classList.add("classItem");
     classSelectorDiv.classList.add("classSelector");
     classDescriptionDiv.classList.add("classDescription");
-    joinClassButtonDiv.classList.add("classJoinButton");
+    joinClassButtonDiv.classList.add("joinClassButton");
     
     liveClassCardCheckbox.type = "checkbox";
     liveClassCardCheckbox.name = "liveClassCard";
-    liveClassCardCheckbox.disabled = disabled;
+    liveClassCardCheckbox.disabled = inputDisabled;
     liveClassCardCheckbox.value = liveClassDetails.liveClassId;
     classHeadingDiv.classList.add("classHeading");
     classHeadingDiv.innerText = liveClassDetails.subjectName; 
     hostNameDiv.classList.add("hostName");
-    hostNameDiv.innerText = "( " + liveClassDetails.teacherName + " )"; 
+    hostNameDiv.innerHTML = "( " + liveClassDetails.teacherName + " )"; 
 
     classDescriptionDiv.classList.add("classDescription");
     classTitleDiv.classList.add("classTitle");
@@ -477,9 +469,8 @@ function getLiveClassCard(liveClassDetails, disabled){
     classTimeDiv.classList.add("classTime");
     classTimeDiv.innerText = "Timing :- " + liveClassDetails.startingTime + " to " + liveClassDetails.endingTime;
 
-
-    // aClassLink.classList.add("classJoinButton");
-
+    joinClassButtonDiv.classList.add("joinClassButton");
+    aClassLink.classList.add("classJoinButton");
     aClassLink.target = "_blank";
     aClassLink.href = liveClassDetails.joiningLink;
     aClassLink.innerText = "Join Class";
@@ -508,7 +499,7 @@ function getLiveClassCard(liveClassDetails, disabled){
 
 
 // Function to Show all the Hsoted Classes //
-function showHostedClasses(classFilter){
+function showLiveClasses(classFilter){
 
     // Getting The Live Class Section Tag //
     let liveClassSection = document.getElementById("liveClassSection");
@@ -520,9 +511,9 @@ function showHostedClasses(classFilter){
     let data = {
         "task" : "Get Live Classes", 
         "loggedInUser" : document.getElementById("userId").textContent, 
-        "instituteId" : document.getElementById("userId").textContent, 
-        "sessionId" : document.getElementById("sessionId").textContent,
+        "instituteId" : document.getElementById("instituteId").textContent,   
         "authority" : document.getElementById("authority").textContent,
+        "sessionId" : document.getElementById("sessionId").textContent,
         "hostName" : document.getElementById("userId").textContent
     };
 
@@ -534,6 +525,7 @@ function showHostedClasses(classFilter){
             let responseText = this.responseText.replace(/(\r\n|\n|\r)/gm, "");
             if( responseText.includes("Success") ){
                 let response = JSON.parse(responseText);
+
                 for(let key in response.liveClasses){
 
                     if( classFilter == "hosted" ){
@@ -541,14 +533,15 @@ function showHostedClasses(classFilter){
                             liveClassContainer.appendChild(getLiveClassCard(response.liveClasses[key]));
                     }
                     else{
-                        liveClassContainer.appendChild(getLiveClassCard(response.liveClasses[key], true));
+                        let classVisibility = response.liveClasses[key].liveClassVisibility.toLowerCase();
+                        if( response.liveClasses[key].hostName == data.loggedInUser || classVisibility == "everyone" || classVisibility == "all teachers" ){
+                            liveClassContainer.appendChild(getLiveClassCard(response.liveClasses[key], true));
+                        }
                     }
                 }
                 // If No Live Classes are scheduled //
                 if( response.liveClasses.length < 1 ){
-                    // alert("No Live Classes Scheduled !!!");
-                    
-                    liveClassSection.innerHTML = `<div style="color: red; text-align:center; margin-top:10px">No live class is sheduled !</div>`;
+                    alert("No Live Classes Scheduled !!!");
                 }
             }
             else{
@@ -565,6 +558,7 @@ function showHostedClasses(classFilter){
 }
 
 
+
 // Function to delete Live Hosted Classes //
 function deleteHostedClasses(){
 
@@ -575,9 +569,9 @@ function deleteHostedClasses(){
         let data = {
             "task" : "Delete Live Classes", 
             "loggedInUser" : document.getElementById("userId").textContent, 
-            "instituteId" : document.getElementById("userId").textContent, 
-            "sessionId" : document.getElementById("sessionId").textContent,
             "authority" : document.getElementById("authority").textContent,
+            "instituteId" : document.getElementById("instituteId").textContent,   
+            "sessionId" : document.getElementById("sessionId").textContent,
             "selectedLiveClasses" : selectedLiveClasses
         };
     
@@ -591,7 +585,7 @@ function deleteHostedClasses(){
                 if( responseText.includes("Success") || responseText.includes("Failed") ){
                     let response = JSON.parse(responseText);
                     alert(response.message);
-                    showHostedClasses();
+                    showLiveClasses("hosted");
                 }
                 else{
                     alert(responseText);
@@ -606,7 +600,6 @@ function deleteHostedClasses(){
     else{
         alert("Please select atleast one Live Class !!!");
     }
-    
 }
 
 
@@ -615,6 +608,6 @@ function deleteHostedClasses(){
 
 // Binding the Live Class's Buttons to their Respective Handlers //
 document.getElementById("launchClass").addEventListener("click", openLaunchClassForm);
-document.getElementById("showHostedClasses").addEventListener("click", ()=>{showHostedClasses("hosted");});
+document.getElementById("showHostedClasses").addEventListener("click", ()=>{showLiveClasses("hosted");});
 document.getElementById("deleteHostedClasses").addEventListener("click", deleteHostedClasses);
-document.getElementById("allLiveClasses").addEventListener("click", ()=>{showHostedClasses("all");});
+document.getElementById("upcomingLiveClasses").addEventListener("click", ()=>{showLiveClasses();});

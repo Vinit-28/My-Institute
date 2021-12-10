@@ -13,8 +13,8 @@
         $instituteDatabase = get_DatabaseConnectionObject($instituteId);
         
         // Registering the Institute in the App Database //
-        $query = "INSERT INTO AppUsers(userId, password, email, instituteName, authority, emailVerified, profilePath) VALUES(?,?,?,?,?,?,?);";
-        $result = runQuery($databaseConnectionObject, $query, [$instituteId, $password, $instituteEmail, $instituteName, "root", "false", "http://localhost/Server/Profiles/noProfile.png"], "sssssss", true);
+        $query = "INSERT INTO AppUsers(userId, password, email, instituteName, authority, emailVerified, profilePath, instituteId) VALUES(?,?,?,?,?,?,?,?);";
+        $result = runQuery($databaseConnectionObject, $query, [$instituteId, $password, $instituteEmail, $instituteName, "root", "false", "http://localhost/Server/Profiles/noProfile.png", $instituteId], "ssssssss", true);
         
         $query = "INSERT INTO LoggedInUsers(userId, sessionId) VALUES(?,?);";
         $result = runQuery($databaseConnectionObject, $query, [$instituteId, "offline"], "ss", true);
@@ -115,9 +115,8 @@
         $databaseConnectionObject->select_db("App_Database");
         
         // Registering the User in the App Database //
-        $query = "INSERT INTO AppUsers(userId, password, email, instituteName, authority, emailVerified, profilePath) VALUES(?,?,?,?,?,?,?);";
-        runQuery($databaseConnectionObject, $query, [$userDetails['userId'], $userDetails['password'], $userDetails['email'], $userDetails['instituteName'], $userDetails['designation'], "false", "http://localhost/Server/Profiles/noProfile.png
-        "], "sssssss", true);
+        $query = "INSERT INTO AppUsers(userId, password, email, instituteName, authority, emailVerified, profilePath, instituteId) VALUES(?,?,?,?,?,?,?,?);";
+        runQuery($databaseConnectionObject, $query, [$userDetails['userId'], $userDetails['password'], $userDetails['email'], $userDetails['instituteName'], $userDetails['designation'], "false", "http://localhost/Server/Profiles/noProfile.png", $userDetails['instituteId']], "ssssssss", true);
          
 
         $query = "INSERT INTO LoggedInUsers(userId, sessionId) VALUES(?,?);";

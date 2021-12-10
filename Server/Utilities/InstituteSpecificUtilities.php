@@ -19,7 +19,7 @@
         
 
         // If the user is a Valid Person //
-        if( isUserOnline($databaseConnectionObject, $request['instituteId'], $request['sessionId']) ){
+        if( isUserOnline($databaseConnectionObject, $request['loggedInUser'], $request['sessionId']) ){
 
             // If the request is to Add a Person(Student/Teacher) in the Institute's Database //
             if( $request['task'] == 'Add Person' ){
@@ -163,10 +163,10 @@
             }
 
             // If the request is to Get all the Hosted Classes by the User //
-            else if($request['task'] == "Get Hosted Classes"){
+            else if($request['task'] == "Get Live Classes"){
 
                 $databaseConnectionObject->select_db($request['instituteId']);
-                $liveClasses = getHostedClasses($databaseConnectionObject, $request);
+                $liveClasses = getLiveClasses($databaseConnectionObject, $request);
                 
                 $response =array(
                     "result"=>"Success",

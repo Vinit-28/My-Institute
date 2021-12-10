@@ -68,10 +68,10 @@
 
 
     // Function to get the hosted classes //
-    function getHostedClasses($databaseConnectionObject, $request){
+    function getLiveClasses($databaseConnectionObject, $request){
 
-        $query = "SELECT * FROM LiveClasses WHERE hostName = ?";
-        $result = runQuery($databaseConnectionObject, $query, [$request['hostName']], "s");
+        $query = "SELECT * FROM LiveClasses;";
+        $result = runQuery($databaseConnectionObject, $query, [], "");
         $liveClasses = array();
         $counter = 1;
         while($row = $result->fetch_assoc()){

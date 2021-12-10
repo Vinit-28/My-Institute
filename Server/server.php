@@ -63,6 +63,8 @@
 
                 $databaseConnectionObject->select_db("App_Database");
                 $_SESSION['userProfile'] = getColumnValue($databaseConnectionObject, "SELECT * FROM AppUsers Where userId = ?", [$request["userId"]], "s", "profilePath");
+                $_SESSION['instituteId'] = getColumnValue($databaseConnectionObject, "SELECT * FROM AppUsers Where userId = ?", [$request["userId"]], "s", "instituteId");
+                $_SESSION['authority'] = getColumnValue($databaseConnectionObject, "SELECT * FROM AppUsers Where userId = ?", [$request["userId"]], "s", "authority");
                 
 
                 // Making the user Online and storing the session id in the database //
