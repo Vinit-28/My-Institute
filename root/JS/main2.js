@@ -174,8 +174,11 @@ function showUploadedFiles(){
                     // Appending the Input Tags (Checkboxes) in the form //
                     form.appendChild(getUploadFileCard(response.uploadedFiles[key]));
                 }
+                
+                // If no files to show !
                 if(response.uploadedFiles.length == 0){
-                    alert("No Files to Show !!!");
+                    form.innerHTML = `<div style="color: red; text-align:center; margin-top:10px">No files to show !</div>`;
+                    // alert("No Files to Show !!!");
                 }
             }
             else{
@@ -453,7 +456,7 @@ function getLiveClassCard(liveClassDetails, disabled){
     form.classList.add("classItem");
     classSelectorDiv.classList.add("classSelector");
     classDescriptionDiv.classList.add("classDescription");
-    joinClassButtonDiv.classList.add("joinClassButton");
+    joinClassButtonDiv.classList.add("classJoinButton");
     
     liveClassCardCheckbox.type = "checkbox";
     liveClassCardCheckbox.name = "liveClassCard";
@@ -474,8 +477,9 @@ function getLiveClassCard(liveClassDetails, disabled){
     classTimeDiv.classList.add("classTime");
     classTimeDiv.innerText = "Timing :- " + liveClassDetails.startingTime + " to " + liveClassDetails.endingTime;
 
-    
-    aClassLink.classList.add("classJoinButton");
+
+    // aClassLink.classList.add("classJoinButton");
+
     aClassLink.target = "_blank";
     aClassLink.href = liveClassDetails.joiningLink;
     aClassLink.innerText = "Join Class";
@@ -542,7 +546,9 @@ function showHostedClasses(classFilter){
                 }
                 // If No Live Classes are scheduled //
                 if( response.liveClasses.length < 1 ){
-                    alert("No Live Classes Scheduled !!!");
+                    // alert("No Live Classes Scheduled !!!");
+                    
+                    liveClassSection.innerHTML = `<div style="color: red; text-align:center; margin-top:10px">No live class is sheduled !</div>`;
                 }
             }
             else{
@@ -557,7 +563,6 @@ function showHostedClasses(classFilter){
     makeAJAXRequest("POST", "../../Server/Utilities/InstituteSpecificUtilities.php", data, onLoadFunction);
 
 }
-
 
 
 // Function to delete Live Hosted Classes //
