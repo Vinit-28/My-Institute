@@ -19,10 +19,10 @@
         $query = "INSERT INTO LoggedInUsers(userId, sessionId) VALUES(?,?);";
         $result = runQuery($databaseConnectionObject, $query, [$instituteId, "offline"], "ss", true);
         
+        $query = "INSERT INTO Institutes(instituteId, instituteName, instituteEmail, institutePhoneNumber, address, city, state, pinCode, profilePath) VALUES(?,?,?,?,?,?,?,?,?);";
+        $result = runQuery($databaseConnectionObject, $query, [$instituteId, $instituteName, $instituteEmail, "", "", "", "", "", "http://localhost/Server/Profiles/noProfile.png"], "sssssssss", true);
         
-
-        
-
+    
         // -------------------- Creating Tables for a Institute in its Database -------------------- //
 
         // Making a TeacherInfo Table which will store all teachers related information // 
@@ -104,6 +104,7 @@
         $path = str_replace("Server", "InstituteFolders/" . $instituteId, $path);
         mkdir($path);
         mkdir($path . "/uploadedFiles");
+        mkdir($path . "/profilePhotos");
         
     }
 
@@ -319,13 +320,110 @@
     }
 
 
+    // Function to get the User Profile Path From the Database // 
+    function getUserProfilePath($databaseConnectionObject, $institueId, $userId){
+
+        $path = getColumnValue($databaseConnectionObject, "SELECT * FROM AppUsers WHERE userId = ?", [$userId], "s", "profilePath");
+        return $path;
+    }
 
 
+    // Function to check whether the New Email Id is deifferent from the Email Id stored in the Database //
+    function isEmailChanged($databaseConnectionObject, $userId, $newEmail){
+
+        $databaseConnectionObject->select_db("App_Database");
+        $prevEmail = getColumnValue($databaseConnectionObject, "SELECT * FROM AppUsers WHERE userId = ?", [$userId], "s", "email");
+
+        return !($newEmail == $prevEmail);
+    }
 
 
+    // Function to update the Profile of a Institute //
+    function updateInstituteProfile($databaseConnectionObject, $request){
+
+        $databaseConnectionObject->select_db("App_Database");
+        $query = "UPDATE Institutes SET instituteName = ?, instituteEmail = ?, institutePhoneNumber = ?, address = ?, city = ?, state = ?, pinCode = ? WHERE instituteId = ?;";
+
+        runQuery($databaseConnectionObject, $query, [$request['updatedInstituteName'], $request['updatedInstituteEmail'], $request['updatedInstitutePhoneNumber'], $request['updatedInstituteAddress'], $request['updatedInstituteCity'], $request['updatedInstituteState'], $request['updatedInstitutePinCode'], $request['instituteId'] ], "ssssssss");
 
 
+        $query = "UPDATE AppUsers SET instituteName = ? WHERE instituteId = ?;";
+        runQuery($databaseConnectionObject, $query, [$request['updatedInstituteName'], $request['loggedInUser'] ], "ss");
+        
+        if( isEmailChanged($databaseConnectionObject, $request['loggedInUser'], $request['updatedInstituteEmail'])){
 
+            $query = "UPDATE AppUsers SET email = ?, emailVerified = ? WHERE userId = ?;";
+            runQuery($databaseConnectionObject, $query, [$request['updatedInstituteEmail'], "false", $request['loggedInUser'] ], "sss");
+        }
+
+    }
+
+
+    // // Function to update the Profile of a Institute //
+    // function updateTeacherProfile($databaseConnectionObject, $request){
+
+    //     $databaseConnectionObject->select_db("App_Database");
+    //     $query = "UPDATE Institutes SET instituteName = ?, instituteEmail = ?, institutePhoneNumber = ?, address = ?, city = ?, state = ?, pinCode = ? WHERE instituteId = ?;";
+
+    //     runQuery($databaseConnectionObject, $query, [$request['updatedInstituteName'], $request['updatedInstituteEmail'], $request['updatedInstitutePhoneNumber'], $request['updatedInstituteAddress'], $request['updatedInstituteCity'], $request['updatedInstituteState'], $request['updatedInstitutePinCode'], $request['instituteId'] ], "ssssssss", true);
+
+
+    //     $query = "UPDATE AppUsers SET instituteName = ? WHERE instituteId = ?;";
+    //     runQuery($databaseConnectionObject, $query, [$request['updatedInstituteName'], $request['loggedInUser'] ], "ss");
+        
+    //     if( isEmailChanged($databaseConnectionObject, $request['loggedInUser'], $request['updatedInstituteEmail'])){
+
+    //         $query = "UPDATE AppUsers SET email = ?, emailVerified = ? WHERE userId = ?;";
+    //         runQuery($databaseConnectionObject, $query, [$request['updatedInstituteEmail'], "false", $request['loggedInUser'] ], "sss");
+    //     }
+
+    // }
+
+
+    // Functio to update the Profile of a User //
+    function updateMyProfile($databaseConnectionObject, $request, $authority){
+
+        if( $authority == "root" ){
+            updateInstituteProfile($databaseConnectionObject, $request);
+        }
+        else if( $authority == "teacher" ){
+
+        }
+    }
+
+
+    // Function to get the File Extension from the File Name (Usually for images) //
+    function getFileExtension($fileName){
+
+        $ext = "";
+        for($i=strlen($fileName)-1; $i>=0; $i--){
+            if( $fileName[$i] == '.' )
+                break;
+            $ext .= $fileName[$i];
+        }
+        return ("." . strrev($ext));
+    }
+
+
+    // Function to update the Profile Image of the User //
+    function updateProfileImage($databaseConnectionObject, $fileName, $tmpName, $authority, $userId, $instituteId){
+
+        $databaseConnectionObject->select_db("App_Database");
+        $profilePathHref = "http://localhost/InstituteFolders/". $instituteId . "/" . "profilePhotos/" . $userId . getFileExtension($fileName);
+
+        $query = "UPDATE AppUsers SET profilePath = ? WHERE userId = ?;";
+        runQuery($databaseConnectionObject, $query, [$profilePathHref, $userId], "ss", true);
+        
+        if( $authority == "root" ){
+            $query = "UPDATE Institutes SET profilePath = ? WHERE instituteId = ?;";
+            runQuery($databaseConnectionObject, $query, [$profilePathHref, $userId], "ss", true);    
+        }
+        
+        $filePath =  ("InstituteFolders/" . $instituteId . "/profilePhotos" . "/" . $userId . getFileExtension($fileName));
+        $machinePath = getcwd();
+        $machinePath = str_replace("Server/Utilities", $filePath, $machinePath);
+        move_uploaded_file($tmpName, $machinePath);
+    }
 
 
 

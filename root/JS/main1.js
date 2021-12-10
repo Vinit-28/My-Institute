@@ -6,11 +6,11 @@ let instituteClasses = {};
 
 
 // Function to make a AJAX request to the Server //
-function makeAJAXRequest(requesType, serverUrl, data, onLoadFunction){
+function makeAJAXRequest(requesType, serverUrl, data, onLoadFunction, async=true){
 
     // Creating the XHR Object //
     let xhrObject = new XMLHttpRequest();
-    xhrObject.open(requesType, serverUrl);
+    xhrObject.open(requesType, serverUrl, async);
     xhrObject.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     
     // After getting the Response from the Server this Function will be executed //
@@ -828,7 +828,7 @@ function appendClassDropdownMenu(classDropdownMenuId, callback=null){
 // Function to make Class Dropdown Menu disabled/enabled according to the designation Selected //
 function changeDesignation(designationId, classId){
 
-    let designation = document.getElementById(designationId);
+let designation = document.getElementById(designationId);
     let designationValue = designation.options[designation.selectedIndex].value;
     let Class = document.getElementById(classId);
     Class.selectedIndex = 0;

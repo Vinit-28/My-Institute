@@ -170,8 +170,11 @@ function showUploadedFiles(){
                 let response = JSON.parse(responseText);
 
                 for(let key in response.uploadedFiles){
+                    let fileVisibility = response.uploadedFiles[key].fileVisibility.toLowerCase();
                     // Appending the Input Tags (Checkboxes) in the form //
-                    form.appendChild(getUploadFileCard(response.uploadedFiles[key]));
+                    if( fileVisibility == "everyone" || fileVisibility == "all teachers" || response.uploadedFiles[key].uploadedBy == data.loggedInUser ){
+                        form.appendChild(getUploadFileCard(response.uploadedFiles[key]));
+                    }
                 }
                 if(response.uploadedFiles.length == 0){
                     alert("No Files to Show !!!");

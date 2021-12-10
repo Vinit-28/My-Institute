@@ -188,7 +188,7 @@
     display: none;
 }
 
-#selectedImg ,#rootImg{
+#selectedImg ,#rootImg, #rootProfileImg{
     width: 4.7rem; 
     border-radius: 50%;
 }
@@ -260,7 +260,7 @@
         grid-template-columns: repeat(2, minmax( 3rem  , auto));
     }    
 
-    #selectedImg , #modalImg , #rootImg{
+    #selectedImg , #modalImg , #rootImg, #rootProfileImg{
         width: 3rem;
     }
 
@@ -274,7 +274,7 @@
     .forms{
         grid-template-columns: repeat(2, minmax( 3rem  , auto));
     }    
-    #selectedImg , #modalImg , #rootImg{
+    #selectedImg , #modalImg , #rootImg, #rootProfileImg{
         width: 3rem;
     }
 
@@ -287,7 +287,7 @@
     .forms{
         grid-template-columns: repeat(2, minmax( 3rem  , auto));
     }    
-    #selectedImg , #modalImg, #rootImg{
+    #selectedImg , #modalImg, #rootImg, #rootProfileImg{
         width: 2.7rem;
     }
 

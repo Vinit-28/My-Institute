@@ -21,8 +21,10 @@
         // If the user is a Valid Person //
         if( isUserOnline($databaseConnectionObject, $request['loggedInUser'], $request['sessionId']) ){
 
+            $authority = getColumnValue($databaseConnectionObject, "SELECT * FROM AppUsers WHERE userId = ?", [$request['loggedInUser']], "s", "authority");
+
             // If the request is to Add a Person(Student/Teacher) in the Institute's Database //
-            if( $request['task'] == 'Add Person' ){
+            if( $request['task'] == 'Add Person' && $authority == "root" ){
                 
                 $request['password'] = password_hash($request['password'], PASSWORD_BCRYPT);
                 $databaseConnectionObject->select_db("App_Database");
@@ -44,7 +46,7 @@
 
 
             // If the request is to Search a person in the Institute's Database //
-            else if( $request['task'] == 'Search Person' ){
+            else if( $request['task'] == 'Search Person' && ($authority == "root" || $authority == "teacher" ) ){
                 
                 $relatedPersons = searchUsers($databaseConnectionObject, $request);
                 
@@ -59,7 +61,7 @@
             
             
             // If the request is to Update a Person Details in the Institute's Database //
-            else if( $request['task'] == 'Update Person Details' ){
+            else if( $request['task'] == 'Update Person Details' && ($authority == "root" || $authority == "teacher" ) ){
                 
                 updatePersonDetails($databaseConnectionObject, $request);
 
@@ -74,7 +76,7 @@
 
 
             // If the request is to Update the Class in the Institute's Database //
-            else if( $request['task'] == 'Update Classes' ){
+            else if( $request['task'] == 'Update Classes' && $authority == "root" ){
                 
                 $response = array();
                 $databaseConnectionObject->select_db($request['instituteId']);
@@ -105,7 +107,7 @@
             }
 
             // If the request is to Upload Files in the Institute's Database //
-            else if($request['task'] == "Upload File"){
+            else if($request['task'] == "Upload File" && ($authority == "root" || $authority == "teacher" ) ){
 
                 if( isset($_FILES['fileToBeUploaded']) ){
 
@@ -125,7 +127,7 @@
             }
 
             // If the request is to Get the Uploaded Files from the Institute's Database //
-            else if($request['task'] == "Show Uploaded Files"){
+            else if($request['task'] == "Show Uploaded Files" ){
 
                 $uploadedFiles = getUploadedFiles($databaseConnectionObject, $request);
                 $response =array(
@@ -136,7 +138,7 @@
             }
 
             // If the request is to Delete Uploaded File/Files From the Institute's Database //
-            else if($request['task'] == "Delete Uploaded Files"){
+            else if($request['task'] == "Delete Uploaded Files" && ($authority == "root" || $authority == "teacher" ) ){
 
                 deleteUploadedFiles($databaseConnectionObject, $request);
                 
@@ -149,7 +151,7 @@
             }
 
             // If the request is to Create a Live Class //
-            else if($request['task'] == "Create Live Class"){
+            else if($request['task'] == "Create Live Class" && ($authority == "root" || $authority == "teacher" ) ){
 
                 $databaseConnectionObject->select_db($request['instituteId']);
                 createLiveClass($databaseConnectionObject, $request);
@@ -163,7 +165,7 @@
             }
 
             // If the request is to Get all the Hosted Classes by the User //
-            else if($request['task'] == "Get Live Classes"){
+            else if($request['task'] == "Get Live Classes" ){
 
                 $databaseConnectionObject->select_db($request['instituteId']);
                 $liveClasses = getLiveClasses($databaseConnectionObject, $request);
@@ -177,7 +179,7 @@
             }
 
             // If the request is to Delete the Hosted Classes by the User //
-            else if($request['task'] == "Delete Live Classes"){
+            else if($request['task'] == "Delete Live Classes" && ($authority == "root" || $authority == "teacher" ) ){
 
                 $databaseConnectionObject->select_db($request['instituteId']);
                 deleteLiveClasses($databaseConnectionObject, $request);
@@ -187,6 +189,44 @@
                     "message"=>"Live Class/Classes Deleted successfully !!!",
                 );
 
+                echo json_encode($response);
+            }
+            
+            // If request is to get the Institute Data //
+            else if($request['task'] == "Get Institute Data" && $authority == "root" ){
+
+                $databaseConnectionObject->select_db("App_Database");
+                $instituteData = getInstituteData($databaseConnectionObject, $request);
+                $response =array(
+                    "result"=>"Success",
+                    "instituteData"=>$instituteData
+                );
+
+                echo json_encode($response);
+            }
+
+            // If request is to Update the User Profile //
+            else if($request['task'] == "Update My Profile" ){
+
+                updateMyProfile($databaseConnectionObject, $request, $authority);
+                
+                // If Profile Image has to be changed //
+                if( isset($_FILES['profileImg']) ){
+                    updateProfileImage($databaseConnectionObject, $_FILES['profileImg']['name'], $_FILES['profileImg']['tmp_name'], $authority, $request['loggedInUser'], $request['instituteId']);
+                }
+
+                $response =array(
+                    "result"=>"Success",
+                    "message"=>"Profile Updated Successfully !!!"
+                );
+                echo json_encode($response);
+            }
+
+            // If request is not valid //
+            else{
+                $response = array(
+                    "Not able to fulfill your request !!!"
+                );
                 echo json_encode($response);
             }
 

@@ -93,4 +93,15 @@
         }
     }
 
+
+    // Function to get the Institute Data //
+    function getInstituteData($databaseConnectionObject, $request){
+
+        $query = "SELECT * FROM Institutes WHERE InstituteId = ?;";
+        $instituteData = array();
+        $result = runQuery($databaseConnectionObject, $query, [$request['instituteId']], "s");
+        $instituteData += [$result->fetch_assoc()];
+        return $instituteData;
+    }
+
 ?>

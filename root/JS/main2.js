@@ -81,7 +81,7 @@ function openUploadFileForm(){
         formData.append("request", JSON.stringify(data));   
         formData.append("fileToBeUploaded", fileToBeUploaded);
         
-        xhr.timeout = 8000;
+        xhr.timeout = 10000;
         xhr.open("POST", '../../Server/Utilities/InstituteSpecificUtilities.php'); 
         
         // Function to be executed When the request has made and got the response from the server //
@@ -618,3 +618,155 @@ document.getElementById("launchClass").addEventListener("click", openLaunchClass
 document.getElementById("showHostedClasses").addEventListener("click", ()=>{showHostedClasses("hosted");});
 document.getElementById("deleteHostedClasses").addEventListener("click", deleteHostedClasses);
 document.getElementById("allLiveClasses").addEventListener("click", ()=>{showHostedClasses("all");});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// ---------------------------------- Update Personal Details ---------------------------------- //
+
+
+// Function to get the Isntitute Details From the Database //
+function getInstituteDetails(){
+
+    let instituteData = {};
+
+    let data = {
+        "task" : "Get Institute Data", 
+        "loggedInUser" : document.getElementById("userId").textContent, 
+        "instituteId" : document.getElementById("userId").textContent, 
+        "sessionId" : document.getElementById("sessionId").textContent,
+        "authority" : document.getElementById("authority").textContent,
+    };
+
+    let onLoadFunction = function(){
+        if( this.status != 200 ){
+            alert("Something Went Wrong!");
+        }
+        else{
+            let responseText = this.responseText.replace(/(\r\n|\n|\r)/gm, "");
+            if( responseText.includes("Success") ){
+                let response = JSON.parse(responseText);
+                instituteData = response.instituteData[0];
+            }
+            else{
+                alert(responseText);
+            }
+        }
+    }
+
+    // Making the AJAX Request //
+    makeAJAXRequest("POST", "../../Server/Utilities/InstituteSpecificUtilities.php", data, onLoadFunction, false);
+    return instituteData;
+}
+
+
+// Function to fill up the Self Profile Section //
+function fillUpPersonalDetails(){
+    
+    // Getting the Institute Data //
+    let instituteData = getInstituteDetails();
+
+    // Getting the tag Elements //
+    let rootProfileDiv = document.getElementById("rootProfileDiv");
+    let instituteId = document.getElementById("personalPersonId");
+    let instituteName = document.getElementById("personalName");
+    let instituteEmail = document.getElementById("personalEmail");
+    let institutePhoneNo = document.getElementById("personalPhoneNo");
+    let instituteAddress = document.getElementById("personalAddress");
+    let instituteCity = document.getElementById("personalCity");
+    let instituteState = document.getElementById("personalState");
+    let institutePinCode = document.getElementById("personalPinCode");
+
+
+    // Assigining Values to their attributes //
+    rootProfileDiv.style.display = "block";
+    instituteId.value = instituteData.instituteId;
+    instituteId.disabled = true;
+    instituteName.value = instituteData.instituteName;
+    instituteEmail.value = instituteData.instituteEmail;
+    institutePhoneNo.value = instituteData.institutePhoneNumber;
+    instituteAddress.value = instituteData.address;
+    instituteCity.value = instituteData.city;
+    instituteState.value = instituteData.state;
+    institutePinCode.value = instituteData.pinCode;
+}
+
+
+// Function to update the Self Profile Details in the Database //
+function updatePersonalDetails(e){
+
+    e.preventDefault();
+
+    // Creating Some Variables //
+    let data = {
+        "task" : "Update My Profile", 
+        "loggedInUser" : document.getElementById("userId").textContent, 
+        "instituteId" : document.getElementById("userId").textContent, 
+        "authority" : document.getElementById("authority").textContent,
+        "sessionId" : document.getElementById("sessionId").textContent,
+        "updatedInstituteName" : document.getElementById("personalName").value,
+        "updatedInstituteEmail" : document.getElementById("personalEmail").value,
+        "updatedInstitutePhoneNumber" : document.getElementById("personalPhoneNo").value,
+        "updatedInstituteAddress" : document.getElementById("personalAddress").value,
+        "updatedInstituteCity" : document.getElementById("personalCity").value,
+        "updatedInstituteState" : document.getElementById("personalState").value,
+        "updatedInstitutePinCode" : document.getElementById("personalPinCode").value,
+    };
+
+    
+    let xhr = new XMLHttpRequest();
+    let formData = new FormData();
+    let profileImg = document.getElementById("rootProfileImg").src;  
+    let Image = document.getElementById("newProfile");
+    
+    formData.append("request", JSON.stringify(data));   
+    
+    // If image is Selected || Profile Picture is updated //
+    if( Image.files.length > 0 ){
+        let profileImg = Image.files[0];      
+        formData.append("profileImg", profileImg);
+    }    
+    
+
+    xhr.timeout = 10000;
+    xhr.open("POST", '../../Server/Utilities/InstituteSpecificUtilities.php'); 
+    
+    // Function to be executed When the request has made and got the response from the server //
+    xhr.onload = function(){
+
+        if( this.status != 200 ){
+            alert("Something Went Wrong!");
+        }
+        else{
+            let responseText = this.responseText.replace(/(\r\n|\n|\r)/gm, "");
+            if( responseText.includes("Success") ){
+                let response = JSON.parse(responseText);
+                alert(response.message);
+                // Reloading the Page to see the Updated changes //
+                location.reload();
+            }
+            else{
+                alert(responseText);
+            }
+        }
+        console.log(this.responseText);
+    }
+    xhr.send(formData);
+}
+
+
+// Binding the updatePersonalDetails button with its handler //
+document.getElementById("updatePersonalDetails").addEventListener("click", updatePersonalDetails);

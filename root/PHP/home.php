@@ -13,6 +13,7 @@ if (!(isset($_SESSION["isUserLogedIn"]) && isset($_SESSION["userId"]) && isset($
     session_destroy();
     header('Location: ../../index.php');
 } else {
+    $_SESSION['userProfile'] = getUserProfilePath($databaseConnectionObject, $_SESSION['instituteId'], $_SESSION['userId']);
 ?>
 
 
@@ -86,7 +87,7 @@ if (!(isset($_SESSION["isUserLogedIn"]) && isset($_SESSION["userId"]) && isset($
         </div>
 
 
-        <!-- THIS IS VERY IMPORTANT BOX, IT CONTAINS THE INFORMATION OF THE SELECTED PERSON FORM SEARCH BAR (Modal) -->
+        <!-- (END)THIS IS VERY IMPORTANT BOX, IT CONTAINS THE INFORMATION OF THE SELECTED PERSON FORM SEARCH BAR (Modal) -->
 
 
         <nav id="mynavbar">
@@ -151,39 +152,33 @@ if (!(isset($_SESSION["isUserLogedIn"]) && isset($_SESSION["userId"]) && isset($
 
 
 
-            <!-- Add Person Div -->
+            <!-- Personal Profile Div -->
 
-            <div id="rootProfileDiv"  class="formsDiv" style="display:none;">
+            <div id="rootProfileDiv"  class="formsDiv" >
                 <div class="boxHeadingDiv">
                     <h3 class="boxHeading">Personl Profile</h3>
                 </div>
-                <div id="profileimgdiv">
-                    <img id="selectedImg" src="../IMAGES/profile.jpg" alt="">
+                <div id="">
+                    <?php echo '<img id="rootProfileImg" src="' . $_SESSION['userProfile'] . '" alt="">'; ?>
                 </div>
                 <form id="rootProfileForm" action="" method="post" class="forms">
-                    <input required autocomplete="off" id="root-personId" type="text" placeholder="*Person ID">
-                    <input required autocomplete="off" id="root-name" type="text" placeholder="*Person Name">
+                    <input autocomplete="off" id="personalPersonId" type="text" placeholder="*Institute ID">
+                    <input id="newProfile" type="file">
+                    <input autocomplete="off" id="personalName" type="text" placeholder="Institute Name">
 
-                    <input required autocomplete="off" id="root-email" type="email" placeholder="*Person Email">
+                    <input required autocomplete="off" id="personalEmail" type="email" placeholder="Institute Email">
 
-                    <select id="add-gender" name="personGender">
-                        <option class="options" value="gender" selected="selected">Gender</option>
-                        <option class="options" value="male">Male</option>
-                        <option class="options" value="female">Female</option>
-                        <option class="options" value="other">Other</option>
-                    </select>
-
-                    <input required autocomplete="off" id="root-phoneNo" type="number" placeholder="*Phone No.">
-                    <input required autocomplete="off" id="root-adharCardNo" type="number" placeholder="*Aadhar Card No.">
-                    <input required autocomplete="off" id="root-address" type="text" placeholder="*Address">
-                    <input required autocomplete="off" id="root-city" type="text" placeholder="*City">
-                    <input required autocomplete="off" id="root-state" type="text" placeholder="*State">
-                    <input required autocomplete="off" id="root-pinCode" type="number" placeholder="*PIN Code">
-                    <button type="submit" name="submitPerson" id="submitAddPersonForm">Submit Details</button>
+                    <input autocomplete="off" id="personalPhoneNo" type="number" placeholder="Institute Phone No.">
+                    <input autocomplete="off" id="personalAddress" type="text" placeholder="Institute Address">
+                    <input autocomplete="off" id="personalCity" type="text" placeholder="Institute City">
+                    <input autocomplete="off" id="personalState" type="text" placeholder="Institute State">
+                    <input autocomplete="off" id="personalPinCode" type="number" placeholder="PIN Code">
+                    <button type="submit" id="updatePersonalDetails">Update Profile</button>
                 </form>
             </div>
 
-            <!-- Add Person Div End -->
+            <!-- Personal Profile Div END -->
+
 
 
 
@@ -567,10 +562,13 @@ if (!(isset($_SESSION["isUserLogedIn"]) && isset($_SESSION["userId"]) && isset($
                 document.getElementById("add-designation").onchange = ()=>{changeDesignation("add-designation", "add-class");};
             }
             else if ($(person).attr("value") == "#div5") {
-                showHostedClasses();
+                showHostedClasses("hosted");
             }
             else if ($(person).attr("value") == "#div6") {
                 showUploadedFiles();
+            }
+            else if( $(person).attr("value") == "#rootProfileDiv"){
+                fillUpPersonalDetails();
             }
             
 
