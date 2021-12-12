@@ -355,29 +355,35 @@
             $query = "UPDATE AppUsers SET email = ?, emailVerified = ? WHERE userId = ?;";
             runQuery($databaseConnectionObject, $query, [$request['updatedInstituteEmail'], "false", $request['loggedInUser'] ], "sss");
         }
-
     }
 
 
-    // // Function to update the Profile of a Institute //
-    // function updateTeacherProfile($databaseConnectionObject, $request){
+    // Function to update the Profile of a Teacher //
+    function updateTeacherOrStudentProfile($databaseConnectionObject, $request, $authority){
 
-    //     $databaseConnectionObject->select_db("App_Database");
-    //     $query = "UPDATE Institutes SET instituteName = ?, instituteEmail = ?, institutePhoneNumber = ?, address = ?, city = ?, state = ?, pinCode = ? WHERE instituteId = ?;";
+        $databaseConnectionObject->select_db($request['instituteId']);
+        $query = "";
+        $newEmail = "";
+        if( $authority == "teacher" ){
+            $newEmail = $request['updatedTeacherEmail'];
+            $query = "UPDATE TeacherInfo SET name = ?, email = ?, phoneNo = ?, address = ?, city = ?, state = ?, pinCode = ? WHERE userId = ?;";
 
-    //     runQuery($databaseConnectionObject, $query, [$request['updatedInstituteName'], $request['updatedInstituteEmail'], $request['updatedInstitutePhoneNumber'], $request['updatedInstituteAddress'], $request['updatedInstituteCity'], $request['updatedInstituteState'], $request['updatedInstitutePinCode'], $request['instituteId'] ], "ssssssss", true);
+            runQuery($databaseConnectionObject, $query, [$request['updatedTeacherName'], $request['updatedTeacherEmail'], $request['updatedTeacherPhoneNumber'], $request['updatedTeacherAddress'], $request['updatedTeacherCity'], $request['updatedTeacherState'], $request['updatedTeacherPinCode'], $request['loggedInUser'] ], "ssssssss");
+        }
+        else if( $authority == "student" ){
+            $newEmail = $request['updatedStudentEmail'];
+            $query = "UPDATE StudentInfo SET name = ?, email = ?, phoneNo = ?, address = ?, city = ?, state = ?, pinCode = ? WHERE userId = ?;";
 
+            runQuery($databaseConnectionObject, $query, [$request['updatedStudentName'], $request['updatedStudentEmail'], $request['updatedStudentPhoneNumber'], $request['updatedStudentAddress'], $request['updatedStudentCity'], $request['updatedStudentState'], $request['updatedStudentPinCode'], $request['loggedInUser'] ], "ssssssss");
+        }
 
-    //     $query = "UPDATE AppUsers SET instituteName = ? WHERE instituteId = ?;";
-    //     runQuery($databaseConnectionObject, $query, [$request['updatedInstituteName'], $request['loggedInUser'] ], "ss");
-        
-    //     if( isEmailChanged($databaseConnectionObject, $request['loggedInUser'], $request['updatedInstituteEmail'])){
+        if( isEmailChanged($databaseConnectionObject, $request['loggedInUser'], $newEmail)){
 
-    //         $query = "UPDATE AppUsers SET email = ?, emailVerified = ? WHERE userId = ?;";
-    //         runQuery($databaseConnectionObject, $query, [$request['updatedInstituteEmail'], "false", $request['loggedInUser'] ], "sss");
-    //     }
+            $query = "UPDATE AppUsers SET email = ?, emailVerified = ? WHERE userId = ?;";
+            runQuery($databaseConnectionObject, $query, [$newEmail, "false", $request['loggedInUser'] ], "sss");
+        }
 
-    // }
+    }
 
 
     // Functio to update the Profile of a User //
@@ -386,8 +392,8 @@
         if( $authority == "root" ){
             updateInstituteProfile($databaseConnectionObject, $request);
         }
-        else if( $authority == "teacher" ){
-
+        else if( $authority == "teacher" || $authority == "student" ){
+            updateTeacherOrStudentProfile($databaseConnectionObject, $request, $authority);
         }
     }
 
@@ -412,11 +418,11 @@
         $profilePathHref = "http://localhost/InstituteFolders/". $instituteId . "/" . "profilePhotos/" . $userId . getFileExtension($fileName);
 
         $query = "UPDATE AppUsers SET profilePath = ? WHERE userId = ?;";
-        runQuery($databaseConnectionObject, $query, [$profilePathHref, $userId], "ss", true);
+        runQuery($databaseConnectionObject, $query, [$profilePathHref, $userId], "ss");
         
         if( $authority == "root" ){
             $query = "UPDATE Institutes SET profilePath = ? WHERE instituteId = ?;";
-            runQuery($databaseConnectionObject, $query, [$profilePathHref, $userId], "ss", true);    
+            runQuery($databaseConnectionObject, $query, [$profilePathHref, $userId], "ss");    
         }
         
         $filePath =  ("InstituteFolders/" . $instituteId . "/profilePhotos" . "/" . $userId . getFileExtension($fileName));

@@ -76,12 +76,12 @@
 
 
             // If the request is to Update the Class in the Institute's Database //
-            else if( $request['task'] == 'Update Classes' && $authority == "root" ){
+            else if( $request['task'] == 'Update Classes' ){
                 
                 $response = array();
                 $databaseConnectionObject->select_db($request['instituteId']);
 
-                if( $request['subtask'] == "Add Class" ){
+                if( $request['subtask'] == "Add Class" && $authority == "root" ){
 
                     if( isClassExists($databaseConnectionObject, $request['className']) ){
                         $response += ["result"=>"Failed", "message"=>"Class Already Exists !!!"];
@@ -91,11 +91,11 @@
                         $response += ["result"=>"Success", "message"=>"Class Created Successfully !!!"];
                     }
                 }
-                else if( $request['subtask'] == "Update Class" ){
+                else if( $request['subtask'] == "Update Class" && $authority == "root" ){
                     updateClass($databaseConnectionObject, $request);
                     $response += ["result"=>"Success", "message"=>"Class Updated Successfully !!!"];
                 }
-                else if( $request['subtask'] == "Delete Classes" ){ 
+                else if( $request['subtask'] == "Delete Classes" && $authority == "root" ){ 
                     DeleteClasses($databaseConnectionObject, $request);
                     $response += ["result"=>"Success", "message"=>"Class/Classes Deleted Successfully !!!"];
                 }
@@ -205,6 +205,30 @@
                 echo json_encode($response);
             }
 
+            // If request is to get the Institute Data //
+            else if($request['task'] == "Get Teacher Data" && $authority == "teacher" ){
+                
+                $teacherData = getTeacherData($databaseConnectionObject, $request);
+                $response =array(
+                    "result"=>"Success",
+                    "teacherData"=>$teacherData,
+                );
+
+                echo json_encode($response);
+            }
+
+            // If request is to get the Institute Data //
+            else if($request['task'] == "Get Student Data" && $authority == "student" ){
+                
+                $studentData = getStudentData($databaseConnectionObject, $request);
+                $response =array(
+                    "result"=>"Success",
+                    "studentData"=>$studentData,
+                );
+
+                echo json_encode($response);
+            }
+
             // If request is to Update the User Profile //
             else if($request['task'] == "Update My Profile" ){
 
@@ -225,11 +249,10 @@
             // If request is not valid //
             else{
                 $response = array(
-                    "Not able to fulfill your request !!!"
+                    "Not able to fulfill your request !!!" . $request['task'] . $authority
                 );
                 echo json_encode($response);
             }
-
         }
         // If the user is not a Valid Person //
         else{

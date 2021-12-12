@@ -104,4 +104,31 @@
         return $instituteData;
     }
 
+
+    // Function to get the Teacher Data //
+    function getTeacherData($databaseConnectionObject, $request){
+        
+        $databaseConnectionObject->select_db($request['instituteId']);
+        $query = "SELECT * FROM TeacherInfo WHERE userId = ?;";
+        $teacherData = array();
+        $result = runQuery($databaseConnectionObject, $query, [$request['loggedInUser']], "s");
+        $teacherData += [$result->fetch_assoc()];
+        return $teacherData;
+    }
+    
+    
+    // Function to get the Student Data //
+    function getStudentData($databaseConnectionObject, $request){
+        
+        $databaseConnectionObject->select_db($request['instituteId']);
+        $query = "SELECT * FROM StudentInfo WHERE userId = ?;";
+        $studentData = array();
+        $result = runQuery($databaseConnectionObject, $query, [$request['loggedInUser']], "s");
+        $studentData += [$result->fetch_assoc()];
+        return $studentData;
+    }
+
+
+    
+
 ?>

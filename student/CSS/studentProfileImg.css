@@ -1,0 +1,26 @@
+
+#studentProfileImg{
+    width: 4.7rem; 
+    border-radius: 50%;
+}
+
+@media screen and (max-width : 1000px) and (min-width : 850px) 
+{
+    #studentProfileImg{
+        width: 3rem;
+    }
+
+}
+@media screen and (max-width : 849px) and (min-width : 780px) 
+{
+    #studentProfileImg{
+        width: 3rem;
+    }
+}
+@media screen and (max-width : 779px) and (min-width : 701px) 
+{
+    #studentProfileImg{
+        width: 2.7rem;
+    }
+}
+

@@ -55,7 +55,7 @@ function addPersonInTheDatabase(e){
     let personData = {
         "task" : "Add Person", 
         "loggedInUser" : document.getElementById("userId").textContent, 
-        "instituteId" : document.getElementById("userId").textContent, 
+        "instituteId" : document.getElementById("instituteId").textContent, 
         "sessionId" : document.getElementById("sessionId").textContent,
         "authority" : document.getElementById("authority").textContent,
         "userId" : document.getElementById("add-personId").value,
@@ -166,7 +166,7 @@ function searchPersonInTheDatabase(e){
     let personData = {
         "task" : "Search Person", 
         "loggedInUser" : document.getElementById("userId").textContent, 
-        "instituteId" : document.getElementById("userId").textContent, 
+        "instituteId" : document.getElementById("instituteId").textContent, 
         "authority" : document.getElementById("authority").textContent,
         "sessionId" : document.getElementById("sessionId").textContent,
         "searchKey" : document.getElementById("searchKey").value,
@@ -344,7 +344,7 @@ function openModalForSelectedPerson(selectedPerson){
         let updatedData = {
             "task" : "Update Person Details", 
             "loggedInUser" : document.getElementById("userId").textContent, 
-            "instituteId" : document.getElementById("userId").textContent, 
+            "instituteId" : document.getElementById("instituteId").textContent, 
             "authority" : document.getElementById("authority").textContent,
             "sessionId" : document.getElementById("sessionId").textContent,
             "userId" : updatePersonId.value,
@@ -444,7 +444,7 @@ function openAddClassForm(){
             "task" : "Update Classes", 
             "subtask" : "Add Class", 
             "loggedInUser" : document.getElementById("userId").textContent, 
-            "instituteId" : document.getElementById("userId").textContent, 
+            "instituteId" : document.getElementById("instituteId").textContent, 
             "authority" : document.getElementById("authority").textContent,
             "sessionId" : document.getElementById("sessionId").textContent,
             "className" : document.getElementById("className-add").value,
@@ -521,7 +521,7 @@ function showClasses(){
         "subtask" : "Show Classes", 
         "loggedInUser" : document.getElementById("userId").textContent, 
         "authority" : document.getElementById("authority").textContent,
-        "instituteId" : document.getElementById("userId").textContent, 
+        "instituteId" : document.getElementById("instituteId").textContent, 
         "sessionId" : document.getElementById("sessionId").textContent,
     };
 
@@ -587,7 +587,7 @@ function deleteClass(){
             "task" : "Update Classes", 
             "subtask" : "Delete Classes", 
             "loggedInUser" : document.getElementById("userId").textContent, 
-            "instituteId" : document.getElementById("userId").textContent, 
+            "instituteId" : document.getElementById("instituteId").textContent, 
             "authority" : document.getElementById("authority").textContent,
             "sessionId" : document.getElementById("sessionId").textContent,
             "selectedClasses" : selectedClasses
@@ -697,7 +697,7 @@ function updateClass(){
                 "task" : "Update Classes", 
                 "subtask" : "Update Class", 
                 "loggedInUser" : document.getElementById("userId").textContent, 
-                "instituteId" : document.getElementById("userId").textContent, 
+                "instituteId" : document.getElementById("instituteId").textContent, 
                 "authority" : document.getElementById("authority").textContent,
                 "sessionId" : document.getElementById("sessionId").textContent,
                 "updatedClassInfo" : {"updatedClassName" : updatedClassName, "updatedFees" : updatedClassFees, "className" : selectedClass.className}
@@ -752,18 +752,6 @@ document.getElementById("updateClass").addEventListener("click", updateClass);
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
 // Function to Create or Append or Edit the Class Dropdown Menu int the Add Person Pannel //
 function appendClassDropdownMenu(classDropdownMenuId, callback=null){
     
@@ -786,7 +774,7 @@ function appendClassDropdownMenu(classDropdownMenuId, callback=null){
         "task" : "Update Classes", 
         "subtask" : "Show Classes", 
         "loggedInUser" : document.getElementById("userId").textContent, 
-        "instituteId" : document.getElementById("userId").textContent, 
+        "instituteId" : document.getElementById("instituteId").textContent, 
         "sessionId" : document.getElementById("sessionId").textContent,
     };
 

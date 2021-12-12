@@ -118,11 +118,11 @@ if (!(isset($_SESSION["isUserLogedIn"]) && isset($_SESSION["userId"]) && isset($
         <div id="mydashboardContainer">
 
             <div id="mynavigationBar">
-                <!-- <div class="mynavigationItem  activeItem" id="item1">
+                <!-- <div class="mynavigationItem  activeItem" >
                     <i class='mynavigationItemIcon bx bx-home'></i>
                     <span class="mynavigationItemName">Dashboard</span>
                 </div> -->
-                <div class="mynavigationItem" value="#rootProfileDiv">
+                <div class="mynavigationItem" value="#rootProfileDiv" id="item1">
                     <i class='mynavigationItemIcon bx bxs-user'></i>
                     <span class="mynavigationItemName">Profile</span>
                 </div>
@@ -154,7 +154,7 @@ if (!(isset($_SESSION["isUserLogedIn"]) && isset($_SESSION["userId"]) && isset($
 
             <!-- Personal Profile Div -->
 
-            <div id="rootProfileDiv"  class="formsDiv" >
+            <div id="rootProfileDiv"  class="formsDiv" style="display: none;">
                 <div class="boxHeadingDiv">
                     <h3 class="boxHeading">Personl Profile</h3>
                 </div>
@@ -545,8 +545,10 @@ if (!(isset($_SESSION["isUserLogedIn"]) && isset($_SESSION["userId"]) && isset($
         });
 
 
-        let lastActiveItem = $("#item1");
-
+        let lastActiveItem = $("#item1").addClass("activeItem");
+        $("#item1").addClass("activeItem");
+        fillUpPersonalDetails();
+        // lastActiveItem.classList.addClass = ;
         function manipulate(person) {
 
             $(lastActiveItem).removeClass("activeItem");
@@ -571,7 +573,6 @@ if (!(isset($_SESSION["isUserLogedIn"]) && isset($_SESSION["userId"]) && isset($
                 fillUpPersonalDetails();
             }
             
-
             lastActiveItem = $(person);
         }
         $(".mynavigationItem").click(function() {

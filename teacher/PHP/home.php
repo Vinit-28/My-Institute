@@ -13,6 +13,8 @@ if (!(isset($_SESSION["isUserLogedIn"]) && isset($_SESSION["userId"]) && isset($
     session_destroy();
     header('Location: ../../index.php');
 } else {
+    $_SESSION['userProfile'] = getUserProfilePath($databaseConnectionObject, $_SESSION['instituteId'], $_SESSION['userId']);
+
 ?>
 
 
@@ -31,6 +33,7 @@ if (!(isset($_SESSION["isUserLogedIn"]) && isset($_SESSION["userId"]) && isset($
         <link rel="stylesheet" href="../CSS/formsCss.css">
         <link rel="stylesheet" href="../CSS/downloads.css">
         <link rel="stylesheet" href="../CSS/div7.css">
+        <link rel="stylesheet" href="../CSS/teacherProfileDiv.css">
         <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
         <title>Teacher Dashboard</title>
     </head>
@@ -117,7 +120,7 @@ if (!(isset($_SESSION["isUserLogedIn"]) && isset($_SESSION["userId"]) && isset($
         <div id="mydashboardContainer">
 
             <div id="mynavigationBar">
-                <div class="mynavigationItem">
+                <div class="mynavigationItem" id="item1" value="#teacherProfileDiv">
                     <i class='mynavigationItemIcon bx bxs-user'></i>
                     <span class="mynavigationItemName">Profile</span>
                 </div>
@@ -138,6 +141,53 @@ if (!(isset($_SESSION["isUserLogedIn"]) && isset($_SESSION["userId"]) && isset($
                     <span class="mynavigationItemName">Upload Files</span>
                 </div>
             </div>
+
+
+
+
+
+
+
+            <!-- Personal Profile Div -->
+            
+            <div value="#teacherProfileDiv" id="teacherProfileDiv"  class="formsDiv" style="display: none;">
+                        <div class="boxHeadingDiv">
+                    <h3 class="boxHeading">Personl Profile</h3>
+                </div>
+                <div id="">
+                    <?php echo '<img id="teacherProfileImg" src="' . $_SESSION['userProfile'] . '" alt="">'; ?>
+                </div>
+                <form id="teacherProfileForm" action="" method="post" class="forms">
+                    <input autocomplete="off" id="personalPersonId" type="text" placeholder="*Teacher ID">
+                    <input id="newProfile" type="file">
+                    <input autocomplete="off" id="personalName" type="text" placeholder="Teacher Name">
+
+                    <input required autocomplete="off" id="personalEmail" type="email" placeholder="Teacher Email">
+
+                    <input autocomplete="off" id="personalPhoneNo" type="number" placeholder="Teacher Phone No.">
+                    <input autocomplete="off" id="personalAddress" type="text" placeholder="Teacher Address">
+                    <input autocomplete="off" id="personalCity" type="text" placeholder="Teacher City">
+                    <input autocomplete="off" id="personalState" type="text" placeholder="Teacher State">
+                    <input autocomplete="off" id="personalPinCode" type="number" placeholder="PIN Code">
+                    <button type="submit" id="updatePersonalDetails">Update Profile</button>
+                </form>
+            </div>
+
+            <!-- Personal Profile Div END -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
             <div id="div2" style="display: none;">
                 <div id="searchDiv">
@@ -468,6 +518,8 @@ if (!(isset($_SESSION["isUserLogedIn"]) && isset($_SESSION["userId"]) && isset($
 
 
         let lastActiveItem = $("#item1");
+        $("#item1").addClass("activeItem");
+        fillUpPersonalDetails();
 
         function manipulate(person) {
 
@@ -478,6 +530,10 @@ if (!(isset($_SESSION["isUserLogedIn"]) && isset($_SESSION["userId"]) && isset($
             $($(person).attr("value")).css("display", "block");
 
             lastActiveItem = $(person);
+
+            if( $(person).attr("value") == "#teacherProfileDiv"){
+                fillUpPersonalDetails();
+            }
         }
         $(".mynavigationItem").click(function() {
             manipulate($(this));

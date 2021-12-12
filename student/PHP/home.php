@@ -14,6 +14,8 @@
         header('Location: ../../index.php');
     }   
     else{
+    $_SESSION['userProfile'] = getUserProfilePath($databaseConnectionObject, $_SESSION['instituteId'], $_SESSION['userId']);
+
 ?>
 
 <!DOCTYPE html>
@@ -32,6 +34,7 @@
     <link rel="stylesheet" href="../CSS/formsCss.css">
     <link rel="stylesheet" href="../CSS/downloads.css">
     <link rel="stylesheet" href="../CSS/quizApp.css">
+    <link rel="stylesheet" href="../CSS/studentProfileImg.css">
     <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
     <title>Root Dashboard</title>
 </head>
@@ -94,11 +97,48 @@
 
 
 
-        <div id="div2" style="display: none;">
+
+
+
+            <!-- Personal Profile Div -->
+        
+            <div id="studentProfileDiv"  class="formsDiv" style="display: none;">
+                    <div class="boxHeadingDiv">
+                <h3 class="boxHeading">Personl Profile</h3>
+                </div>
+                <div id="">
+                    <?php echo '<img id="studentProfileImg" src="' . $_SESSION['userProfile'] . '" alt="">'; ?>
+                </div>
+                <form id="studentProfileForm" action="" method="post" class="forms">
+                    <input autocomplete="off" id="personalPersonId" type="text" placeholder="*Student ID">
+                    <input id="newProfile" type="file">
+                    <input autocomplete="off" id="personalName" type="text" placeholder="Student Name">
+
+                    <input required autocomplete="off" id="personalEmail" type="email" placeholder="Student Email">
+
+                    <input autocomplete="off" id="personalPhoneNo" type="number" placeholder="Student Phone No.">
+                    <input autocomplete="off" id="personalAddress" type="text" placeholder="Student Address">
+                    <input autocomplete="off" id="personalCity" type="text" placeholder="Student City">
+                    <input autocomplete="off" id="personalState" type="text" placeholder="Student State">
+                    <input autocomplete="off" id="personalPinCode" type="number" placeholder="PIN Code">
+                    <button type="submit" id="updatePersonalDetails">Update Profile</button>
+                </form>
+            </div>
+
+            <!-- Personal Profile Div END -->
+
+
+
+
+
+
+
+
+
+        <!-- <div id="div2" style="display: none;">
             <div id="selectedPersonProfile" class="selectedFormsDiv" style="width: 100%;">
                 <div id="profileimgdiv">
                     <div id="selectedImgContainer" onclick="file.click()" ondragdrop="file.dragdrop()">
-                        <!-- <img id="selectedImg" src="../IMAGES/profile.jpg" alt=""> -->
                         <?php echo "<img id='selectedImg' src='" . $_SESSION['userProfile'] . "' alt=''>";?>
                         <div id="selectedImgCamera"><i class='bx bxs-camera' style="margin-top: 0.3rem;"></i></div>
                     </div>
@@ -109,8 +149,6 @@
 
 
                     <input required autocomplete="off" name="personID" type="text" placeholder="*Person ID" disabled>
-                    <!-- <input required autocomplete="off" name="personName" type="text" placeholder="*Person Name" disabled> -->
-                    <!-- <input required autocomplete="off" name="personPassword" type="password" placeholder="*Password"> -->
                     <input required autocomplete="off" name="personEmail" type="email" placeholder="*Person Email">
                     <input required autocomplete="off" name="personEmail" type="text" placeholder="*Person Class" disabled>
                     
@@ -128,16 +166,12 @@
                     <input required autocomplete="off" name="personCity" type="text" placeholder="*City">
                     <input required autocomplete="off" name="personState" type="text" placeholder="*State">
                     <input required autocomplete="off" name="personPin" type="number" placeholder="*PIN Code">
-                    <!-- <div style="display:flex; justify-content:space-evenly; align-items: center;">
-                        <label id="personImageLabel" for="personImage">Change Image :- </label>
-                        <input id="personImage" name="personImage" type="file">
-                    </div> -->
                     <button type="submit" name="submitPerson">Update Details</button>
                 </form>
             </div>
 
 
-        </div>
+        </div> -->
 
 
         <!-- Live Class Section -->
@@ -347,7 +381,10 @@
 
     </div>
 
-    <p id="userId" style="display: none;"><?php echo $_SESSION["userId"];?></p>
+    <p id="userId" style="display: none;"><?php echo $_SESSION['userId']; ?></p>
+    <p id="sessionId" style="display: none;"><?php echo $_SESSION['sessionId']; ?></p>
+    <p id="instituteId" style="display: none;"><?php echo $_SESSION['instituteId']; ?></p>
+    <p id="authority" style="display: none;"><?php echo $_SESSION['authority']; ?></p>
 
 </body>
 
@@ -355,6 +392,7 @@
 
 
 <script src="../JS/jquery.js"></script>
+<script src="../JS/main1.js"></script>
 
 
 <!-- FOR input tags -->
@@ -538,7 +576,9 @@
         $(person).addClass("activeItem");
         $($(person).attr("value")).css("display", "block");
 
-
+        if( $(person).attr("value") == "#div2" ){
+            fillUpPersonalDetails();
+        }
         lastActiveItem = $(person);
     }
     $(".mynavigationItem").click(function () {

@@ -65,7 +65,7 @@ function openUploadFileForm(){
         let data = {
             "task" : "Upload File", 
             "loggedInUser" : document.getElementById("userId").textContent, 
-            "instituteId" : document.getElementById("userId").textContent, 
+            "instituteId" : document.getElementById("instituteId").textContent, 
             "authority" : document.getElementById("authority").textContent,
             "sessionId" : document.getElementById("sessionId").textContent,
             "fileTitle" : document.getElementById("fileTitle").value,
@@ -155,7 +155,7 @@ function showUploadedFiles(){
     let data = {
         "task" : "Show Uploaded Files", 
         "loggedInUser" : document.getElementById("userId").textContent, 
-        "instituteId" : document.getElementById("userId").textContent, 
+        "instituteId" : document.getElementById("instituteId").textContent, 
         "authority" : document.getElementById("authority").textContent,
         "sessionId" : document.getElementById("sessionId").textContent,
     };
@@ -220,7 +220,7 @@ function deleteUploadedFiles(){
         let data = {
             "task" : "Delete Uploaded Files", 
             "loggedInUser" : document.getElementById("userId").textContent, 
-            "instituteId" : document.getElementById("userId").textContent, 
+            "instituteId" : document.getElementById("instituteId").textContent, 
             "sessionId" : document.getElementById("sessionId").textContent,
             "authority" : document.getElementById("authority").textContent,
             "selectedFiles" : selectedFiles
@@ -388,7 +388,7 @@ function openLaunchClassForm(){
         let data = {
             "task" : "Create Live Class", 
             "loggedInUser" : document.getElementById("userId").textContent, 
-            "instituteId" : document.getElementById("userId").textContent, 
+            "instituteId" : document.getElementById("instituteId").textContent, 
             "authority" : document.getElementById("authority").textContent,
             "sessionId" : document.getElementById("sessionId").textContent,
             "hostName" : document.getElementById("userId").textContent,
@@ -520,7 +520,7 @@ function showHostedClasses(classFilter){
     let data = {
         "task" : "Get Live Classes", 
         "loggedInUser" : document.getElementById("userId").textContent, 
-        "instituteId" : document.getElementById("userId").textContent, 
+        "instituteId" : document.getElementById("instituteId").textContent, 
         "sessionId" : document.getElementById("sessionId").textContent,
         "authority" : document.getElementById("authority").textContent,
         "hostName" : document.getElementById("userId").textContent
@@ -575,7 +575,7 @@ function deleteHostedClasses(){
         let data = {
             "task" : "Delete Live Classes", 
             "loggedInUser" : document.getElementById("userId").textContent, 
-            "instituteId" : document.getElementById("userId").textContent, 
+            "instituteId" : document.getElementById("instituteId").textContent, 
             "sessionId" : document.getElementById("sessionId").textContent,
             "authority" : document.getElementById("authority").textContent,
             "selectedLiveClasses" : selectedLiveClasses
@@ -646,7 +646,7 @@ function getInstituteDetails(){
     let data = {
         "task" : "Get Institute Data", 
         "loggedInUser" : document.getElementById("userId").textContent, 
-        "instituteId" : document.getElementById("userId").textContent, 
+        "instituteId" : document.getElementById("instituteId").textContent, 
         "sessionId" : document.getElementById("sessionId").textContent,
         "authority" : document.getElementById("authority").textContent,
     };
@@ -714,7 +714,7 @@ function updatePersonalDetails(e){
     let data = {
         "task" : "Update My Profile", 
         "loggedInUser" : document.getElementById("userId").textContent, 
-        "instituteId" : document.getElementById("userId").textContent, 
+        "instituteId" : document.getElementById("instituteId").textContent, 
         "authority" : document.getElementById("authority").textContent,
         "sessionId" : document.getElementById("sessionId").textContent,
         "updatedInstituteName" : document.getElementById("personalName").value,
@@ -756,7 +756,7 @@ function updatePersonalDetails(e){
                 let response = JSON.parse(responseText);
                 alert(response.message);
                 // Reloading the Page to see the Updated changes //
-                location.reload();
+                window.location.reload();
             }
             else{
                 alert(responseText);

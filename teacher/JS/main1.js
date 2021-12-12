@@ -141,12 +141,10 @@ function searchPersonInTheDatabase(e){
                     searchResult.style.display = "block";
                     relatedPersons = response.relatedPersons;
                     for(let key in response.relatedPersons){
-                        
+                
                         // Make a Person Card //
-                        if( personData.loggedInUser != response.relatedPersons[key].userId ){
-                            searchResult.appendChild(getPersonCard(response.relatedPersons[key], key));
-                            totalPersons+=1;
-                        }
+                        searchResult.appendChild(getPersonCard(response.relatedPersons[key], key));
+                        totalPersons+=1;
                     }
                     
                     // If No One Found //

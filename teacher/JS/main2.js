@@ -614,3 +614,149 @@ document.getElementById("launchClass").addEventListener("click", openLaunchClass
 document.getElementById("showHostedClasses").addEventListener("click", ()=>{showLiveClasses("hosted");});
 document.getElementById("deleteHostedClasses").addEventListener("click", deleteHostedClasses);
 document.getElementById("upcomingLiveClasses").addEventListener("click", ()=>{showLiveClasses();});
+
+
+
+
+
+
+
+
+
+
+// ---------------------------------- Update Personal Details ---------------------------------- //
+
+
+// Function to get the Isntitute Details From the Database //
+function getTeacherDetails(){
+
+    let teacherData = {};
+
+    let data = {
+        "task" : "Get Teacher Data", 
+        "loggedInUser" : document.getElementById("userId").textContent, 
+        "instituteId" : document.getElementById("instituteId").textContent, 
+        "userId" : document.getElementById("userId").textContent, 
+        "sessionId" : document.getElementById("sessionId").textContent,
+        "authority" : document.getElementById("authority").textContent,
+    };
+
+    let onLoadFunction = function(){
+        if( this.status != 200 ){
+            alert("Something Went Wrong!");
+        }
+        else{
+            let responseText = this.responseText.replace(/(\r\n|\n|\r)/gm, "");
+            if( responseText.includes("Success") ){
+                let response = JSON.parse(responseText);
+                teacherData = response.teacherData[0];
+            }
+            else{
+                alert(responseText);
+            }
+        }
+    }
+
+    // Making the AJAX Request //
+    makeAJAXRequest("POST", "../../Server/Utilities/InstituteSpecificUtilities.php", data, onLoadFunction, false);
+    return teacherData;
+}
+
+
+// Function to fill up the Self Profile Section //
+function fillUpPersonalDetails(){
+    
+    // Getting the Institute Data //
+    let teacherData = getTeacherDetails();
+
+    // Getting the tag Elements //
+    let rootProfileDiv = document.getElementById("teacherProfileDiv");
+    let teacherId = document.getElementById("personalPersonId");
+    let teacherName = document.getElementById("personalName");
+    let teacherEmail = document.getElementById("personalEmail");
+    let teacherPhoneNo = document.getElementById("personalPhoneNo");
+    let teacherAddress = document.getElementById("personalAddress");
+    let teacherCity = document.getElementById("personalCity");
+    let teacherState = document.getElementById("personalState");
+    let teacherPinCode = document.getElementById("personalPinCode");
+
+
+    // Assigining Values to their attributes //
+    rootProfileDiv.style.display = "block";
+    teacherId.value = teacherData.userId;
+    teacherId.disabled = true;
+    teacherName.value = teacherData.name;
+    teacherEmail.value = teacherData.email;
+    teacherPhoneNo.value = teacherData.phoneNo;
+    teacherAddress.value = teacherData.address;
+    teacherCity.value = teacherData.city;
+    teacherState.value = teacherData.state;
+    teacherPinCode.value = teacherData.pinCode;
+}
+
+
+// Function to update the Self Profile Details in the Database //
+function updatePersonalDetails(e){
+
+    e.preventDefault();
+
+    // Creating Some Variables //
+    let data = {
+        "task" : "Update My Profile", 
+        "loggedInUser" : document.getElementById("userId").textContent, 
+        "instituteId" : document.getElementById("instituteId").textContent, 
+        "authority" : document.getElementById("authority").textContent,
+        "sessionId" : document.getElementById("sessionId").textContent,
+        "updatedTeacherName" : document.getElementById("personalName").value,
+        "updatedTeacherEmail" : document.getElementById("personalEmail").value,
+        "updatedTeacherPhoneNumber" : document.getElementById("personalPhoneNo").value,
+        "updatedTeacherAddress" : document.getElementById("personalAddress").value,
+        "updatedTeacherCity" : document.getElementById("personalCity").value,
+        "updatedTeacherState" : document.getElementById("personalState").value,
+        "updatedTeacherPinCode" : document.getElementById("personalPinCode").value,
+    };
+
+    
+    let xhr = new XMLHttpRequest();
+    let formData = new FormData();
+    let profileImg = document.getElementById("teacherProfileImg").src;  
+    let Image = document.getElementById("newProfile");
+    
+    formData.append("request", JSON.stringify(data));   
+    
+    // If image is Selected || Profile Picture is updated //
+    if( Image.files.length > 0 ){
+        let profileImg = Image.files[0];      
+        formData.append("profileImg", profileImg);
+    }    
+    
+
+    xhr.timeout = 10000;
+    xhr.open("POST", '../../Server/Utilities/InstituteSpecificUtilities.php'); 
+    
+    // Function to be executed When the request has made and got the response from the server //
+    xhr.onload = function(){
+
+        if( this.status != 200 ){
+            alert("Something Went Wrong!");
+        }
+        else{
+            let responseText = this.responseText.replace(/(\r\n|\n|\r)/gm, "");
+            if( responseText.includes("Success") ){
+                let response = JSON.parse(responseText);
+                alert(response.message);
+                // Reloading the Page to see the Updated changes //
+                window.location.reload();
+            }
+            else{
+                alert(responseText);
+            }
+        }
+    }
+    xhr.send(formData);
+}
+
+
+// Binding the updatePersonalDetails button with its handler //
+document.getElementById("updatePersonalDetails").addEventListener("click", updatePersonalDetails);
+
