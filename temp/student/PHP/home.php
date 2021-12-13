@@ -14,8 +14,6 @@
         header('Location: ../../index.php');
     }   
     else{
-    $_SESSION['userProfile'] = getUserProfilePath($databaseConnectionObject, $_SESSION['instituteId'], $_SESSION['userId']);
-
 ?>
 
 <!DOCTYPE html>
@@ -25,8 +23,6 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../CSS/quizApp.css">
-    <link rel="stylesheet" href="../CSS/library.css">
     <link rel="stylesheet" href="../CSS/mynavbar.css">
     <link rel="stylesheet" href="../CSS/mynavigationbar.css">
     <link rel="stylesheet" href="../CSS/mainPage.css">
@@ -36,8 +32,6 @@
     <link rel="stylesheet" href="../CSS/formsCss.css">
     <link rel="stylesheet" href="../CSS/downloads.css">
     <link rel="stylesheet" href="../CSS/quizApp.css">
-    <link rel="stylesheet" href="../CSS/studentProfileImg.css">
-
     <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
     <title>Root Dashboard</title>
 </head>
@@ -76,7 +70,7 @@
                 <i class='mynavigationItemIcon bx bx-home'></i>
                 <span class="mynavigationItemName">Dashboard</span>
             </div>
-            <div class="mynavigationItem" value="#studentProfileDiv">
+            <div class="mynavigationItem" value="#div2">
                 <i class='mynavigationItemIcon bx bxs-user'></i>
                 <span class="mynavigationItemName">Profile</span>
             </div>
@@ -100,40 +94,50 @@
 
 
 
-
-
-
-            <!-- Personal Profile Div -->
-        
-            <div id="studentProfileDiv"  class="formsDiv" style="display: none;">
-                    <div class="boxHeadingDiv">
-                <h3 class="boxHeading">Personl Profile</h3>
+        <div id="div2" style="display: none;">
+            <div id="selectedPersonProfile" class="selectedFormsDiv" style="width: 100%;">
+                <div id="profileimgdiv">
+                    <div id="selectedImgContainer" onclick="file.click()" ondragdrop="file.dragdrop()">
+                        <!-- <img id="selectedImg" src="../IMAGES/profile.jpg" alt=""> -->
+                        <?php echo "<img id='selectedImg' src='" . $_SESSION['userProfile'] . "' alt=''>";?>
+                        <div id="selectedImgCamera"><i class='bx bxs-camera' style="margin-top: 0.3rem;"></i></div>
+                    </div>
+                    <div id="studentName">Aman Khushalani</div>
                 </div>
-                <div id="">
-                    <?php echo '<img id="studentProfileImg" src="' . $_SESSION['userProfile'] . '" alt="">'; ?>
-                </div>
-                <form id="studentProfileForm" action="" method="post" class="forms">
-                    <input autocomplete="off" id="personalPersonId" type="text" placeholder="*Student ID">
-                    <input id="newProfile" type="file">
-                    <input autocomplete="off" id="personalName" type="text" placeholder="Student Name">
+                <form action="" method="post" class="forms">
+                    <input type="file" name="newImage" id="file" style="display:none"/>
 
-                    <input required autocomplete="off" id="personalEmail" type="email" placeholder="Student Email">
 
-                    <input autocomplete="off" id="personalPhoneNo" type="number" placeholder="Student Phone No.">
-                    <input autocomplete="off" id="personalAddress" type="text" placeholder="Student Address">
-                    <input autocomplete="off" id="personalCity" type="text" placeholder="Student City">
-                    <input autocomplete="off" id="personalState" type="text" placeholder="Student State">
-                    <input autocomplete="off" id="personalPinCode" type="number" placeholder="PIN Code">
-                    <button type="submit" id="updatePersonalDetails">Update Profile</button>
+                    <input required autocomplete="off" name="personID" type="text" placeholder="*Person ID" disabled>
+                    <!-- <input required autocomplete="off" name="personName" type="text" placeholder="*Person Name" disabled> -->
+                    <!-- <input required autocomplete="off" name="personPassword" type="password" placeholder="*Password"> -->
+                    <input required autocomplete="off" name="personEmail" type="email" placeholder="*Person Email">
+                    <input required autocomplete="off" name="personEmail" type="text" placeholder="*Person Class" disabled>
+                    
+                    <select id="gender" name="personGender">
+                        <option class="options" value="" selected="selected">Gender</option>
+                        <option class="options" value="male">Male</option>
+                        <option class="options" value="female">Female</option>
+                        <option class="options" value="other">Other</option>
+                    </select>
+                    <input required autocomplete="off" name="personDesignation" type="text" placeholder="Designation = Student" disabled>
+                    
+                    <input required autocomplete="off" name="personPhone" type="number" placeholder="*Phone No.">
+                    <input required autocomplete="off" name="personAadhar" type="number" placeholder="*Aadhar Card No." disabled>
+                    <input required autocomplete="off" name="personAddress" type="text" placeholder="*Address">
+                    <input required autocomplete="off" name="personCity" type="text" placeholder="*City">
+                    <input required autocomplete="off" name="personState" type="text" placeholder="*State">
+                    <input required autocomplete="off" name="personPin" type="number" placeholder="*PIN Code">
+                    <!-- <div style="display:flex; justify-content:space-evenly; align-items: center;">
+                        <label id="personImageLabel" for="personImage">Change Image :- </label>
+                        <input id="personImage" name="personImage" type="file">
+                    </div> -->
+                    <button type="submit" name="submitPerson">Update Details</button>
                 </form>
             </div>
 
-            <!-- Personal Profile Div END -->
 
-
-
-
-
+        </div>
 
 
         <!-- Live Class Section -->
@@ -147,7 +151,7 @@
                 <div id="liveClassContainer">
 
                     <!-- This is a whole live class form -->
-                    <!-- <div class="classItem">
+                    <div class="classItem">
                         <div class="classSelector">
                             <div class="classHeading">C++</div>
                             &nbsp;&nbsp;&nbsp;
@@ -165,7 +169,7 @@
                         <div style=" display: flex; text-align: center; justify-content: center;">
                             <a href="" class="classJoinButton">Join Class</a>
                         </div>
-                    </div> -->
+                    </div>
                     <!-- This is a whole live class form End-->
                     
                 </div>
@@ -198,61 +202,38 @@
         <!-- Download Section Div End-->
 
 
-
-
-
-        <!-- Quiz Section Div -->
+        <!-- Download Section Div -->
         
         <div id="div7" style="display: none;">
             
             <div class="boxHeadingDiv">
                 <h3 class="boxHeading">Quiz App</h3>
             </div>
-            <form action="" class="forms" method="post">
-                <select name="subject" id="subjectOfQuiz">
+            <form action="quizApp.html" class="forms" method="post">
+                <select name="subject" id="">
                     <option value="">Select the subject</option>
-                    <option value="Linux">Linux</option>
-                    <option value="BASH">Bash_</option>
-                    <option value="PHP">PHP</option>
-                    <option value="Docker">Docker</option>
-                    <option value="HTML">HTML</option>
-                    <option value="MySql">MySql</option>
-                    <option value="Laravel">Laravel</option>
-                    <option value="Javascript">Javascript</option>
+                    <option value="c++">C++</option>
+                    <option value="c++">Java</option>
+                    <option value="c++">Python3/option>
+                    <option value="c++">HTML</option>
+                    <option value="c++">CSS</option>
+                    <option value="c++">Javascript</option>
+                    <option value="c++">Reasoning</option>
                 </select>
-                <select name="questionNumber" id="numberOfQuestions">
+                <select name="questionNumber" id="">
                     <option value="">Select the question Numbers</option>
                     <option value="5">5</option>
                     <option value="10">10</option>
                 </select>
-                <button type="button" onclick="startQuiz()">Start Quiz !</button>
+                <button type="submit">Start Quiz !</button>
             </form>
             
-            <script>
-                function startQuiz() {
-                    var subject = document.getElementById('subjectOfQuiz').value;
-                    var limit = document.getElementById('numberOfQuestions').value;
-                    if(subject=="" || limit == "")
-                    {
-                            alert(subject+" -- "+limit);
-                            event.preventDefault();
-                    }
-                    else
-                    {
-                        localStorage.setItem('subject' , document.getElementById('subjectOfQuiz').value);
-                        localStorage.setItem('limit' , document.getElementById('numberOfQuestions').value);
-                        window.open("./quizPage.html", "_blank");
-                    }
-                }
-            </script>
             
         </div>
         
-        <!-- Quiz Section Div End-->
+        <!-- Download Section Div End-->
         
-
-
-
+        
         
         <!-- Resume maker Div -->
 
@@ -261,72 +242,42 @@
                 <h3 class="boxHeading">Resume Maker</h3>
             </div>
             <div class="selectedFormsDiv">
-                <form action="" method="post" class="resumeForm" style="width: 100%;">
+                <form action="resume.php" method="post" class="resumeForm" style="width: 100%;">
                     
-                    <input id="name" required autocomplete="OFF" type="text" placeholder="*Your Name">
-                    <input id="tag" required autocomplete="OFF" type="text" placeholder="*Tag (Eg: Student)">
+                    <input name="name" required autocomplete="OFF" type="text" placeholder="*Your Name">
+                    <input name="tag" required autocomplete="OFF" type="text" placeholder="*Tag (Eg: Student)">
                     <div style="display: flex; flex-wrap: wrap; align-items: center; column-gap: 1rem;">
                         <label for="image">Select your image</label>
-                        <input type="file" id="image">
+                        <input type="file">
 
                     </div>
                     <div class="educationBlock">
                         <label class="heading" for="">Enter Contact Details</label>
-                        <input id="email" required autocomplete="OFF" type="email" placeholder="*Email">
-                        <input id="phone" required autocomplete="OFF" type="number" placeholder="*Phone Number" >
-                        <input id="address" required autocomplete="OFF" type="text" placeholder="*Street Address" maxlength="50">
-                        <input id="city" required autocomplete="OFF" type="text" placeholder="*City">
-                        <input id="pincode" required autocomplete="OFF" type="number" placeholder="*Pin Code" size="10">
-                        <input id="state" required autocomplete="OFF" type="text" placeholder="*State">
+                        <input name="email" required autocomplete="OFF" type="email" placeholder="*Email">
+                        <input name="pno" required autocomplete="OFF" type="number" placeholder="*Phone Number" >
+                        <input name="address" required autocomplete="OFF" type="text" placeholder="*Street Address" maxlength="50">
+                        <input name="city" required autocomplete="OFF" type="text" placeholder="*City">
+                        <input name="pincode" required autocomplete="OFF" type="number" placeholder="*Pin Code" size="10">
+                        <input name="state" required autocomplete="OFF" type="text" placeholder="*State">
                     </div>
-
-                    <div class="educationBlock">
-                        <label class="heading" for="">Education</label>
-                        <label>Senior Secondary Details</label>
-                        <input required autocomplete="OFF" id="class12name"  type="text" placeholder="*Institute Name">
-                        <input required autocomplete="OFF" id="class12board"  type="text" placeholder="*Board Name">
-                        <input required autocomplete="OFF" id="class12subject"  type="text" placeholder="*Subject">
-                        <input required autocomplete="OFF" id="class12percent" type="number" placeholder="*Percentage">
-                        <div>
-                            <label for="from12">From</label>
-                            <input required type="date" id="from12" >
-                        </div>
-                        <div>
-                            <label for="to12">To</label>
-                            <input required type="date" id="to12" >
-                        </div>
-                        
-                        <label>Secondary Details</label>
-                        <input required autocomplete="OFF" id="class10name"  type="text" placeholder="*Institute Name">
-                        <input required autocomplete="OFF" id="class10board"  type="text" placeholder="*Board Name">
-                        <input required autocomplete="OFF" id="class10percent" type="number" placeholder="*Percentage">
-                        <div>
-                            <label for="from10">From</label>
-                            <input required type="date" id="from10" >
-                        </div>
-                        <div>
-                            <label for="to10">To</label>
-                            <input required type="date" id="to10" >
-                        </div>
-                        
-                    </div>
-
 
                     <div class="educationBlock">
                         <label class="heading" for="">Social Profile Links</label>
                         <input class="tagname" id="github"    name="github"   autocomplete="OFF" type="text" placeholder="Github Username">
-                        <input id="githuburl"  id="githuburl" disabled name="githuburl"   autocomplete="OFF" type="url" placeholder="Github Profile URL">
+                        <input id="githuburl" disabled name="githuburl"   autocomplete="OFF" type="url" placeholder="Github Profile URL">
                         
                         <input class="tagname" id="linkedin" name="linkedin" autocomplete="OFF" type="url" placeholder="LinkedIn Username">
-                        <input  disabled       id="linkedinurl"   autocomplete="OFF" type="url" placeholder="Linkedin Profile URL">
+                        <input  disabled name="linkedinurl"   autocomplete="OFF" type="url" placeholder="Linkedin Profile URL">
                         
+                        <input class="tagname" id="" name="codechefs"autocomplete="OFF" type="url" placeholder="CodeChefs Username">
+                        <input   disabled name="codechefsurl"   autocomplete="OFF" type="url" placeholder="CodeChefs Profile URL">
                     </div>
 
 
 
                     <div class="educationBlock">
                         <label class="heading" for="secondaryenddate">*Professional Summary</label>
-                        <textarea required id="professionalsummary" placeholder="*50 Words professional summary" maxlength="300"  cols="30" rows="6" ></textarea>
+                        <textarea required name="professionalsummary" placeholder="*50 Words professional summary" maxlength="300"  cols="30" rows="6" ></textarea>
                     </div>
                     
                     <div class="educationBlock">
@@ -360,14 +311,14 @@
 
                     <div class="educationBlock">
                         <label class="heading" for="">Project Details (Optional)</label>
-                        <input id="project1name" class="tagname" required autocomplete="OFF" type="text" placeholder="Project 1 Name">
-                        <textarea required id="project1summary" disabled  placeholder="*50 Words project 1 summary" maxlength="300"  cols="30" rows="3" ></textarea>
+                        <input name="project1Name" class="tagname" required autocomplete="OFF" type="text" placeholder="Project 1 Name">
+                        <textarea required name="project1summary" disabled  placeholder="*50 Words project 1 summary" maxlength="300"  cols="30" rows="3" ></textarea>
                         
-                        <input id="project2name" class="tagname" required autocomplete="OFF" type="text" placeholder="Project 2 Name">
-                        <textarea required id="project2summary" disabled  placeholder="*50 Words project 2 summary" maxlength="300"  cols="30" rows="3" ></textarea>
+                        <input name="project2Name" class="tagname" required autocomplete="OFF" type="text" placeholder="Project 2 Name">
+                        <textarea required name="project2summary" disabled  placeholder="*50 Words project 2 summary" maxlength="300"  cols="30" rows="3" ></textarea>
                         
-                        <input id="project3name" class="tagname" required autocomplete="OFF" type="text" placeholder="Project 3 Name">
-                        <textarea required id="project3summary" disabled  placeholder="*50 Words project 3 summary" maxlength="300"  cols="30" rows="3" ></textarea>
+                        <input name="project3Name" class="tagname" required autocomplete="OFF" type="text" placeholder="Project 3 Name">
+                        <textarea required name="project3summary" disabled  placeholder="*50 Words project 3 summary" maxlength="300"  cols="30" rows="3" ></textarea>
                     </div>
 
 
@@ -386,42 +337,17 @@
 
                     </div>
 
-                    <button type="button" onclick="createResume()">Create Resume</button>
+                    <button type="submit" name="createResume">Create Resume</button>
                 </form>
             </div>
 
         </div>
-
         
         <!-- Resume maker Div END-->
 
-
-
-
-        <!-- Library Div END-->
-
-        <div id="library" style="display: none;">
-            <div class="boxHeadingDiv">
-                <h3 class="boxHeading">Student Library</h3>
-            </div>
-            <div id="libraryContainer" class="libraryDiv">
-                <form class="searchForm" action="" method="POST" style="display: flex; column-gap: 0.2rem;">
-                    <input type="search" id="bookName" placeholder="Search book..." autocomplete="OFF">
-                    <button id="searchbookbutton" onclick="showBooks()" ><i class='mynavigationItemIcon bx bx-search'></i></button>
-                </form>
-                
-            </div>
-        </div>
-
-
-
-
     </div>
 
-    <p id="userId" style="display: none;"><?php echo $_SESSION['userId']; ?></p>
-    <p id="sessionId" style="display: none;"><?php echo $_SESSION['sessionId']; ?></p>
-    <p id="instituteId" style="display: none;"><?php echo $_SESSION['instituteId']; ?></p>
-    <p id="authority" style="display: none;"><?php echo $_SESSION['authority']; ?></p>
+    <p id="userId" style="display: none;"><?php echo $_SESSION["userId"];?></p>
 
 </body>
 
@@ -429,8 +355,6 @@
 
 
 <script src="../JS/jquery.js"></script>
-<script src="../JS/main1.js"></script>
-<script src="../JS/resume.js"></script>
 
 
 <!-- FOR input tags -->
@@ -545,7 +469,7 @@
         $("#downloads").height($(window).height() - 170);
         $("#downloadContainer").height($("#downloads").height() -30 );
         
-        $("#liveClassContainer").height($(window).height() * 80 / 100);
+        $("#liveClassContainer").height($(window).height() * 60 / 100);
     }
 
 
@@ -578,9 +502,6 @@
 
 
 
-        if (windowWidth <= 710 && windowWidth >= 690) {
-            window.location.reload("true");
-        }
         if (windowWidth <= 700 && windowWidth >= 690) 
         {
             $("#mynavigationBar").css({"width": "100%" });
@@ -608,9 +529,6 @@
 
 
     let lastActiveItem = $("#item1");
-    $("#item1").addClass('activeItem');
-    // By Default TAb //
-
 
     function manipulate(person) {
 
@@ -620,20 +538,7 @@
         $(person).addClass("activeItem");
         $($(person).attr("value")).css("display", "block");
 
-        console.log($(person).attr("value"));
 
-        if( $(person).attr("value") == "#div2" ){
-            fillUpPersonalDetails();
-        }
-        else if( $(person).attr("value") == "#div6" ){
-            showDownloadFiles();
-        }
-        else if( $(person).attr("value") == "#div5" ){
-            showLiveClasses();
-        }
-        else if( $(person).attr("value") == "#studentProfileDiv" ){
-            fillUpPersonalDetails();
-        }
         lastActiveItem = $(person);
     }
     $(".mynavigationItem").click(function () {

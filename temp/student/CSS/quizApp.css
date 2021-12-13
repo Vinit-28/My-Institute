@@ -1,0 +1,184 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200&display=swap');
+
+
+*, *:before, *:after {
+    box-sizing: border-box;
+    --fontFamily : Poppins, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    --backgroundColor : #edf2f9;
+    --navigationBarColor : rgb(209, 225, 248);
+    --textColor : #5e6e82;
+    --textHoverColor : #cad0d6;
+    --activeTextColor : #2864c5;
+    --hoverDarkColor : rgb(35, 43, 53);
+    --buttonColor : rgba(44, 124, 229, 0.844);
+    --buttonHover : rgb(44, 123, 229);
+    --formBorder : #d8e2ef;
+    --littleHeadings : #344050;
+    --backgroundDark : #0b1727;
+    --boxShadow : 0 .5rem 1rem rgba(0,0,0,.15) ;
+}
+
+
+
+#div7{
+    font-family: var(--fontFamily);
+    box-shadow:  var(--boxShadow);
+    padding: 0.6rem;
+    margin-top: 1.2rem;
+    margin-left: 0.5rem;
+    background-color: #fff;
+    border-radius: 0.5rem;
+    overflow-y: scroll;
+}
+
+#div7::-webkit-scrollbar{
+    display: none;
+}
+
+
+
+
+
+
+
+
+
+
+/* Quiz html file css */
+
+#quizappbody *{
+    font-family: var(--fontFamily);
+}
+#quizappbody{
+    background-color: var(--backgroundColor);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* border: 2px solid red; */
+}
+#quizContainer{
+    background-color: #fff;
+    width: 80%;
+    box-shadow: var(--boxShadow);
+    border-radius: 3rem;
+    padding: 2rem;
+    padding-top: 4rem;
+}
+
+.question{
+    font-size: 2.5rem;
+    font-weight: 500;
+    width: 100%;
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.options{
+    /* border: 2px solid red; */
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    row-gap: 1rem;
+}
+.option{
+    text-align: center;
+    font-size: 1.4rem;
+    cursor: pointer;
+}
+.option *{
+    cursor: pointer;
+}
+
+
+.quizAppButton{
+    padding: 0.6rem;
+    border-radius: 0.25rem;
+    border: none;
+    cursor: pointer;
+    background-color: var(--buttonColor);
+    color: white;
+    font-size: 0.8rem;
+    font-weight: bolder;
+    width: 100%;
+    margin-top: 2rem;
+    transition: all 300ms ease;
+}
+.quizAppButton:hover{
+    background-color: var(--buttonHover);
+}
+.quizAppButton:active , .quizAppButton:focus{
+    outline: none;
+}
+
+.timer{
+    font-size: 2.5rem;
+    font-weight: 500;
+    width: 100%;
+    text-align: center;
+    margin-top: 2rem;
+}
+
+/* Quiz html file css end*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@media screen and (max-width : 6000px) and (min-width : 1701px) 
+{
+    #div7 {
+        width: 56rem;
+    }
+}
+
+@media screen and (max-width : 1700px) and (min-width : 1501px) 
+{
+    #div7{
+        width: 48rem;
+    }
+}
+
+@media screen and (max-width : 1500px) and (min-width : 1251px) 
+{
+    #div7{
+        width: 80%;
+    }
+}
+
+@media screen and (max-width : 1250px) and (min-width : 901px) 
+{
+    #div7 {
+        width: 70%;
+    }
+}
+
+@media screen and (max-width : 900px) and (min-width : 701px) 
+{
+    #div7 {
+        width: 30rem;
+    }
+    
+}
+
+
+
+@media screen and (max-width : 700px) and (min-width : 50px) 
+{
+
+    #div7  {
+        width: 100%;
+        height: 100%;
+        margin-left: 0.8rem;
+        margin-right: 0.8rem;
+    }
+
+
+}

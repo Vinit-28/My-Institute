@@ -1,0 +1,212 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200&display=swap');
+
+*, *:before, *:after {
+    box-sizing: border-box;
+    --fontFamily : Poppins, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    --backgroundColor : #edf2f9;
+    --navigationBarColor : rgb(209, 225, 248);
+    --textColor : #5e6e82;
+    --textHoverColor : #cad0d6;
+    --activeTextColor : #2864c5;
+    --hoverDarkColor : rgb(35, 43, 53);
+    --buttonColor : rgba(44, 124, 229, 0.844);
+    --buttonHover : rgb(44, 123, 229);
+    --formBorder : #d8e2ef;
+    --littleHeadings : #344050;
+    --backgroundDark : #0b1727;
+    --boxShadow : 0 .5rem 1rem rgba(0,0,0,.15) ;
+}
+*:active , *:focus{
+    outline: none;
+}
+
+#library{
+    font-family: var(--fontFamily);
+    box-shadow: var(--boxShadow);
+    padding: 0.6rem;
+    margin-top: 1.2rem;
+    margin-left: 0.5rem;
+    background-color: #fff;
+    border-radius: 0.5rem;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    
+
+    /* border: 2px solid red;
+    display: flex; */
+    /* align-items: center; */
+    /* justify-content: center;
+    position: relative;
+    overflow-y: scroll;
+     */
+    /* height: 40vw; */
+    
+}
+#library::-webkit-scrollbar{
+    display: none;
+}
+
+.libraryDiv {
+    /* border: 2px solid red; */
+    padding: 0.6rem;
+    /* margin-top: 1.2rem; */
+    /* margin: 1.2rem auto 0 auto; */
+    height: max-content;
+    width: 100%;
+
+    
+}
+.boxHeading{
+    margin: 0.6rem;
+    font-size:x-large;
+    color: var(--littleHeadings);
+}
+
+#libraryContainer{
+    padding: 10px;
+    overflow-y: scroll;
+}
+#libraryContainer::-webkit-scrollbar{
+    display: none;
+}
+.book{
+    /* border: 2px solid red; */
+    width: 70%;
+    height: 10vw;
+    display: flex;
+    /* margin: 0.5rem auto 0.5rem auto; */
+    align-items: center;
+    justify-content: flex-start;
+    border-radius: 0.5rem;
+    box-shadow : 0 .5rem 1rem rgba(0,0,0,.15);
+}
+.bookContainer{
+    height: 8vw;
+    margin-left: 5%;
+}
+.bookThumbnail{
+    height: 100%;
+}
+.details *{
+    margin: 0;
+}
+.details{
+    /* border: 2px solid red; */
+    font-size: 1.3vw;
+    margin-left: 5%;
+    width: 60%;
+}
+.link{
+    text-decoration: none;
+    color: #2864c5;
+}
+
+
+
+
+.searchForm{
+    /* border: 2px solid red; */
+    width: 100%;
+}
+
+
+.searchForm input{
+    width: 100%;
+    border: none;
+    border-bottom: 2px solid var(--textColor);    
+}
+.searchForm button{
+    cursor: pointer;
+    width: 3rem;
+    font-size: 1.6rem;
+    color: black;
+    background-color: transparent;
+    border-radius: 0.2rem;
+    border: none;
+    transition: all 300ms ease;
+}
+.searchForm button i{
+    transition: all 100ms ease;
+}
+
+.searchForm button:hover{
+    color: #fff;
+    background-color: var(--buttonHover);
+
+}
+
+
+
+
+
+@media screen and (max-width : 6000px) and (min-width : 1200px) 
+{
+
+    #library{
+        width: 67%;
+    }
+    .libraryDiv{
+        width: 100%;
+    }
+}
+@media screen and (max-width : 1199px) and (min-width : 1001px) 
+{
+    #library{
+        width: 70%;
+    }
+    .libraryDiv{
+        width: 100%;
+    }
+}
+
+@media screen and (max-width : 1000px) and (min-width : 850px) 
+{
+    #library{
+        width: 70%;
+    }
+    .libraryDiv{
+        width: 100%;
+    }
+
+
+}
+@media screen and (max-width : 849px) and (min-width : 780px) 
+{
+    #library{
+        width: 70%;
+    }
+    .libraryDiv{
+        width: 100%;
+    }
+
+}
+@media screen and (max-width : 779px) and (min-width : 701px) 
+{
+    .libraryDiv ,#library{
+        width: 65%;
+    }
+    
+
+}
+    
+
+@media screen and (max-width : 700px) and (min-width:80px) 
+{
+
+    .details{
+        font-size: 1.7vw;
+    }
+    #library{
+        margin-left:  2%;
+        margin-right: 2%;
+        width: 100%;
+    }
+    .libraryDiv {
+        padding: 0.6rem;
+        /* margin-top: 1.2rem;
+        margin-left: 0.5rem;
+        margin-right: 0.5rem;         */
+        width: 100%;
+    }
+
+}
