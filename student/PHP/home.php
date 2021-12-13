@@ -96,6 +96,10 @@
                 <i class='mynavigationItemIcon bx bxs-user-detail'></i>
                 <span class="mynavigationItemName">Resume Maker</span>
             </div>
+            <div class="mynavigationItem" value="#library">
+                <i class='mynavigationItemIcon bx bx-book-open'></i>
+                <span class="mynavigationItemName">Library</span>
+            </div>
         </div>
 
 
@@ -404,15 +408,23 @@
             <div class="boxHeadingDiv">
                 <h3 class="boxHeading">Student Library</h3>
             </div>
-            <div id="libraryContainer" class="libraryDiv">
-                <form class="searchForm" action="" method="POST" style="display: flex; column-gap: 0.2rem;">
+            <div id="libraryContainer">
+                <form class="searchForm" style="display: flex; column-gap: 0.2rem;">
                     <input type="search" id="bookName" placeholder="Search book..." autocomplete="OFF">
-                    <button id="searchbookbutton" onclick="showBooks()" ><i class='mynavigationItemIcon bx bx-search'></i></button>
+                    <button id="searchbookbutton" ><i class='mynavigationItemIcon bx bx-search'></i></button>
                 </form>
+
+                <div id="booksContainer" >
+
+                </div>
                 
             </div>
         </div>
+        <script src="../JS/library.js"></script>
 
+
+
+        <!-- Library Div END-->
 
 
 
@@ -537,6 +549,10 @@
         $("#div8").height($(window).height() * 80/100);
         $("#downloads").height($(window).height() * 65 / 100);
         $("#downloadContainer").height($("#downloads").height());
+
+        $("#library").height($(window).height() * 80 / 100);
+        $("#libraryContainer").height($('#library').height() * 85 / 100);
+        $("#booksContainer").height($('#libraryContainer').height() * 85 / 100);
     }
     else {
         $($("#mynavigationBar").children()[0]).css("margin-top", $("#mynavbar").height() * 23 / 100);
@@ -546,6 +562,10 @@
         $("#downloadContainer").height($("#downloads").height() -30 );
         
         $("#liveClassContainer").height($(window).height() * 80 / 100);
+
+        $("#library").height($(window).height() * 80 / 100);
+        $("#libraryContainer").height($('#library').height() * 85 / 100);
+        $("#booksContainer").height($('#libraryContainer').height() * 85 / 100);
     }
 
 
