@@ -1,0 +1,140 @@
+*, *:before, *:after {
+    box-sizing: border-box;
+    font-family: Poppins, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    --fontFamily : Poppins, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    --backgroundColor : #edf2f9;
+    --navigationBarColor : rgb(209, 225, 248);
+    --textColor : #5e6e82;
+    --textHoverColor : #cad0d6;
+    --activeTextColor : #2864c5;
+    --hoverDarkColor : rgb(35, 43, 53);
+    --buttonColor : rgba(44, 124, 229, 0.844);
+    --buttonHover : rgb(44, 123, 229);
+    --formBorder : #d8e2ef;
+    --littleHeadings : #344050;
+    --backgroundDark : #0b1727;
+    --boxShadow : 0 .5rem 1rem rgba(0,0,0,.15) ;
+}
+
+body{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+
+#modalContainer{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #5e6e829e;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#modal{
+    display: flex;
+    flex-direction: column;
+    row-gap: 1rem;
+    align-items: center;
+    width: 50%;
+    background-color: #fff;
+    border-radius: 15px;
+    box-shadow: 0 .5rem 1rem rgba(0,0,0,.15) ;
+
+}
+
+#details p{
+    margin: 0;
+}
+#details{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    row-gap: 1rem;
+}
+
+.button{
+    padding: 0.6rem;
+    border-radius: 0.25rem;
+    width: 80%;
+    margin-bottom: 1rem;
+    border: none;
+    cursor: pointer;
+    background-color: var(--buttonColor);
+    color: white;
+    font-size: 1rem;
+    font-weight: bold;
+    transition: all 300ms ease;
+
+}
+.button:hover{
+    background-color: var(--buttonHover);
+}
+
+.forms{
+    padding: 0.6rem;
+    display: grid;
+    grid-template-columns: repeat(2,1fr);
+    justify-content: center;
+    text-align: left;
+    gap: 10px;
+    font-family: var(--fontFamily);
+}
+#questionStatement{
+    text-align: left;
+}
+
+#quizForm label{
+    font-size: 1.5vw;
+}
+
+.optionDiv{
+    display: flex;
+    align-items: baseline;
+}
+
+#timeLeft{
+    color: var(--textColor);
+    font-size: 2vw;
+}
+
+@media screen and (max-width : 700px) and (min-width:80px) {
+    #questionStatement{
+        text-align: left;
+        font-size: 5vw;
+    }
+    .formsDiv {
+        padding: 0.6rem;
+        margin: auto;
+        width: 90%;
+    }
+    #quizForm label{
+        font-size: 3.5vw;
+    }
+    .forms{
+        padding: 0.6rem;
+        display: grid;
+        grid-template-columns: repeat(1,1fr);
+        justify-content: center;
+        text-align: left;
+        gap: 10px;
+        font-family: var(--fontFamily);
+    }
+
+    #timeLeft{
+        color: var(--textColor);
+        font-size: 5vw;
+    }
+
+    .button{
+        padding: 0.4rem;
+        font-size: 3.5vw;   
+    }
+    
+}
