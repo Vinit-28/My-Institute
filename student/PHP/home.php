@@ -90,7 +90,7 @@
             </div>
             <div class="mynavigationItem" value="#div7">
                 <i class='mynavigationItemIcon bx bxs-book-content' ></i>
-                <span class="mynavigationItemName">Quizz App</span>
+                <span class="mynavigationItemName">Mock Test</span>
             </div>
             <div class="mynavigationItem" value="#div8">
                 <i class='mynavigationItemIcon bx bxs-user-detail'></i>
