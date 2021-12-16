@@ -129,6 +129,161 @@
     }
 
 
+    // Function to Upload New Assignment //
+    function uploadNewAssignment($databaseConnectionObject, $request, $fileName, $tmpName){
+
+        $databaseConnectionObject->select_db($request['instituteId']);
+
+        $filePath = ("InstituteFolders/". $request['instituteId'] . "/" . "uploadedAssignments/" . $request['loggedInUser'] . $request['uploadedDateTime'] . $fileName);
+
+        $machinePath = getcwd();
+        $machinePath = str_replace("Server/Utilities", $filePath, $machinePath);
+        move_uploaded_file($tmpName, $machinePath);
+
+        $query = "INSERT INTO UploadedAssignments(uploadedBy, subjectName, assignmentTitle, assignmentDescription, 	assignmentDeadline, uploadedDateTime, assignmentVisibility, assignmentFileLinkHref, assignmentFileLinkMachine) Values(?,?,?,?,?,?,?,?,?);";
+        
+        runQuery($databaseConnectionObject, $query, [$request['uploadedBy'], $request['subjectName'], $request['assignmentTitle'], $request['assignmentDescription'], $request['assignmentDeadline'], $request['uploadedDateTime'], $request['assignmentVisibility'], "http://localhost/" . $filePath, $machinePath ], "sssssssss", true);
+    }
+
+
+
+    // Function to Edit Uploaded Assignment //
+    function updateUploadedAssignment($databaseConnectionObject, $request, $fileName="", $tmpName=""){
+
+        $databaseConnectionObject->select_db($request['instituteId']);
+
+        $query = "UPDATE UploadedAssignments SET subjectName=?, assignmenttitle=?, assignmentDescription=?, assignmentDeadline=?, assignmentVisibility=? WHERE assignmentId=?;";
+        
+        runQuery($databaseConnectionObject, $query, [$request['subjectName'], $request['assignmentTitle'], $request['assignmentDescription'], $request['assignmentDeadline'], $request['assignmentVisibility'], $request['assignmentId']], "sssssi");
+
+        // If the file has been edited //
+        if( $fileName != "" ){
+
+            // Removing the Old File //
+            $oldFilePath = getColumnValue($databaseConnectionObject, "SELECT * FROM UploadedAssignments WHERE assignmentId = ?;", [$request['assignmentId']], "i", "assignmentFileLinkMachine");
+            unlink($oldFilePath);
+
+            // Creating and storing New File //
+            $newFilePath = ("InstituteFolders/". $request['instituteId'] . "/" . "uploadedAssignments/" . $request['loggedInUser'] . $request['uploadedDateTime'] . $fileName);
+
+            $machinePath = getcwd();
+            $machinePath = str_replace("Server/Utilities", $newFilePath, $machinePath);
+            move_uploaded_file($tmpName, $machinePath);
+            
+            $query =  "UPDATE UploadedAssignments SET assignmentFileLinkMachine = ?, assignmentFileLinkHref = ? WHERE assignmentId = ? ;";
+            runQuery($databaseConnectionObject, $query, [$machinePath, ("http://localhost/" . $newFilePath), $request['assignmentId']], "ssi", true);
+        }
+    }
+
+
+    // Function to Delete Uploaded Assignment //
+    function deleteUploadedAssignment($databaseConnectionObject, $request){
+
+        $databaseConnectionObject->select_db($request['instituteId']);
+
+        $query1 = "SELECT * FROM AssignmentSubmissions WHERE assignmentId=?;";
+        $query2 = "DELETE FROM AssignmentSubmissions WHERE assignmentId=?;";
+        $query3 = "SELECT * FROM UploadedAssignments WHERE assignmentId = ?;";
+        $query4 = "DELETE FROM UploadedAssignments WHERE assignmentId=?;";
+
+        for($i=0;$i<count($request['selectedAssignments']);$i++){
+
+            $assignmentId = $request['selectedAssignments'][$i];
+            
+            // Removing the Submissions of the Assignment and its Entry from the Database //
+            $result = runQuery($databaseConnectionObject, $query1, [$assignmentId], "i");
+            while($row = $result->fetch_assoc()){
+                unlink($row['submittedFileLinkMachine']);
+            }
+            runQuery($databaseConnectionObject, $query2, [$assignmentId], "i");
+
+            // Removing the Assignment File and Assignment Entry from the Database //
+            $result = runQuery($databaseConnectionObject, $query3, [$assignmentId], "i");
+            unlink($result->fetch_assoc()['assignmentFileLinkMachine']);
+            runQuery($databaseConnectionObject, $query4, [$assignmentId], "i", true);
+        }
+    }
+
+
+
+    // Function to check whether a assignment is submitted by a student or not // 
+    function isAssignmentSubmitted($databaseConnectionObject, $assignmentId, $studentId){
+
+        $query = "SELECT * FROM AssignmentSubmissions WHERE assignmentId=? and submittedBy=?;";
+        $result = runQuery($databaseConnectionObject, $query, [$assignmentId, $studentId], "is");
+
+        return ( $result && $result->num_rows == 1 );
+    }
+    
+
+    // Function to show all the assignments to the student //
+    function getUploadedAssignmentsForTeachers($databaseConnectionObject, $request){
+
+        $databaseConnectionObject->select_db($request['instituteId']);
+        $query = "SELECT * FROM UploadedAssignments WHERE uploadedBy = ?;";
+        $result = runQuery($databaseConnectionObject, $query, [$request['loggedInUser']], "s");
+        $assignments = array();
+        $counter=1;
+        while($row = $result->fetch_assoc()){
+            $assignments += [$counter=>$row];
+            $counter+=1;
+        }
+
+        return $assignments;
+    }
+
+
+    // Function to show all the assignments to the student //
+    function getUploadedAssignmentsForStudents($databaseConnectionObject, $request){
+
+        $databaseConnectionObject->select_db($request['instituteId']);
+        $query = "SELECT * FROM UploadedAssignments WHERE assignmentVisibility = ?;";
+        $result = runQuery($databaseConnectionObject, $query, [$request['studentClass']], "s");
+        $assignments = array();
+        $counter=1;
+        while($row = $result->fetch_assoc()){
+            $row += ["isSubmitted"=>isAssignmentSubmitted($databaseConnectionObject, $row['assignmentId'], $request['loggedInUser'])];
+            $assignments += [$counter=>$row];
+            $counter+=1;
+        }
+
+        return $assignments;
+    }
+
+
+    // Function to get all the Submissions of a particular Assignment // 
+    function getAssignmentSubmissions($databaseConnectionObject, $request){
+
+        $databaseConnectionObject->select_db($request['instituteId']);
+        $query = "SELECT * FROM AssignmentSubmissions WHERE assignmentId=?;";
+        $result = runQuery($databaseConnectionObject, $query, [$request['assignmentId']], "i");
+        $submissions = array();
+        $counter=1;
+        while($row = $result->fetch_assoc()){
+            $submissions += [$counter=>$row];
+            $counter+=1;
+        }
+        return $submissions;
+    }
+
+
+    // Function to Delete the Assignment Submission of a Student // 
+    function deleteAssignmentSubmission($databaseConnectionObject, $request){
+
+        $databaseConnectionObject->select_db($request['instituteId']);
+
+        // Removing the Submissions made to that particular Assignment //
+        $query = "SELECT * FROM AssignmentSubmissions WHERE submittedBy=? AND assignmentId=?;";
+        $result = runQuery($databaseConnectionObject, $query, [$request['submittedBy'], $request['assignmentId']], "si");
+        
+        // Removing from the Machine //
+        while($row = $result->fetch_assoc()){
+            unlink($row['submittedFileLinkMachine']);
+        }
+        // Removing from the Database //
+        $query = "DELETE FROM AssignmentSubmissions WHERE submittedBy=? AND assignmentId=?;";
+        $result = runQuery($databaseConnectionObject, $query, [$request['submittedBy'], $request['assignmentId']], "si", true);
+    }
     
 
 ?>

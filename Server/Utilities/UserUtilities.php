@@ -98,13 +98,42 @@
         runQuery($instituteDatabase, $query, [], "");
 
 
+        // Making a f Table which will store all Uploaded Assignments information // 
+        $query = "CREATE TABLE UploadedAssignments(
+            assignmentId BIGINT(8) AUTO_INCREMENT PRIMARY kEY, 
+            uploadedBy VARCHAR(100), 
+            subjectName VARCHAR(100),
+            assignmentTitle VARCHAR(100),
+            assignmentDescription VARCHAR(500),
+            assignmentDeadline VARCHAR(100),
+            uploadedDateTime VARCHAR(100),
+            assignmentVisibility VARCHAR(100),
+            assignmentFileLinkHref VARCHAR(1000),
+            assignmentFileLinkMachine VARCHAR(1000)
+            );";
+        runQuery($instituteDatabase, $query, [], "");
+
+
+        // Making a AssignmentSubmissions Table which will store all Submitted Assignments information // 
+        $query = "CREATE TABLE AssignmentSubmissions(
+            submittedBy VARCHAR(100) PRIMARY kEY, 
+            submittedDateTime VARCHAR(100),
+            assignmentId BIGINT(8), 
+            submittedFileLinkHref VARCHAR(1000),
+            submittedFileLinkMachine VARCHAR(1000)
+            );";
+        runQuery($instituteDatabase, $query, [], "");
+
+
 
         // Making the Institute Folder in the Server //
         $path = getcwd();
         $path = str_replace("Server", "InstituteFolders/" . $instituteId, $path);
         mkdir($path);
-        mkdir($path . "/uploadedFiles");
-        mkdir($path . "/profilePhotos");
+        mkdir($path . "/uploadedFiles"); //Download-Upload Files
+        mkdir($path . "/profilePhotos"); //Profile Photos of Institute's Persons
+        mkdir($path . "/uploadedAssignments"); //Uploaded Assignment File
+        mkdir($path . "/AssignmentsSubmissions");//Submitted Answer/File to the Assignment
         
     }
 

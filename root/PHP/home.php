@@ -158,22 +158,57 @@ if (!(isset($_SESSION["isUserLogedIn"]) && isset($_SESSION["userId"]) && isset($
                 <div class="boxHeadingDiv">
                     <h3 class="boxHeading">Personl Profile</h3>
                 </div>
-                <div id="">
+                <div id="" style="display: flex; justify-content:center; margin:1rem 0 1rem 0">
                     <?php echo '<img id="rootProfileImg" src="' . $_SESSION['userProfile'] . '" alt="">'; ?>
                 </div>
                 <form id="rootProfileForm" action="" method="post" class="forms">
-                    <input autocomplete="off" id="personalPersonId" type="text" placeholder="*Institute ID">
-                    <input id="newProfile" type="file">
-                    <input autocomplete="off" id="personalName" type="text" placeholder="Institute Name">
+                    
+                    <div class="aman">
+                        <label for="">Institute ID</label>
+                        <input autocomplete="off" id="personalPersonId" type="text" placeholder="*Institute ID">
+                    </div>
+                    <div class="aman">
+                        <label for="">Institute Profile</label>
+                        <input id="newProfile" type="file">
+                    </div>
+                    <div class="aman">
+                        <label for="">Institute Name</label>
+                        <input autocomplete="off" id="personalName" type="text" placeholder="Institute Name">
+                    </div>
 
-                    <input required autocomplete="off" id="personalEmail" type="email" placeholder="Institute Email">
+                    <div class="aman">
+                        <label for="">Institute Email</label>
+                        <input required autocomplete="off" id="personalEmail" type="email" placeholder="Institute Email">
+                    </div>
 
-                    <input autocomplete="off" id="personalPhoneNo" type="number" placeholder="Institute Phone No.">
-                    <input autocomplete="off" id="personalAddress" type="text" placeholder="Institute Address">
-                    <input autocomplete="off" id="personalCity" type="text" placeholder="Institute City">
-                    <input autocomplete="off" id="personalState" type="text" placeholder="Institute State">
-                    <input autocomplete="off" id="personalPinCode" type="number" placeholder="PIN Code">
-                    <button type="submit" id="updatePersonalDetails">Update Profile</button>
+                    <div class="aman">
+                        <label for="">Institute Phone No.</label>
+                        <input autocomplete="off" id="personalPhoneNo" type="number" placeholder="Institute Phone No.">
+                    </div>
+
+                    <div class="aman">
+                        <label for="">Address</label>
+                        <input autocomplete="off" id="personalAddress" type="text" placeholder="Institute Address">
+                    </div>
+
+                    <div class="aman">
+                        <label for="">City</label>
+                        <input autocomplete="off" id="personalCity" type="text" placeholder="Institute City">
+                    </div>
+
+                    <div class="aman">
+                        <label for="">State</label>
+                        <input autocomplete="off" id="personalState" type="text" placeholder="Institute State">
+                    </div>
+
+                    <div class="aman">
+                        <label for="">PIN Code</label>
+                        <input autocomplete="off" id="personalPinCode" type="number" placeholder="PIN Code">
+                    </div>
+                    <div class="aman">
+                        <label for="" style="visibility: hidden;">Submit</label>
+                        <button type="submit" id="updatePersonalDetails">Update Profile</button>
+                    </div>
                 </form>
             </div>
 

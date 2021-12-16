@@ -140,6 +140,10 @@ if (!(isset($_SESSION["isUserLogedIn"]) && isset($_SESSION["userId"]) && isset($
                     <i class='mynavigationItemIcon bx bx-download'></i>
                     <span class="mynavigationItemName">Upload Files</span>
                 </div>
+                <div class="mynavigationItem" value="#uploadTest">
+                    <i class='mynavigationItemIcon bx bxs-edit-alt'></i>
+                    <span class="mynavigationItemName">Upload Test</span>
+                </div>
             </div>
 
 
@@ -257,11 +261,85 @@ if (!(isset($_SESSION["isUserLogedIn"]) && isset($_SESSION["userId"]) && isset($
 
             <!-- Upload Assignments Div -->
 
-            <div id="div4" about="uploadAssignments" class="formsDiv" style="display: none;">
+            <div id="div4" about="uploadAssignments" class="formsDiv" style="display:none;">
+                <div class="boxHeadingDiv">
+                    <h3 class="boxHeading">Upload Assignment</h3>
+                </div>
+                <div id="">
+                    <button id="uploadAssignment"  style="margin: 0.4rem 0.2rem 0.4rem 0.2rem; font-weight:bold" class="downloadOptions">Upload Assignment</button>
+                    <button id="showAssignments"  style="margin: 0.4rem 0.2rem 0.4rem 0.2rem; font-weight:bold" class="downloadOptions">Show Assignments</button>
+                    <button id="deleteAssignments"  style="margin: 0.4rem 0.2rem 0.4rem 0.2rem; font-weight:bold" class="downloadOptions">Delete Assignments</button>
+                    <button id="updateAssignment"  style="margin: 0.4rem 0.2rem 0.4rem 0.2rem; font-weight:bold" class="downloadOptions">Update Assignment</button>
+                </div>
                 
+                <div id="uploadAssignmentContainer">
+                    <!-- Upload New Assignment Form -->
+                    
+                    <!-- <form action="" class="forms">
+                        <input required autocomplete="OFF" type="text" placeholder="Uploaded By"       >
+                        <input required autocomplete="OFF" type="text" placeholder="Subject Name"      >
+                        <input required autocomplete="OFF" type="text" placeholder="Assignment Title"  >
+                        <input required autocomplete="OFF" type="text" placeholder="Topic Description" >
+                        <div class="timeDiv">
+                            <label for="">Upload File here--</label>
+                            <input type="file" >
+                        </div>
+                        <div class="timeDiv">
+                            <label for="">Deadline Date </label>
+                            <input required autocomplete="OFF" type="time" name="assignmentDeadline">
+                        </div>
+    
+                        <select name="classsForClass">
+                            <option>Visiblie To</option>
+                            <option value="">BCA 1st Yr.</option>
+                            <option value="">BCA 2nd Yr.</option>
+                            <option value="">BCA 3rd Yr.</option>
+                        </select>
+                        <button type="submit">Upload Assignment</button>
+                    </form> -->
+                </div>
+
             </div>
 
             <!-- Upload Assignments Div End -->
+            
+            
+            <!-- Upload Student Test File Div -->
+
+            <div id="uploadTest" about="uploadTestFile" class="formsDiv" style="display:none">
+            
+
+                                <!-- Launch/Create Live Class Section -->
+                <div id="liveClassLaunchContainer" style="display: none;">
+
+                    <form action="" class="forms">
+                        <input required autocomplete="OFF" type="text" placeholder="Host Name" name="hostName">
+                        <input required autocomplete="OFF" type="text" placeholder="Subject Name" name="subjectName">
+                        <input required autocomplete="OFF" type="text" placeholder="Topic Name" name="topicName">
+                        <input required autocomplete="OFF" type="text" placeholder="Topic Description" name="topicDescription">
+
+                        <div class="timeDiv">
+                            <label for="">From:- </label>
+                            <input required autocomplete="OFF" type="time" name="startingTime">
+                            <label for="">Till:- </label>
+                            <input required autocomplete="OFF" type="time" name="endingTime">
+                        </div>
+
+                        <input required autocomplete="OFF" type="date" name="classDate" style="width: 100%;">
+                        <input required autocomplete="OFF" type="url" placeholder="Joining Link" name="classLink">
+                        <select name="classForClass">
+                            <option value="">BCA 1st Yr.</option>
+                            <option value="">BCA 2nd Yr.</option>
+                            <option value="">BCA 3rd Yr.</option>
+                        </select>
+                        <button type="submit">Upload</button>
+                    </form>
+
+                </div>
+                
+            </div>
+
+            <!-- Upload Student Test File End -->
 
 
 
@@ -401,6 +479,7 @@ if (!(isset($_SESSION["isUserLogedIn"]) && isset($_SESSION["userId"]) && isset($
 
 
 
+
             <!-- add class Section Div -->
 
             <div id="div7" style="display: none;">
@@ -445,7 +524,6 @@ if (!(isset($_SESSION["isUserLogedIn"]) && isset($_SESSION["userId"]) && isset($
                             <input required id="fees-update" required autocomplete="OFF" type="text" placeholder="Updated Class Fees">
                             <button class="saveUpdatedClassInfo" type="submit" id="saveUpdatedClassInfo" >Save Changes</button>
                         </form> -->
-
 
                     </div>
 
@@ -533,6 +611,10 @@ if (!(isset($_SESSION["isUserLogedIn"]) && isset($_SESSION["userId"]) && isset($
 
             if( $(person).attr("value") == "#teacherProfileDiv"){
                 fillUpPersonalDetails();
+            }
+            else if( $(person).attr("value") == "#div4"){
+                // fillUpPersonalDetails();
+                // openUploadNewAssignmentForm();
             }
         }
         $(".mynavigationItem").click(function() {

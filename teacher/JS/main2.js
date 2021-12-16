@@ -369,6 +369,7 @@ function getLiveClassCreatorForm(){
 // Function to open a Launch Live Class Section //
 function openLaunchClassForm(){
 
+    window.open("https:/meet.new" , "_blank");
     // Getting The Live Class Section Tag //
     let liveClassSection = document.getElementById("liveClassSection");
     liveClassSection.innerHTML = "";

@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../CSS/mainPage.css">
+    <link rel="stylesheet" href="../CSS/formsCss.css">
+    <link rel="stylesheet" href="../CSS/quizPage.css">
+    <link rel="stylesheet" href="../CSS/testpaper.css">
+
+    <title>Document</title>
+</head>
+
+<body id="body">
+
+    <div id="timerModal">
+        <div id="remainingTime" style="font-size: 1.5vw;"></div>
+    </div>
+
+
+
+
+    <h1 class="boxHeading">Student Test Pannel</h1>
+
+    <div id="modalContainer" style="display: none;">
+        <div id="modal">
+            <div class="boxHeadingDiv">
+                <h5 class="boxHeading">Result</h5>
+            </div>
+            <div id="details">
+                <p id="correct">Correct Answers:- 5</p>
+                <p id="incorrect">Correct Answers:- 5</p>
+                <p id="notattempet"></p>
+                <p id="percentage"></p>
+            </div>
+
+            <button onclick="exitButton()" class="button">Exit</button>
+        </div>
+
+    </div>
+
+
+    <div id="container" class="formsDiv" style="padding: 20px; display:none">
+        <div class="boxHeadingDiv">
+            <h3 class="boxHeading"></h3>
+        </div>
+
+        <h1 id="questionStatement"></h1>
+        <form id="quizForm" action="" method="post" class="forms forms">
+
+        </form>
+        <div class="boxHeadingDiv">
+            <h3 id="timeLeft" class="boxHeading"></h3>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; justify-content: space-evenly; grid-gap: 1rem;">
+            <button onclick="nextQuestion()" style="width: 100%;" class="button">Next Question</button>
+            <button onclick="exitButton()" style="width: 100%;" class="button">Exit Test</button>
+        </div>
+    </div>
+</body>
+
+</html>
+
+
+
+<script src="../JS/jquery.js"></script>
+<script>
+
+
+
+
+    document.getElementById('body').style.height = (window.screen.availHeight * 80 / 100) + "px";
+    document.getElementById('modalContainer').style.height = (window.screen.availHeight * 90 / 100) + "px";
+
+    let correctAnswer = 0, wrongAnswers = 0, questionsMissed = 0
+    var timeID = 0, timeLeft = 15, questionsDone = 0;
+    var ID = 0;
+
+    var limit = 0
+    var object = {}
+
+
+
+    function getCard(name, value, optionText) {
+        let div = document.createElement("div");
+        div.classList.add("optionDiv")
+
+        let input = document.createElement("input");
+        input.type = "radio";
+        input.name = name;
+        input.value = value;
+
+        let label = document.createElement("label");
+        label.classList.add("option");
+        label.innerText = optionText;
+
+        div.appendChild(input);
+        div.appendChild(label);
+
+        return div;
+    }
+
+
+
+
+    function checkAnswer() {
+        if (document.querySelector('input[name="answer"]:checked') != null) {
+            var answer = document.querySelector('input[name="answer"]:checked').value;
+            if (object[questionsDone][answer] == object[questionsDone]['correct_answer']) {
+                correctAnswer += 1
+            }
+            else {
+                wrongAnswers += 1
+            }
+        }
+        else {
+            questionsMissed += 1
+        }
+    }
+
+
+    function changeTime(call_by_user = false) {
+        document.getElementById('timeLeft').innerHTML = "Time left:- " + timeLeft;
+        timeLeft -= 1;
+        if (timeLeft == -1 || call_by_user) {
+            clearInterval(timeID);
+            checkAnswer();
+            questionsDone += 1;
+            if (questionsDone < limit) {
+                change();
+            }
+            else {
+                document.getElementById("container").style.display = "none";
+                document.getElementById("modalContainer").style.display = "flex";
+                document.getElementById("correct").innerHTML = "Correct Answers:- " + correctAnswer;
+                document.getElementById("incorrect").innerHTML = "Incorrect Answers:- " + wrongAnswers;
+
+                if (questionsMissed != 0)
+                    document.getElementById("notattempet").innerHTML = "Not Attempt:- " + questionsMissed;
+                document.getElementById("percentage").innerHTML = "Percentage:- " + (correctAnswer * 100 / limit) + " %";;
+            }
+        }
+    }
+
+
+
+
+
+    function change() {
+        timeLeft = 15
+        timeID = setInterval(changeTime, 1000);
+
+        document.getElementById("questionStatement").innerHTML = (questionsDone + 1) + ") " + object[questionsDone]["question"];
+
+        let quizForm = document.getElementById("quizForm");
+        quizForm.innerHTML = "";
+
+
+        var i = 1
+        for (i; i <= 4; i++) {
+            quizForm.appendChild(getCard('answer', 'option' + i, object[questionsDone]['option' + i]));
+        }
+
+
+
+
+    }
+
+    function nextQuestion() {
+        alert('next question')
+        changeTime(true);
+    }
+
+
+    function exitButton() {
+        if (confirm('Are you sure, you want to exit ?')) {
+            window.close();
+        }
+        else {}
+    }
+
+
+
+
+
+
+
+
+
+    $("#timerModal").height($(window).height());
+    var timerID = 0;
+    var timeRemaining = 11
+
+    function updateTime() {
+        if (timeRemaining > 0) {
+            timeRemaining -= 1;
+            document.getElementById("remainingTime").innerHTML = "Time Remaining = " + timeRemaining;
+        }
+        else {
+            clearTimeout(timerID);
+            document.getElementById('timerModal').style.display = "none";
+            alert('Make sure that no tab switching should take place, \nelse browser will close itself !');
+            document.getElementById('container').style.display = "block";
+            setTimeout(function () {
+                object = JSON.parse(localStorage['questions']);
+                // console.log(object)
+                limit = object.length - 1;
+                change();
+            }, 1000)
+
+        }
+    }
+    function start() {
+        timerID = setInterval(updateTime, 1000);
+        document.getElementById('timerModal').style.display = "flex";
+    }
+
+
+    var hidden = false
+    document.addEventListener('visibilitychange', function () {
+        if (document.visibilityState == 'hidden') {
+            document.getElementById('body').innerHTML = "";
+            document.getElementById('body').innerHTML = `
+                <h1 id="tabswitching" class="boxHeading" style="color: red;">Found Tab switching !!!</h1>
+            `;
+            setTimeout(function () {
+                window.close();
+            }, 2000)
+
+        }
+
+    });
+
+
+
+    $(document).ready(function () {
+        alert(localStorage['started_by_user']);
+        if (localStorage['started_by_user'] == "true")
+            start();
+        else {
+            alert('You are not authorised to this page !!');
+            setTimeout(function () {
+                window.close();
+            }, 1000)
+        }
+
+    })
+
+</script>

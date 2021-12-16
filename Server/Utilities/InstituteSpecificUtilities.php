@@ -246,6 +246,96 @@
                 echo json_encode($response);
             }
 
+
+            // If request is to Upload New Assignment //
+            else if($request['task'] == "Upload New Assignment" && $authority == "teacher" ){
+                
+                uploadNewAssignment($databaseConnectionObject, $request, $_FILES['assignmentFile']['name'], $_FILES['assignmentFile']['tmp_name']);
+                
+                $response =array(
+                    "result"=>"Success",
+                    "message"=>"Assignment Uploaded Successfully !!!"
+                );
+                echo json_encode($response);
+            }
+
+
+            // If request is to Update an Uploaded Assignment //
+            else if($request['task'] == "Update Uploaded Assignment" && $authority == "teacher" ){
+                
+                if( isset($_FILES['updatedAssignmentFile']) ){
+                    updateUploadedAssignment($databaseConnectionObject, $request, $_FILES['updatedAssignmentFile']['name'], $_FILES['updatedAssignmentFile']['tmp_name']);
+                }
+                else{
+                    updateUploadedAssignment($databaseConnectionObject, $request);
+                }
+                
+                $response =array(
+                    "result"=>"Success",
+                    "message"=>"Assignment Updated Successfully !!!"
+                );
+                echo json_encode($response);
+            }
+
+
+            // If request is to Delete an Uploaded Assignment //
+            else if($request['task'] == "Delete Uploaded Assignments" && $authority == "teacher" ){
+                
+                deleteUploadedAssignment($databaseConnectionObject, $request);
+                
+                $response =array(
+                    "result"=>"Success",
+                    "message"=>"Assignment/Assignments Deleted Successfully !!!"
+                );
+                echo json_encode($response);
+            }
+
+
+            // If request is to Get Uploaded Assignments //
+            else if($request['task'] == "Get Uploaded Assignments" ){
+                $assignments = array();     
+                if( $authority == "teacher" ){
+                    $assignments = getUploadedAssignmentsForTeachers($databaseConnectionObject, $request);
+                }
+                else if( $authority == "student" ){
+                    $assignments = getUploadedAssignmentsForStudents($databaseConnectionObject, $request);
+                }
+                
+                $response =array(
+                    "result"=>"Success",
+                    "assignments"=>$assignments
+                );
+                echo json_encode($response);
+            }
+
+
+            // If request is to Delete a Submission //
+            else if($request['task'] == "Delete Assignment Submission" && $authority == "teacher" ){
+                deleteAssignmentSubmission($databaseConnectionObject, $request);
+                $response = array(
+                    "result"=>"Success",
+                    "message"=>"Submission of ". $request['submittedBy'] . " has Deleted Successfully !!!"
+                );
+                echo json_encode($response);
+            }
+
+
+            // If request is to Show all the Submissions of an Assignment //
+            else if($request['task'] == "Show Assignment Submissions" && $authority == "teacher" ){
+                $submissions = getAssignmentSubmissions($databaseConnectionObject, $request);
+                $response = array(
+                    "result"=>"Success",
+                    "submissions"=>$submissions
+                );
+                echo json_encode($response);
+            }
+
+
+
+
+
+
+
             // If request is not valid //
             else{
                 $response = array(

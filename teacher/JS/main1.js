@@ -3,6 +3,7 @@
 // Declaring Some Global Varibales //
 let relatedPersons = {};
 let instituteClasses = {};
+let uploadedAssignments = {};
 
 
 // Function to make a AJAX request to the Server //
@@ -389,6 +390,495 @@ function appendClassDropdownMenu(classDropdownMenuId, callback=null){
 
 
 
+
+// ------------------------------- Assignments ------------------------------- // 
+
+
+
+
+// Function to make and return the Form of Upload New Assignment //
+function getUploadNewAssignmentForm(){
+
+
+    let uploadAssignmentContainer = document.getElementById("uploadAssignmentContainer");
+    uploadAssignmentContainer.innerHTML = "";
+
+    // Creating Tags //
+    let divForm = document.createElement("div");
+    let form = document.createElement("form");
+    let uploadedBy = document.createElement("input");
+    let subjectName = document.createElement("input");
+    let assignmentTitle = document.createElement("input");
+    let assignmentDescription = document.createElement("input");
+    let timeDivFileInput = document.createElement("div");
+    let timeDivDeadline = document.createElement("div");
+    let fileInput = document.createElement("input");
+    let labelFile = document.createElement("label");
+    let deadline = document.createElement("input");
+    let labelTime = document.createElement("label");
+    let selectVisibility = document.createElement("select");
+    let defaultOption = document.createElement("option");
+    let uploadAssignmentButton = document.createElement("button");
+
+
+    // Adding Classes and Assigning Values to their Attributes //
+    form.classList.add("forms");
+    timeDivFileInput.classList.add("timeDiv");
+    timeDivDeadline.classList.add("timeDiv");
+
+    uploadedBy.placeholder = "Uploaded By";
+    subjectName.placeholder = "Subject Name";
+    assignmentTitle.placeholder = "Assignment Title";
+    assignmentDescription.placeholder = "Assignment Description";
+    labelFile.innerText = "Upload File ";
+    labelTime.innerText = "Deadline ";
+    fileInput.type = "file";
+    deadline.type = "datetime-local";
+    defaultOption.value = defaultOption.innerText = "Visible To";
+    defaultOption.selected = true;
+    uploadAssignmentButton.innerText = "Upload Assignment";
+    uploadAssignmentButton.type = "submit";
+
+    subjectName.id = "subjectName";
+    assignmentTitle.id = "assignmentTitle";
+    assignmentDescription.id = "assignmentDescription";
+    fileInput.id = "fileInput";
+    deadline.id = "deadline";
+    selectVisibility.id = "assignmentVisibility"
+
+    uploadedBy.value = document.getElementById("userId").innerText + " (Creator)";
+    uploadedBy.disabled = true;
+
+    // Wrapping up the Tags //
+    timeDivFileInput.appendChild(labelFile);
+    timeDivFileInput.appendChild(fileInput);
+    timeDivDeadline.appendChild(labelTime);
+    timeDivDeadline.appendChild(deadline);
+    selectVisibility.appendChild(defaultOption);
+
+    form.appendChild(uploadedBy);
+    form.appendChild(subjectName);
+    form.appendChild(assignmentTitle);
+    form.appendChild(assignmentDescription);
+    form.appendChild(timeDivFileInput);
+    form.appendChild(timeDivDeadline);
+    form.appendChild(selectVisibility);
+    form.appendChild(uploadAssignmentButton);
+    uploadAssignmentContainer.appendChild(form);
+
+    for(let key in instituteClasses){
+        let option = document.createElement("option");
+        option.value = option.innerText = instituteClasses[key].className;
+        selectVisibility.appendChild(option);
+    }
+
+
+    return [form, subjectName, assignmentTitle, assignmentDescription, fileInput, deadline, selectVisibility, uploadAssignmentButton, uploadedBy]
+}
+
+
+
+// Function to open the New From to upload the Assignment //
+function openUploadNewAssignmentForm(){
+
+    let elemenList = getUploadNewAssignmentForm();
+
+    let form = elemenList[0], subjectName = elemenList[1], assignmentTitle = elemenList[2], assignmentDescription = elemenList[3], fileInput = elemenList[4], deadline = elemenList[5], selectVisibility = elemenList[6], uploadAssignmentButton = elemenList[7], uploadedBy=elemenList[8];
+
+
+    // Function to make request to the server to upload a new Assignment //
+    function uploadNewAssignment(e){
+
+        e.preventDefault();
+
+        if( selectVisibility.selectedIndex == 0 ){
+            alert("Please Select the Visibility of Assignment !!!");
+            return;
+        }
+
+        // Creating Some Variables //
+        let data = {
+            "task" : "Upload New Assignment", 
+            "loggedInUser" : document.getElementById("userId").textContent, 
+            "instituteId" : document.getElementById("instituteId").textContent, 
+            "authority" : document.getElementById("authority").textContent,
+            "sessionId" : document.getElementById("sessionId").textContent,
+            "uploadedBy": document.getElementById("userId").textContent,
+            "subjectName": subjectName.value,
+            "assignmentTitle": assignmentTitle.value,
+            "assignmentDescription": assignmentDescription.value,
+            "assignmentDeadline": deadline.value,
+            "uploadedDateTime": Date(),
+            "assignmentVisibility": selectVisibility.options[selectVisibility.selectedIndex].value,
+        };
+
+        let xhr = new XMLHttpRequest();
+        let formData = new FormData();
+        
+        formData.append("request", JSON.stringify(data));   
+        formData.append("assignmentFile", fileInput.files[0]);
+
+        xhr.timeout = 10000;
+        xhr.open("POST", '../../Server/Utilities/InstituteSpecificUtilities.php'); 
+        
+        // Function to be executed When the request has made and got the response from the server //
+        xhr.onload = function(){
+
+            if( this.status != 200 ){
+                alert("Something Went Wrong!");
+            }
+            else{
+                let responseText = this.responseText.replace(/(\r\n|\n|\r)/gm, "");
+                if( responseText.includes("Success") ){
+                    let response = JSON.parse(responseText);
+                    alert(response.message);
+                    showUploadedAssignments();
+                }
+                else{
+                    alert(responseText);
+                }
+            }
+        }
+        xhr.send(formData);
+
+    }
+    uploadAssignmentButton.addEventListener("click", uploadNewAssignment);
+}
+
+
+
+// Function to get the Uploaded assignments from the Institute's Database //
+function getUploadedAssignments(asyncRequest=true){
+
+    // Creating Some Variables //
+    let data = {
+        "task" : "Get Uploaded Assignments", 
+        "loggedInUser" : document.getElementById("userId").textContent, 
+        "instituteId" : document.getElementById("instituteId").textContent, 
+        "authority" : document.getElementById("authority").textContent,
+        "sessionId" : document.getElementById("sessionId").textContent,
+    };
+
+    let onLoadFunction = function(){
+        if( this.status != 200 ){
+            alert("Something Went Wrong!");
+        }
+        else{
+            let responseText = this.responseText.replace(/(\r\n|\n|\r)/gm, "");
+            if( responseText.includes("Success") ){
+                let response = JSON.parse(responseText);
+                uploadedAssignments = response.assignments;
+            }
+            else{
+                uploadedAssignments = {};
+            }
+        }
+    }
+
+    // Making the Request to the Server //
+    makeAJAXRequest("POST", "../../Server/Utilities/InstituteSpecificUtilities.php", data, onLoadFunction, asyncRequest);
+    return uploadedAssignments;
+}
+
+
+
+
+// Function to Make a Uploaded File Card //
+function getUploadedAssignmentCard(assignmentDetails){
+
+    // Creating Tags //
+    let form = document.createElement("form");
+    let classSelectorDiv = document.createElement("div");
+    let classDescriptionDiv = document.createElement("div");
+    let buttonsDiv = document.createElement("div");
+    let liveClassCardCheckbox = document.createElement("input");
+    let classHeadingDiv = document.createElement("div");
+    let hostNameDiv = document.createElement("div");
+    let classTitleDiv = document.createElement("div");
+    let classSubtopicsUL = document.createElement("ul");
+    let pTopicDescription = document.createElement("p");
+    let classDateDiv = document.createElement("div");
+    let classTimeDiv = document.createElement("div");
+    let assignmentFileLink = document.createElement("a");
+    let submissionLink = document.createElement("a");
+
+    
+    // Assigning values to their Attributes //
+    form.classList.add("classItem");
+    classSelectorDiv.classList.add("classSelector");
+    classDescriptionDiv.classList.add("classDescription");
+    buttonsDiv.classList.add("joinClassButton");
+    
+    liveClassCardCheckbox.type = "checkbox";
+    liveClassCardCheckbox.name = "uploadedAssignmentCard";
+    liveClassCardCheckbox.value = assignmentDetails.assignmentId;
+    classHeadingDiv.classList.add("classHeading");
+    classHeadingDiv.innerText = assignmentDetails.subjectName; 
+    hostNameDiv.classList.add("hostName");
+    hostNameDiv.innerHTML = "( " + assignmentDetails.uploadedBy + " )"; 
+
+    classDescriptionDiv.classList.add("classDescription");
+    classTitleDiv.classList.add("classTitle");
+    classTitleDiv.innerText = assignmentDetails.assignmentTitle;
+    classSubtopicsUL.classList.add("classSubtopics");
+    pTopicDescription.innerText = assignmentDetails.assignmentDescription;
+    classDateDiv.classList.add("classDate");
+    classDateDiv.innerText = assignmentDetails.assignmentDeadline;
+    classTimeDiv.classList.add("classTime");
+    classTimeDiv.innerText = "Timing :- " + assignmentDetails.assignmentDeadline + " to " + assignmentDetails.assignmentDeadline;
+
+    buttonsDiv.classList.add("joinClassButton");
+    assignmentFileLink.classList.add("classJoinButton");
+    assignmentFileLink.target = "_blank";
+    assignmentFileLink.href = assignmentDetails.assignmentFileLinkHref;
+    assignmentFileLink.innerText = "Assignment File";
+
+    submissionLink.classList.add("classJoinButton");
+    submissionLink.innerText = "View Submissions";
+    submissionLink.addEventListener("click", ()=>{console.log(assignmentDetails.assignmentId)});
+
+
+    // Wrapping up the tags //
+    classSelectorDiv.appendChild(liveClassCardCheckbox);
+    classSelectorDiv.appendChild(classHeadingDiv);
+    classSelectorDiv.appendChild(hostNameDiv);
+
+    classSubtopicsUL.appendChild(pTopicDescription);
+    classSubtopicsUL.appendChild(classDateDiv);
+    classSubtopicsUL.appendChild(classTimeDiv);
+
+    classDescriptionDiv.appendChild(classTitleDiv);
+    classDescriptionDiv.appendChild(classSubtopicsUL);
+
+    buttonsDiv.appendChild(assignmentFileLink);
+    buttonsDiv.appendChild(submissionLink);
+
+    form.appendChild(classSelectorDiv);
+    form.appendChild(classDescriptionDiv);
+    form.appendChild(buttonsDiv);
+
+    return form;
+}
+
+
+
+// Function to Show all the Uploaded Assignments to the User(Teacher) //
+function showUploadedAssignments(){
+
+    let uploadAssignmentContainer = document.getElementById("uploadAssignmentContainer");
+    uploadAssignmentContainer.innerHTML = "";
+    getUploadedAssignments(false);
+    let userId = document.getElementById("userId").textContent;
+
+    for(let key in uploadedAssignments){
+        if( userId == uploadedAssignments[key].uploadedBy ){
+            uploadAssignmentContainer.appendChild(getUploadedAssignmentCard(uploadedAssignments[key]));
+        }
+    }
+
+    if( !uploadAssignmentContainer.children.length ){
+        alert("No Uploaded Assignments to Show !!!");
+    }
+}
+
+
+
+
+// Function to get the Selected Items from the Form Menu (Checkboxes) //
+function getSelectedItems(tagName){
+
+    let checkboxes = document.getElementsByName(tagName);
+    let selectedItems = [];
+    for (var checkbox of checkboxes)
+    {
+        if (checkbox.checked) {
+            selectedItems.push(checkbox.value);
+        }
+    }
+    return selectedItems;
+}
+
+
+
+// Function to the index of the Selected Institute Class // 
+function getIndexOfClasses(classList, className){
+
+    for(let index=0;index<classList.length;index++){
+        if( classList[index] == className ) return index;
+    }
+    return 0;
+}
+
+
+
+// Function to get the Selected Assignment //
+function getSelectedAssignment(selectedId){
+
+    for(let key in uploadedAssignments){
+        if( uploadedAssignments[key].assignmentId == selectedId ) return uploadedAssignments[key];
+    }
+    return null;
+}
+
+
+
+
+// Function to provide the functionality to update the Uploaded Assignment //
+function updateUploadedAssignment(){
+
+    let selectedItems = getSelectedItems("uploadedAssignmentCard");
+
+    if( selectedItems.length == 1 ){
+
+        let elemenList = getUploadNewAssignmentForm();
+        let selectedAssignment = getSelectedAssignment(selectedItems[0]); 
+        let form = elemenList[0], subjectName = elemenList[1], assignmentTitle = elemenList[2], assignmentDescription = elemenList[3], fileInput = elemenList[4], deadline = elemenList[5], selectVisibility = elemenList[6], uploadAssignmentButton = elemenList[7], uploadedBy = elemenList[8];
+
+        uploadAssignmentButton.innerText = "Update Assignment";
+        // Setting the Pre-Selected/Entered Values //
+        subjectName.value = selectedAssignment.subjectName;
+        assignmentTitle.value = selectedAssignment.assignmentTitle;
+        assignmentDescription.value = selectedAssignment.assignmentDescription;
+        deadline.value = selectedAssignment.assignmentDeadline;
+        selectVisibility.selectedIndex = getIndexOfValue(selectVisibility.options, selectedAssignment.assignmentVisibility);
+
+
+        // Function to make request the server to update Uploaded Assignment //
+        function makeRequestAndUpdateAssignment(e){
+
+            e.preventDefault();
+    
+            // Creating Some Variables //
+            let data = {
+                "task" : "Update Uploaded Assignment", 
+                "loggedInUser" : document.getElementById("userId").textContent, 
+                "instituteId" : document.getElementById("instituteId").textContent, 
+                "authority" : document.getElementById("authority").textContent,
+                "sessionId" : document.getElementById("sessionId").textContent,
+                "assignmentId" : selectedAssignment.assignmentId,
+                "uploadedBy": document.getElementById("userId").textContent,
+                "subjectName": subjectName.value,
+                "assignmentTitle": assignmentTitle.value,
+                "assignmentDescription": assignmentDescription.value,
+                "assignmentDeadline": deadline.value,
+                "uploadedDateTime": Date(),
+                "assignmentVisibility": selectVisibility.options[selectVisibility.selectedIndex].value,
+            };
+    
+            let xhr = new XMLHttpRequest();
+            let formData = new FormData();
+            
+            formData.append("request", JSON.stringify(data));   
+            formData.append("updatedAssignmentFile", fileInput.files[0]);
+    
+            xhr.timeout = 10000;
+            xhr.open("POST", '../../Server/Utilities/InstituteSpecificUtilities.php'); 
+            
+            // Function to be executed When the request has made and got the response from the server //
+            xhr.onload = function(){
+                if( this.status != 200 ){
+                    alert("Something Went Wrong!");
+                }
+                else{
+                    let responseText = this.responseText.replace(/(\r\n|\n|\r)/gm, "");
+                    if( responseText.includes("Success") ){
+                        let response = JSON.parse(responseText);
+                        alert(response.message);
+                        showUploadedAssignments();
+                    }
+                    else{
+                        alert(responseText);
+                    }
+                }
+            }
+
+            xhr.send(formData);
+        }
+
+        uploadAssignmentButton.addEventListener("click", makeRequestAndUpdateAssignment);
+
+    }
+    else if( selectedItems.length > 1 ){
+        alert("Select Only One Assignment !!!");
+    }
+    else{
+        alert("Select atleast One Aassignment !!!");
+    }
+}
+
+
+
+
+// Function to delete the selected Uploaded Assignments //
+function deleteUploadedAssignments(){
+
+    let selectedItems = getSelectedItems("uploadedAssignmentCard");
+    console.log("wkegm");
+    if( selectedItems.length ){
+
+        // Creating Some Variables //
+        let data = {
+            "task" : "Delete Uploaded Assignments", 
+            "loggedInUser" : document.getElementById("userId").textContent, 
+            "instituteId" : document.getElementById("instituteId").textContent, 
+            "authority" : document.getElementById("authority").textContent,
+            "sessionId" : document.getElementById("sessionId").textContent,
+            "selectedAssignments":selectedItems
+        };
+
+        let onLoadFunction = function(){
+
+            if( this.status != 200 ){
+                alert("Something Went Wrong!");
+            }
+            else{
+                let responseText = this.responseText.replace(/(\r\n|\n|\r)/gm, "");
+                if( responseText.includes("Success") ){
+                    let response = JSON.parse(responseText);
+                    alert(response.message);
+                    showUploadedAssignments();
+                }
+                else{
+                    alert(responseText);
+                }
+            }
+        }
+
+        // Making the AJAX Request //
+        makeAJAXRequest("POST", "../../Server/Utilities/InstituteSpecificUtilities.php", data, onLoadFunction);
+    }
+    else{
+        alert("Select atleast One Aassignment !!!");
+    }
+}
+
+
+
+// Binding the Upload Assignments Buttons to their respective handlers //
+document.getElementById("uploadAssignment").addEventListener("click", openUploadNewAssignmentForm);
+document.getElementById("showAssignments").addEventListener("click", showUploadedAssignments);
+document.getElementById("deleteAssignments").addEventListener("click", deleteUploadedAssignments);
+document.getElementById("updateAssignment").addEventListener("click", updateUploadedAssignment);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// -------------------------- Calling the Required Functions -------------------------- //
 
 // Getting the Classes of the Institute //
 getClassesOfTheInstitute();
