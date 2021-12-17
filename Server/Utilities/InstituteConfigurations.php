@@ -212,7 +212,10 @@
         $query = "SELECT * FROM AssignmentSubmissions WHERE assignmentId=? and submittedBy=?;";
         $result = runQuery($databaseConnectionObject, $query, [$assignmentId, $studentId], "is");
 
-        return ( $result && $result->num_rows == 1 );
+        if ( $result && $result->num_rows == 1 ){
+            return [true, $result->fetch_assoc()['submittedFileLinkHref']];
+        }
+        return [false, ""];
     }
     
 
@@ -242,7 +245,9 @@
         $assignments = array();
         $counter=1;
         while($row = $result->fetch_assoc()){
-            $row += ["isSubmitted"=>isAssignmentSubmitted($databaseConnectionObject, $row['assignmentId'], $request['loggedInUser'])];
+
+            $res = isAssignmentSubmitted($databaseConnectionObject, $row['assignmentId'], $request['loggedInUser']);
+            $row += ["isSubmitted"=>$res[0], "submittedFileLinkHref"=>$res[1]];
             $assignments += [$counter=>$row];
             $counter+=1;
         }
@@ -283,6 +288,24 @@
         // Removing from the Database //
         $query = "DELETE FROM AssignmentSubmissions WHERE submittedBy=? AND assignmentId=?;";
         $result = runQuery($databaseConnectionObject, $query, [$request['submittedBy'], $request['assignmentId']], "si", true);
+    }
+
+
+    // Function to submit the Assignment //
+    function submitAssignment($databaseConnectionObject, $request, $fileName, $tmpName){
+
+        $databaseConnectionObject->select_db($request['instituteId']);
+
+        $filePath = ("InstituteFolders/". $request['instituteId'] . "/" . "AssignmentsSubmissions/" . $request['loggedInUser'] . $request['submittedDateTime'] . $fileName);
+
+        $machinePath = getcwd();
+        $machinePath = str_replace("Server/Utilities", $filePath, $machinePath);
+        move_uploaded_file($tmpName, $machinePath);
+
+
+        $query = "INSERT INTO AssignmentSubmissions(submittedBy, submittedDateTime, assignmentId, submittedFileLinkHref, submittedFileLinkMachine) VALUES(?,?,?,?,?);";
+
+        runQuery($databaseConnectionObject, $query, [$request['loggedInUser'], $request['submittedDateTime'], $request['assignmentId'], "http://localhost/" . $filePath, $machinePath ], "ssiss", true);
     }
     
 

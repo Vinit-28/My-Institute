@@ -1,0 +1,255 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200&display=swap');
+
+
+*, *:before, *:after {
+    box-sizing: border-box;
+    --fontFamily : Poppins, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    --backgroundColor : #edf2f9;
+    --navigationBarColor : rgb(209, 225, 248);
+    --textColor : #5e6e82;
+    --textHoverColor : #cad0d6;
+    --activeTextColor : #2864c5;
+    --hoverDarkColor : rgb(35, 43, 53);
+    --buttonColor : rgba(44, 124, 229, 0.844);
+    --buttonHover : rgb(44, 123, 229);
+    --formBorder : #d8e2ef;
+    --littleHeadings : #344050;
+    --backgroundDark : #0b1727;
+    --boxShadow : 0 .5rem 1rem rgba(0,0,0,.15) ;
+}
+
+
+#uploadAssignment{
+    font-family: var(--fontFamily);
+    box-shadow:  var(--boxShadow);
+    padding: 0.6rem;
+    margin-top: 1.2rem;
+    margin-left: 0.5rem;
+    background-color: #fff;
+    border-radius: 0.5rem;
+    overflow-y: scroll;
+}
+
+
+
+#assignmentContainer{
+    display: flex;
+    flex-wrap: wrap;
+    row-gap: 0.8rem;
+    column-gap: 0.8rem;
+    margin-top: 0.4rem;
+    padding: 0.4rem;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
+*::-webkit-scrollbar {
+    display: none;
+}
+
+
+.classSelector{
+    display: flex;
+    padding: 0.2rem;
+    border-radius: 0.2rem;
+    align-items: center;
+    justify-content: flex-start;
+    background-color: #fff;
+}
+
+.classHeading{
+    font-weight: bolder;
+    margin-left: 0.6rem;
+}
+
+.hostName{
+    font-size: 0.8rem;
+}
+
+.cardButtons{
+    display: flex;
+    text-align: center; 
+    justify-content: center;
+}
+
+
+.assignmentItem{
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    row-gap: 0.8rem;
+    width: 330px;
+    font-size: 20px;
+    height: max-content;
+    padding: 0.8rem;
+    padding-top: 1.4em;
+    padding-bottom: 1.4rem;
+    border-radius: 0.4rem;
+    background-color: var(--backgroundColor);
+    transition: box-shadow 200ms ease;
+}
+
+.assignmentItem:hover{
+    box-shadow: var(--boxShadow);
+}
+
+
+.classDescription{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    /* border: 2px solid red; */
+}
+
+.classTitle{
+    font-weight: 700;
+}
+
+.classSubtopics{
+    margin-top: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    font-size: 0.8rem;
+    /* border: 2px solid red; */
+    list-style: none;
+}
+
+
+.classJoinButton{
+    width: 80%;
+    padding: 0.2rem;
+    border: none;
+    background-color: var(--buttonColor);
+    cursor: pointer;
+    color: white;
+    border-radius: 0.2rem;
+    transition: background-color 250ms ease;
+    text-decoration: none; 
+    font-weight: bolder;
+}
+
+.classJoinButton:active , .classJoinButton:focus{
+    outline: none;
+}
+.classJoinButton:hover{
+    background-color: var(--buttonHover);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@media screen and (max-width : 6000px) and (min-width : 1701px) 
+{
+    #liveClassContainer{
+        grid-template-columns: 350px 350px 350px;
+        /* justify-content: space-evenly; */
+    }
+}
+
+@media screen and (max-width : 1700px) and (min-width : 1501px) 
+{
+    #liveClassContainer{
+        grid-template-columns: repeat(3 , 300px);
+    }
+}
+
+@media screen and (max-width : 1500px) and (min-width : 1251px) 
+{
+    #liveClassContainer{
+        grid-template-columns: repeat(3 , 300px);
+    }
+
+    .classJoinButton{
+        font-size: 0.7rem;
+        padding: 0.4rem;
+    }
+
+}
+
+@media screen and (max-width : 1250px) and (min-width : 901px) 
+{
+    #liveClassContainer{
+        grid-template-columns: repeat(2 , 300px);
+    }
+    .classJoinButton{
+        font-size: 0.85rem;
+        padding: 0.4rem;
+    }
+
+}
+
+@media screen and (max-width : 900px) and (min-width : 701px) 
+{
+     #liveClassContainer{
+        grid-template-columns: 370px;
+    }
+    /* #liveClassContainer .assignmentItem{
+        margin: auto;
+    } */
+}
+
+
+
+@media screen and (max-width : 700px) and (min-width : 50px) 
+{
+
+    #uploadAssignment{
+        width: 100%;
+        height: 100%;
+        margin-left: 0.8rem;
+        margin-right: 0.8rem;
+    }
+
+
+    
+    #liveClassContainer .assignmentItem:nth-last-child(1){
+        margin-bottom: 2rem;
+    }
+    #liveClassContainer{
+        grid-template-columns: 1fr;
+        /* justify-content: space-evenly; */
+        gap: 1rem;
+        margin-bottom: 2rem;
+        /* padding-bottom: 3rem; */
+    }
+
+    .classHeading{
+        font-size: 0.8rem;
+    }
+
+    .hostName{
+        font-size: 0.7rem;
+    }
+
+    .assignmentItem{
+        width: auto;
+    }
+
+    .classJoinButton{
+        font-size: 0.8rem;
+        padding: 0.4rem;
+    }
+
+}

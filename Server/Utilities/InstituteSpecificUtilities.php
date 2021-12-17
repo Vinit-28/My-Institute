@@ -309,6 +309,18 @@
             }
 
 
+            // If request is to Submit a Assignment //
+            else if($request['task'] == "Submit Assignment" && $authority == "student" ){
+                submitAssignment($databaseConnectionObject, $request, $_FILES['submissionFile']['name'], $_FILES['submissionFile']['tmp_name']);
+                
+                $response = array(
+                    "result"=>"Success",
+                    "message"=>"Assignment Submitted Successfully !!!"
+                );
+                echo json_encode($response);
+            }
+
+
             // If request is to Delete a Submission //
             else if($request['task'] == "Delete Assignment Submission" && $authority == "teacher" ){
                 deleteAssignmentSubmission($databaseConnectionObject, $request);

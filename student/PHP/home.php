@@ -36,6 +36,7 @@ if (!(isset($_SESSION["isUserLogedIn"]) && isset($_SESSION["userId"]) && isset($
         <link rel="stylesheet" href="../CSS/downloads.css">
         <link rel="stylesheet" href="../CSS/quizApp.css">
         <link rel="stylesheet" href="../CSS/studentProfileImg.css">
+        <link rel="stylesheet" href="../CSS/uploadAssignment.css">
 
         <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
         <title>Root Dashboard</title>
@@ -86,6 +87,10 @@ if (!(isset($_SESSION["isUserLogedIn"]) && isset($_SESSION["userId"]) && isset($
                 <div class="mynavigationItem" value="#div6">
                     <i class='mynavigationItemIcon bx bx-download'></i>
                     <span class="mynavigationItemName">Download</span>
+                </div>
+                <div class="mynavigationItem" value="#uploadAssignment">
+                    <i class='mynavigationItemIcon bx bx-cloud-upload'></i>
+                    <span class="mynavigationItemName">Submit Assignments</span>
                 </div>
                 <div class="mynavigationItem" value="#div7">
                     <i class='mynavigationItemIcon bx bxs-book-content'></i>
@@ -202,6 +207,48 @@ if (!(isset($_SESSION["isUserLogedIn"]) && isset($_SESSION["userId"]) && isset($
             </div>
 
             <!-- Download Section Div End-->
+
+
+
+            <!-- Upload Section Div -->
+            <div id="uploadAssignment" class="formsDiv" style="display: none;">
+                
+                <div class="boxHeadingDiv">
+                    <h3 class="boxHeading">Assignments</h3>
+                </div>
+                
+                <div id="assignmentContainer">
+                    
+                    <!-- Assignment Card -->
+                    <!-- <div class="assignmentItem">
+                        <div class="classSelector">
+                            <div class="classHeading">C++</div>
+                            &nbsp;&nbsp;&nbsp;
+                            <div class="hostName">(Tarun Sharma)</div>
+                        </div>
+                        <div class="classDescription">
+                            <div class="classTitle">Oop's</div>
+                            <ul class="classSubtopics">
+                                <p>Polymorphism, Encapsulation , Objects</p>
+                                <div class="classDate">Date :- 25-Nov-2021</div>
+                                <div class="classTime">Timing :- 10:00 AM to 11:00 AM</div>
+                            </ul>
+                        </div>
+
+                        <div class="cardButtons">
+                            <a href="" class="classJoinButton">Upload Assignment</a>
+                        </div>
+                        <div class="cardButtons">
+                            <a href="" class="classJoinButton">View Submitted File</a>
+                        </div>
+                    </div>  -->
+
+
+                </div>
+
+
+            </div>
+            <!-- Upload Section Div End-->
 
 
 
@@ -423,7 +470,7 @@ if (!(isset($_SESSION["isUserLogedIn"]) && isset($_SESSION["userId"]) && isset($
             <!-- Library Div END-->
 
 
-            
+
             <!-- Student Exam Div END-->
             <link rel="stylesheet" href="../CSS/studentExam.css">
             <div id="studentExam" class="formsDiv" style="display: none;">
@@ -461,6 +508,7 @@ if (!(isset($_SESSION["isUserLogedIn"]) && isset($_SESSION["userId"]) && isset($
 
     <script src="../JS/jquery.js"></script>
     <script src="../JS/main1.js"></script>
+    <script src="../JS/main2.js"></script>
     <script src="../JS/resume.js"></script>
     <script src="../JS/studentTest.js"></script>
 
@@ -653,6 +701,9 @@ if (!(isset($_SESSION["isUserLogedIn"]) && isset($_SESSION["userId"]) && isset($
                 showLiveClasses();
             } else if ($(person).attr("value") == "#studentProfileDiv") {
                 fillUpPersonalDetails();
+            }
+            else if( $(person).attr("value") == "#uploadAssignment" ){
+                showAssignmentsTab();
             }
             lastActiveItem = $(person);
         }

@@ -239,11 +239,19 @@
 
         $relatedPersons = array();
         $counter=1;
+        $result = "";
         $databaseConnectionObject->select_db($request['instituteId']);
 
-        // Searching for students //
-        $query = "SELECT * FROM StudentInfo WHERE userId	= ? OR name = ? OR designation = ?";
-        $result = runQuery($databaseConnectionObject, $query, [$request['searchKey'], $request['searchKey'], $request['searchKey']], "sss");
+        if( strtolower($request['searchKey']) != "all" ){
+            // Searching for students //
+            $query = "SELECT * FROM StudentInfo WHERE userId	= ? OR name = ? OR designation = ?";
+            $result = runQuery($databaseConnectionObject, $query, [$request['searchKey'], $request['searchKey'], $request['searchKey']], "sss");
+        }
+        else{
+            // Searching for students //
+            $query = "SELECT * FROM StudentInfo;";
+            $result = runQuery($databaseConnectionObject, $query, [], "");
+        }
 
         if( $result && $result->num_rows ){
             $databaseConnectionObject->select_db("App_Database");
@@ -256,10 +264,17 @@
             }
         }
 
-        // Searching for teachers //
         $databaseConnectionObject->select_db($request['instituteId']);
-        $query = "SELECT * FROM TeacherInfo WHERE userId = ? OR name = ? OR designation = ?";
-        $result = runQuery($databaseConnectionObject, $query, [$request['searchKey'], $request['searchKey'], $request['searchKey']], "sss");
+        if( strtolower($request['searchKey']) != "all" ){
+            // Searching for teachers //
+            $query = "SELECT * FROM TeacherInfo WHERE userId = ? OR name = ? OR designation = ?";
+            $result = runQuery($databaseConnectionObject, $query, [$request['searchKey'], $request['searchKey'], $request['searchKey']], "sss");
+        }
+        else{
+            // Searching for teachers //
+            $query = "SELECT * FROM TeacherInfo";
+            $result = runQuery($databaseConnectionObject, $query, [], "");
+        }
 
         if( $result && $result->num_rows ){
             $databaseConnectionObject->select_db("App_Database");

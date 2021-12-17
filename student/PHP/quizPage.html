@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="../CSS/quizPage.css">
     <title>Document</title>
 </head>
-<body id="body">
+<body id="body" >
 
     <h1 class="boxHeading">Mock Test</h1>
 
@@ -53,8 +53,6 @@
 
 <script>
 
-    
- 
 
     document.getElementById('body').style.height = (window.screen.availHeight *80/100) +"px";
     document.getElementById('modalContainer').style.height = (window.screen.availHeight *90/100) +"px";
@@ -197,8 +195,8 @@
 
 
 
-    x.onreadystatechange = function() {
-        if (this.readyState == 4 && this.status == 200) 
+    x.onload = function() {
+        if (this.status == 200) 
         {
             object = JSON.parse(this.responseText);
             console.log(object);
@@ -210,10 +208,9 @@
 
     // // x.open('GET' , 'https://quizapi.io/api/v1/questions?apiKey=N4EqE3vavETJU0zQZaq7Iq2T10urbtuZzbz9IZaW&category=linux&difficulty=Easy&limit=10' , true);
     // // x.open('GET' , './questions.json' , false);
-    // x.open(method , link+key+'&'+category+'&'+dificulty+'&'+limit , true)
+    x.open(method , link+key+'&'+category+'&'+dificulty+'&'+limit , true)
     // alert('Make sure that no tab switching should take place, \nelse browser will close itself !');
-    // x.send();
-
+    x.send();
 
     var hidden = false
     document.addEventListener('visibilitychange', function(){
