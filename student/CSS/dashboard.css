@@ -1,0 +1,251 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200&display=swap');
+
+*, *:before, *:after {
+    box-sizing: border-box;
+    --fontFamily : Poppins, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    --backgroundColor : #edf2f9;
+    --navigationBarColor : rgb(209, 225, 248);
+    --textColor : #5e6e82;
+    --textHoverColor : #cad0d6;
+    --activeTextColor : #2864c5;
+    --hoverDarkColor : rgb(35, 43, 53);
+    --buttonColor : rgba(44, 124, 229, 0.844);
+    --buttonHover : rgb(44, 123, 229);
+    --formBorder : #d8e2ef;
+    --littleHeadings : #344050;
+    --backgroundDark : #0b1727;
+    --boxShadow : 0 .5rem 1rem rgba(0,0,0,.15) ;
+}
+
+
+
+
+#progressContainer{
+    display: flex;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+}
+
+
+.individualProgressCard{
+    box-shadow:  var(--boxShadow);
+    padding: 0rem;
+    margin-top: 1.2rem;
+    margin-left: 0.5rem;
+    margin: 1.2rem auto 0 auto;
+    height: max-content;
+    width: max-content;
+    background-color: #fff;
+    border-radius: 0.5rem;
+
+}
+
+.progressCardHeading{
+    padding-top: 0.4rem;
+    text-align: center;
+    font-weight: 700;
+}
+
+#feesDetailsContainer{
+    margin-bottom: 1rem;
+    margin-left: 1rem;
+}
+#feesDetailsContainer *{
+    text-align: left;
+}
+
+
+
+
+
+.circle{
+    width: 200px;
+    height: 200px;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 1.2rem;
+}
+
+.outerCircle{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: transparent;
+    border: 10px inset var(--activeTextColor);
+    border-radius: 50%;
+    animation: rotate 3s linear infinite;
+}
+
+/* .outerCircle{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width:  15vw;
+    height: 15vw;
+    background-color: transparent;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 2rem;
+    border: 10px inset rgb(133,224,242);
+    border-radius: 50%;
+
+    animation: rotate 3s infinite linear;
+    box-shadow: 0 0 5px rgba(0,0,0,0.2);
+} */
+
+.inner{
+    justify-self: center;
+    align-self: center;
+    border-radius: 50%;
+    position: absolute;
+    width: 80%;
+    height: 80%;
+    z-index: 8;
+    background-color: #fff;
+    box-shadow: 0.1rem 0.1rem 1.5rem rgba(0,0,0,.75);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.7rem;
+    font-weight: bold;
+
+}
+
+
+@keyframes rotate {
+    0%{
+        transform: none;
+    }
+    100%{
+        transform: rotate(-360deg);
+    }
+}
+/*
+
+
+.container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.circle{
+    width: 200px;
+    height: 200px;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.progressCircle{
+    position: relative;
+    padding: 1rem;
+}
+
+.outerCircle{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: transparent;
+    border-radius: 50%;
+    border-top:    5px   solid var(--buttonHover);
+    border-right:  5px solid var(--buttonHover);
+    border-bottom: 5px solid  var(--activeTextColor);
+    border-left:   5px   solid var(--activeTextColor);
+    animation: rotate 10s linear infinite;
+}
+
+
+.outer{
+    position: absolute;
+    width: 90%;
+    height: 90%;
+    border-radius: 50%;
+    border: 2px solid blue;
+    overflow: hidden;
+}
+.coverRight{
+    background-color: #fff;
+    z-index: 3;
+    position: absolute;
+    width: 50%;
+    height: 100%;
+}
+.innerRight , .innerLeft {
+    position: absolute;
+    z-index: 2;
+    width: 50%;
+    height: 100%;
+    background-color: var(--activeTextColor);
+    transform-origin: right;
+}
+.innerLeft{
+    z-index: 4;
+    transform: rotate(180deg);
+    background-color: var(--activeTextColor);
+    visibility: hidden;
+}   
+
+
+
+.innerRight{
+    animation: innerRight 1s linear forwards;
+}
+.innerLeft{
+    animation: innerLeft 1s linear 1s forwards ;
+}
+
+@keyframes innerRight {
+    0%{
+        transform: none;
+    }
+    100%{
+        transform: rotate(180deg);
+    }
+    
+}
+@keyframes innerLeft {
+    0%{
+        visibility: visible;
+    }
+    100%{
+        transform: rotate(360deg);
+        visibility: visible;
+    }
+    
+}
+
+.innerRight .dot{
+    position: absolute;
+    top: 0;
+    right: -12%;
+    width:  15px;
+    height: 15px;
+    background-color: var(--activeTextColor);
+    border-radius: 50%;
+    z-index: 7;
+
+}
+
+
+.innerLeft .dot{
+    position: absolute;
+    top: 0;
+    right: -12%;
+    width:  15px;
+    height: 15px;
+    background-color: var(--activeTextColor);
+    border-radius: 50%;
+    z-index: 7;
+} */
