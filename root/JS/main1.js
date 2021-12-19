@@ -5,7 +5,7 @@ let relatedPersons = {};
 let instituteClasses = {};
 
 
-// Function to make a AJAX request to the Server //
+// Function to make a AJAX request to the Server ( Utility Function ) //
 function makeAJAXRequest(requesType, serverUrl, data, onLoadFunction, async=true){
 
     // Creating the XHR Object //

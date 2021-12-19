@@ -558,18 +558,10 @@ if (!(isset($_SESSION["isUserLogedIn"]) && isset($_SESSION["userId"]) && isset($
     </div>
 
 
-    <p id="userId" style="display: none;">
-        <?php echo $_SESSION['userId']; ?>
-    </p>
-    <p id="sessionId" style="display: none;">
-        <?php echo $_SESSION['sessionId']; ?>
-    </p>
-    <p id="instituteId" style="display: none;">
-        <?php echo $_SESSION['instituteId']; ?>
-    </p>
-    <p id="authority" style="display: none;">
-        <?php echo $_SESSION['authority']; ?>
-    </p>
+    <p id="userId" style="display: none;"><?php echo $_SESSION['userId']; ?></p>
+    <p id="sessionId" style="display: none;"><?php echo $_SESSION['sessionId']; ?></p>
+    <p id="instituteId" style="display: none;"><?php echo $_SESSION['instituteId']; ?></p>
+    <p id="authority" style="display: none;"><?php echo $_SESSION['authority']; ?></p>
 
 </body>
 

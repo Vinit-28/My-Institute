@@ -74,7 +74,6 @@ function submitAssignment(assignmentId){
             // Function to be executed When the request has made and got the response from the server //
             xhr.onload = function(){
 
-                console.log(this.responseText);
                 if( this.status != 200 ){
                     alert("Something Went Wrong!");
                 }
@@ -148,7 +147,6 @@ function getAssignmentCard(assignmentDetails){
     fileInput.id = assignmentDetails.assignmentId;
     fileInput.style.display = "none";
     
-    console.log(fileInput);
 
     // Wrapping up the Tags //
     uploadAssButtonDiv.appendChild(aUploadAss);
@@ -197,7 +195,6 @@ function showAssignmentsTab(){
     let assignmentContainer = document.getElementById("assignmentContainer");
     let uploadedAssignments = getUploadedAssignments(false);
     assignmentContainer.innerHTML = "";
-    console.log(uploadedAssignments)
     for(let key in uploadedAssignments){
         assignmentContainer.appendChild(getAssignmentCard(uploadedAssignments[key]));
     }
