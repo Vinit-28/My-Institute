@@ -18,6 +18,13 @@
 }
 
 
+#dashboard{
+    overflow-y: scroll;
+}
+
+#dashboard::-webkit-scrollbar{
+    display: none;
+}
 
 
 #progressContainer{
