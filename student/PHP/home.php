@@ -679,9 +679,13 @@ if (!(isset($_SESSION["isUserLogedIn"]) && isset($_SESSION["userId"]) && isset($
 
     if (windowWidth >= 701) {
 
+        $("#dashboard").height($(window).height() * 80 / 100);
+
         $($("#mynavigationBar").children()[0]).css("margin-top", $("#mynavbar").height() * 22 / 100);
         $("#mynavigationBar").height($(window).height() * 88 / 100);
         $("#liveClassContainer").height($(window).height() * 70 / 100);
+
+
 
         $("#div8").height($(window).height() * 80 / 100);
         $("#downloads").height($(window).height() * 65 / 100);
@@ -694,6 +698,8 @@ if (!(isset($_SESSION["isUserLogedIn"]) && isset($_SESSION["userId"]) && isset($
         $("#booksContainer").height($('#libraryContainer').height() * 85 / 100);
     } else {
         $($("#mynavigationBar").children()[0]).css("margin-top", $("#mynavbar").height() * 23 / 100);
+
+        $("#dashboard").height($(window).height() * 80 / 100);
 
         $("#div8").height($(window).height() - 130);
         $("#downloads").height($(window).height() - 170);
@@ -712,9 +718,9 @@ if (!(isset($_SESSION["isUserLogedIn"]) && isset($_SESSION["userId"]) && isset($
 
 
     $(window).resize(function () {
+
+        if (windowWidth = 700) {window.location.reload("true");}
         if (windowWidth >= 701) {
-
-
 
             $("#mynavigationBar").css({
                 "height": $(window).height() * 88 / 100,
@@ -735,28 +741,29 @@ if (!(isset($_SESSION["isUserLogedIn"]) && isset($_SESSION["userId"]) && isset($
             $("#downloadContainer").height($("#downloads").height() - 30);
 
             $("#liveClassContainer").height($(window).height() * 60 / 100);
+            
+            
+            if (windowWidth >= 690 && windowWidth <= 700) 
+            {
+                $("#mynavigationBar").css({
+                    "width": "100%"
+                });
+                window.location.reload("true");
+            }
         }
 
 
 
-        if (windowWidth <= 710 && windowWidth >= 690) {
-            window.location.reload("true");
-        }
-        if (windowWidth <= 700 && windowWidth >= 690) {
-            $("#mynavigationBar").css({
-                "width": "100%"
-            });
-            window.location.reload("true");
-        } else if (windowWidth >= 701 && windowWidth <= 710) {
-            if (windowWidth >= 701 && windowWidth <= 849) {
+        if (windowWidth >= 701) 
+        {
+            if (windowWidth >= 701 && windowWidth <= 849) 
+            {
                 $("#mynavigationBar").css("width", "12rem");
-            } else if (windowWidth >= 850) {
+            } 
+            else if (windowWidth >= 850) 
+            {
                 $("#mynavigationBar").css("width", "13rem");
             }
-            setTimeout(function () {
-                window.location.reload("true");
-            }, 100);
-
         }
 
 
@@ -793,23 +800,7 @@ if (!(isset($_SESSION["isUserLogedIn"]) && isset($_SESSION["userId"]) && isset($
         }
         lastActiveItem = $(person);
     }
-    $(".mynavigationItem").click(function () {
-        manipulate($(this));
-        if ($(window).width() <= 700) { moveUp(); }
-        if (btn.classList.contains('cross')) {
-            btn.classList.remove('cross');
-            setTimeout(function () {
-                btn.classList.remove('open')
-            }, 200);
-        }
-        else {
-            btn.classList.remove('open');
-            setTimeout(function () {
-                btn.classList.remove('cross')
-            }, 200);
-        }
-        position = !position
-    });
+    
 
 
 
@@ -819,7 +810,6 @@ if (!(isset($_SESSION["isUserLogedIn"]) && isset($_SESSION["userId"]) && isset($
 
 
     function moveLeft() {
-        navBarWidth = $("#mynavigationBar").css("width");
 
 
         $(".mynavigationItemName").css({
@@ -873,6 +863,24 @@ if (!(isset($_SESSION["isUserLogedIn"]) && isset($_SESSION["userId"]) && isset($
         }, 50);
 
     }
+
+    
+    $(".mynavigationItem").click(function () {
+        manipulate($(this));
+        if ($(window).width() <= 700) 
+        { 
+            moveUp(); 
+            if (btn.classList.contains('cross')) {
+                btn.classList.remove('cross');
+                setTimeout(function () {
+                    btn.classList.remove('open')
+                }, 200);
+            }
+            position = !position
+        }
+    });
+
+    
 
     $("#mytoggleButton").click(function () {
 

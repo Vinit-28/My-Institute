@@ -615,23 +615,8 @@ if (!(isset($_SESSION["isUserLogedIn"]) && isset($_SESSION["userId"]) && isset($
 
         lastActiveItem = $(person);
     }
-    $(".mynavigationItem").click(function () {
-        manipulate($(this));
-        if ($(window).width() <= 700) { moveUp(); }
-        if (btn.classList.contains('cross')) {
-            btn.classList.remove('cross');
-            setTimeout(function () {
-                btn.classList.remove('open')
-            }, 200);
-        }
-        else {
-            btn.classList.remove('open');
-            setTimeout(function () {
-                btn.classList.remove('cross')
-            }, 200);
-        }
-        position = !position
-    });
+    
+    
 
 
 
@@ -671,14 +656,15 @@ if (!(isset($_SESSION["isUserLogedIn"]) && isset($_SESSION["userId"]) && isset($
     // Launch class Button Handeler END
 
 
+
+
+
     let position = false;
     let navBarWidth = $("#mynavigationBar").css("width");
     let btn = document.querySelector('#mytoggleButton');
 
 
     function moveLeft() {
-        navBarWidth = $("#mynavigationBar").css("width");
-
 
         $(".mynavigationItemName").css({
             "transform": "translateX(-300%)",
@@ -731,6 +717,23 @@ if (!(isset($_SESSION["isUserLogedIn"]) && isset($_SESSION["userId"]) && isset($
         }, 50);
 
     }
+
+
+    $(".mynavigationItem").click(function () {
+        manipulate($(this));
+        if ($(window).width() <= 700) 
+        { 
+            moveUp(); 
+            if (btn.classList.contains('cross')) 
+            {
+                btn.classList.remove('cross');
+                setTimeout(function () {
+                    btn.classList.remove('open')
+                }, 200);
+            }
+            position = !position
+        }
+    });
 
     $("#mytoggleButton").click(function () {
 
