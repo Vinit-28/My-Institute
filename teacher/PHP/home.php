@@ -34,6 +34,7 @@ if (!(isset($_SESSION["isUserLogedIn"]) && isset($_SESSION["userId"]) && isset($
     <link rel="stylesheet" href="../CSS/downloads.css">
     <link rel="stylesheet" href="../CSS/div7.css">
     <link rel="stylesheet" href="../CSS/teacherProfileDiv.css">
+    <link rel="stylesheet" href="../CSS/setattendance.css">
     <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
     <title>Teacher Dashboard</title>
 </head>
@@ -147,6 +148,10 @@ if (!(isset($_SESSION["isUserLogedIn"]) && isset($_SESSION["userId"]) && isset($
             <div class="mynavigationItem" value="#uploadTest">
                 <i class='mynavigationItemIcon bx bxs-edit-alt'></i>
                 <span class="mynavigationItemName">Upload Test</span>
+            </div>
+            <div class="mynavigationItem" value="#setAttendance">
+                <i class='mynavigationItemIcon bx bx-check-square'></i>
+                <span class="mynavigationItemName">Set Attendance</span>
             </div>
         </div>
 
@@ -553,7 +558,53 @@ if (!(isset($_SESSION["isUserLogedIn"]) && isset($_SESSION["userId"]) && isset($
 
         </div>
         <!-- add class Section Div end -->
+        
+        
+        
+        
+        <!-- set attendance Div  -->
+        <div id="setAttendance" class="formsDiv" style="display: none;">
+            <div class="boxHeadingDiv">
+                <h3 class="boxHeading">Mark Attendance</h3>
+            </div>
 
+            <div>
+                <button id="markAttendance" class="downloadOptions"   style="font-weight: bold;">&nbsp;&nbsp;Mark&nbsp;&nbsp;</button>
+                <button id="showAttendance" class="downloadOptions"   style="font-weight: bold;">&nbsp;&nbsp;Show&nbsp;&nbsp;</button>
+            </div>
+            <div class="forms">
+                <input type="date" name="" id="attDate" max="2021-12-21">
+                <select name="" id="">
+                    <option value="">Select a class</option>
+                    <option value="">BCA I yr</option>
+                    <option value="">BCA II yr</option>
+                    <option value="">BCA III yr</option>
+                </select>
+            </div>
+
+                <form id="studentContainer" class="internalContainer">
+    
+                    <div class="attStudent">
+                        <input type="checkbox">
+                        <img class="attStudentImg" src="../IMAGES/profile.jpg" alt="">
+                        <div class="attStudentName">Aman Khushalani</div>
+                        <div class="attStudentClass">BCA III Yr.</div>
+                    </div>
+                    
+                    <div id="submitAttendanceContainer" class="forms">
+                        <button class="">Submit</button>
+                        <!-- <button class="">Update</button> -->
+                    </div>
+    
+                </form>
+
+        </div>
+
+        <!-- set attendance Div end -->
+        
+        
+        
+        
 
     </div>
 
@@ -586,10 +637,15 @@ if (!(isset($_SESSION["isUserLogedIn"]) && isset($_SESSION["userId"]) && isset($
         $("#downloadContainer").height($("#downloads").height() * 95 / 100);
         $("#liveClassSection").height($("#downloads").height() * 95 / 100);
         $("#searchResults").height($(window).height() * 65 / 100);
+        
+        $("#setAttendance").height($(window).height() * 80 / 100);
+        
     } else {
         $($("#mynavigationBar").children()[0]).css("margin-top", $("#mynavbar").height() * 23 / 100);
         $("#downloadContainer").height($(window).height() * 60 / 100);
         $("#searchResults").height($(window).height() * 80 / 100);
+        $("#setAttendance").height($(window).height() * 83 / 100);
+        $("#studentContainer").height($('#setAttendance').height() * 57 / 100);
     }
 
 
@@ -637,25 +693,7 @@ if (!(isset($_SESSION["isUserLogedIn"]) && isset($_SESSION["userId"]) && isset($
             // openUploadNewAssignmentForm();
         }
     }
-    $(".mynavigationItem").click(function () {
-        manipulate($(this));
-        if($(window).width()<=700){moveUp();}
-        if(btn.classList.contains('cross'))
-        {
-            btn.classList.remove('cross');
-            setTimeout(function () {
-                btn.classList.remove('open')
-            }, 200);
-        }
-        else
-        {
-            btn.classList.remove('open');
-            setTimeout(function () {
-                btn.classList.remove('cross')
-            }, 200);
-        }
-        position = !position
-    });
+    
 
 
 
@@ -699,8 +737,6 @@ if (!(isset($_SESSION["isUserLogedIn"]) && isset($_SESSION["userId"]) && isset($
 
 
     function moveLeft() {
-        navBarWidth = $("#mynavigationBar").css("width");
-
 
         $(".mynavigationItemName").css({
             "transform": "translateX(-300%)",
@@ -753,6 +789,22 @@ if (!(isset($_SESSION["isUserLogedIn"]) && isset($_SESSION["userId"]) && isset($
         }, 50);
 
     }
+
+
+    $(".mynavigationItem").click(function () {
+        manipulate($(this));
+        if ($(window).width() <= 700) 
+        { 
+            moveUp(); 
+            if (btn.classList.contains('cross')) {
+                btn.classList.remove('cross');
+                setTimeout(function () {
+                    btn.classList.remove('open')
+                }, 200);
+            }
+            position = !position
+        }
+    });
 
     $("#mytoggleButton").click(function () {
 
