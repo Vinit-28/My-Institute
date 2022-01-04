@@ -35,6 +35,7 @@ if (!(isset($_SESSION["isUserLogedIn"]) && isset($_SESSION["userId"]) && isset($
     <link rel="stylesheet" href="../CSS/div7.css">
     <link rel="stylesheet" href="../CSS/teacherProfileDiv.css">
     <link rel="stylesheet" href="../CSS/setattendance.css">
+    <link rel="stylesheet" href="../CSS/uploadAssignments.css">
     <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
     <title>Teacher Dashboard</title>
 </head>
@@ -270,12 +271,14 @@ if (!(isset($_SESSION["isUserLogedIn"]) && isset($_SESSION["userId"]) && isset($
 
 
         <!-- Upload Assignments Div -->
-
-        <div id="div4" about="uploadAssignments" class="formsDiv" style="display:none;">
+        <div id="div4" about="uploadAssignments" class="formsDiv">
+            
             <div class="boxHeadingDiv">
                 <h3 class="boxHeading">Upload Assignment</h3>
             </div>
-            <div id="">
+
+
+            <div>
                 <button id="uploadAssignment" style="margin: 0.4rem 0.2rem 0.4rem 0.2rem; font-weight:bold"
                     class="downloadOptions">Upload Assignment</button>
                 <button id="showAssignments" style="margin: 0.4rem 0.2rem 0.4rem 0.2rem; font-weight:bold"
@@ -286,7 +289,73 @@ if (!(isset($_SESSION["isUserLogedIn"]) && isset($_SESSION["userId"]) && isset($
                     class="downloadOptions">Update Assignment</button>
             </div>
 
+            <div id="assignmentModal" style="display: none;">
+
+                <div id="submissionContainer">
+
+                    <!-- one close button -->
+                    <div id="closeSubmissionModal1" style="display: none;">
+                        <i class='bx bx-x'></i>
+                    </div>
+                    
+                    <!-- One card starts here -->
+                    <div class="submittedAssignmentCard">
+                        <div class="submittedStudentProfile">
+                            <img src="../IMAGES/profile.jpg" alt="">
+                            <div class="submittedStudentName">Aman Khushalani</div>
+                        </div>
+                        <div class="submittedButtonContainer">
+                            <div class="submittedButtons">View Assignment</div>
+                            <div class="submittedButtons">Delete Assignment</div>
+                        </div>
+                    </div>
+                    <!-- One card ends here -->
+                    
+                    
+                </div>
+                
+                
+                <!-- second close button -->
+                <div id="closeSubmissionModal2" style=" cursor: pointer; font-size: 20px; ">
+                    <i class='bx bx-x'></i>
+                </div>
+
+            </div>
+
+            <!-- Script to maintain modal of uploaded modals -->
+            <script>
+                function openModal(){
+                    document.getElementById('assignmentModal').style.display = 'flex'
+                }
+                document.getElementById('closeSubmissionModal1').addEventListener('click' , function(){
+                    document.getElementById('assignmentModal').style.display = 'none';
+                })
+                document.getElementById('closeSubmissionModal2').addEventListener('click' , function(){
+                    document.getElementById('assignmentModal').style.display = 'none';
+                })
+            </script>
+
             <div id="uploadAssignmentContainer">
+                
+                <!-- <form class="assignmentItem">
+                    <div class="classSelector"><input type="checkbox" name="uploadedAssignmentCard" value="2">
+                        <div class="classHeading">Python</div>
+                        <div class="hostName">( teacher )</div>
+                    </div>
+                    <div class="classDescription">
+                        <div class="classTitle">Python</div>
+                        <ul class="classSubtopics">
+                            <p>Python</p>
+                            <div class="classDate">Date :- 2022-01-04T15:59</div>
+                            <div class="classTime">Timing :- 2022-01-04  15:59 to 2022-01-04 15:59</div>
+                        </ul>
+                    </div>
+                    <div class="assignmentButtonContainer">
+                        <a class="assignmentButton" target="_blank" href="http://localhost/InstituteFolders/Decole/uploadedAssignments/teacherTue Jan 04 2022 15:59:49 GMT+0530 (India Standard Time)App_Database.sql">Assignment File</a>
+                        <a class="assignmentButton">View Submissions</a>
+                    </div>
+                </form> -->
+
                 <!-- Upload New Assignment Form -->
 
                 <!-- <form action="" class="forms">
@@ -622,7 +691,7 @@ if (!(isset($_SESSION["isUserLogedIn"]) && isset($_SESSION["userId"]) && isset($
 <script src="../JS/main1.js"></script>
 <script src="../JS/main2.js"></script>
 
-<script>
+<script>console.log('enter')
     let windowWidth = $(window).width();
 
 
@@ -639,6 +708,8 @@ if (!(isset($_SESSION["isUserLogedIn"]) && isset($_SESSION["userId"]) && isset($
         $("#searchResults").height($(window).height() * 65 / 100);
         
         $("#setAttendance").height($(window).height() * 80 / 100);
+        $("#div4").height($(window).height() * 80 / 100);
+        $("#uploadAssignmentContainer").height($("#div4").height() * 80 / 100);
         
     } else {
         $($("#mynavigationBar").children()[0]).css("margin-top", $("#mynavbar").height() * 23 / 100);
@@ -646,12 +717,14 @@ if (!(isset($_SESSION["isUserLogedIn"]) && isset($_SESSION["userId"]) && isset($
         $("#searchResults").height($(window).height() * 80 / 100);
         $("#setAttendance").height($(window).height() * 83 / 100);
         $("#studentContainer").height($('#setAttendance').height() * 57 / 100);
+        $("#div4").height($(window).height() * 85 / 100);
+        $("#uploadAssignmentContainer").height($("#div4").height() * 75 / 100);
     }
 
 
     $(window).resize(function () {
-        if (windowWidth >= 690 && windowWidth >= 710) {
-            window.location.reload("true");
+        if (windowWidth >= 690 && windowWidth <= 710) {
+            window.location.reload(true);
         }
         if (windowWidth > 700) {
             if (windowWidth <= 849 && windowWidth >= 701) {
@@ -673,7 +746,7 @@ if (!(isset($_SESSION["isUserLogedIn"]) && isset($_SESSION["userId"]) && isset($
 
     let lastActiveItem = $("#item1");
     $("#item1").addClass("activeItem");
-    fillUpPersonalDetails();
+    // fillUpPersonalDetails();
 
     function manipulate(person) {
 

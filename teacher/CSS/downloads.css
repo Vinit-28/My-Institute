@@ -43,27 +43,6 @@
 }
 
 
-.classSelector{
-    display: flex;
-    padding: 0.2rem;
-    border-radius: 0.2rem;
-    align-items: center;
-    justify-content: flex-start;
-    background-color: #fff;
-}
-
-.classHeading{
-    font-weight: bolder;
-    margin-left: 0.6rem;
-}
-
-.hostName{
-    font-size: 0.8rem;
-}
-
-
-
-
 .classItem{
     cursor: pointer;
     display: flex;
@@ -122,6 +101,28 @@
 .classJoinButton:hover{
     background-color: var(--buttonHover);
 }
+
+.classSelector{
+    display: flex;
+    padding: 0.2rem;
+    border-radius: 0.2rem;
+    align-items: center;
+    justify-content: flex-start;
+    background-color: #fff;
+}
+
+.classHeading{
+    font-weight: bolder;
+    margin-left: 0.6rem;
+}
+
+.hostName{
+    font-size: 0.8rem;
+}
+
+
+
+
 
 
 
