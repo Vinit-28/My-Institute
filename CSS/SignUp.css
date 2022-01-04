@@ -211,7 +211,14 @@ body {
 {
 
 
+    #signupcontainerbox{
+        position: relative; 
+        width:80%
+    }
 
+    #mainContainer:active , #mainContainer:hover{
+        box-shadow: none;
+    }
     body {
         background-color: rgb(210, 227, 252);
         padding: 0;
@@ -235,7 +242,6 @@ body {
         justify-self: center;
         align-self: center;
         row-gap: 8px;
-        box-shadow: 5px 10px 15px #888888;
     }
     
     

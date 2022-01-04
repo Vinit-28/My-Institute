@@ -16,7 +16,7 @@
 
         <h1 id="heading1"><i class='bx bxs-graduation bx-tada'></i>&nbsp;Welcome To My Institute !</h1>
         <div id="formContainer">
-            <div>
+            <div id="signupcontainerbox">
                 <form action="" id="form">
                     <input class="formInput" id="instituteId" type="text" placeholder="Institute ID">
                     <input class="formInput" id="instituteName" type="text" placeholder="Institute Name">

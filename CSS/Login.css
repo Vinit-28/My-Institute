@@ -31,7 +31,7 @@ body {
 }
 
 
-#mainContainer:active , #mainContainer:hover{
+#mainContainer:hover{
     box-shadow: 5px 10px 15px #888888;
 }
 
@@ -143,6 +143,13 @@ body {
 
 
 
+@media screen and (min-width: 801px) {
+
+    #mainContainer:hover{
+        box-shadow: 5px 10px 15px #888888;
+    }
+}
+
 @media screen and (max-width: 800px) and (min-width: 600px) {
     body {
         background-color: rgb(237, 242, 249);
@@ -181,12 +188,13 @@ body {
 @media screen and (max-width: 599px) and (min-width: 10px) 
 {
 
-
+    #mainContainer:active ,#mainContainer:hover{
+        box-shadow: none;
+    }
 
     body {
         background-color: rgb(210, 227, 252);
         padding: 0;
-
     }
 
     #heading1 {
@@ -203,7 +211,6 @@ body {
         display: flex;
         flex-direction: column;
         row-gap: 15px;
-        box-shadow: 5px 10px 15px #888888;
     }
     
     
@@ -213,16 +220,19 @@ body {
         
         display: flex;
         justify-content: center;
+        /* border: 2px solid red; */
         width: 100%;
         column-gap: 0px;
         padding: 0px;
         margin: 0;
+        position: relative;
     }
 
     #form {
-        width: 100%;
+        position: relative;
+        width: 90%;
         padding: 0.2rem;
-        margin: 0;
+        margin: auto;
     }
 
     #form input {
@@ -259,5 +269,17 @@ body {
 
     #formSvg img {
         display: none;
+    }
+
+
+}
+
+@media screen and (max-width: 350px) and (min-width: 10px) 
+{
+    #form {
+        position: relative;
+        width: 100%;
+        padding: 0.2rem;
+        margin: auto;
     }
 }
