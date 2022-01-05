@@ -586,7 +586,6 @@ function getUploadedAssignments(asyncRequest=true){
 
 // Function to Make a Uploaded File Card //
 function getUploadedAssignmentCard(assignmentDetails){
-
     // Creating Tags //
     let form = document.createElement("form");
     let classSelectorDiv = document.createElement("div");
