@@ -412,3 +412,63 @@ function showLiveClasses(classFilter){
     makeAJAXRequest("POST", "../../Server/Utilities/InstituteSpecificUtilities.php", data, onLoadFunction);
     console.log("classes");
 }
+
+
+
+
+
+
+
+function updatePercentages(targetID, number) {
+
+    var target = document.getElementById(targetID);
+    var counter = 0
+    var ID = setInterval(function () {
+        if (target.innerHTML != parseInt(number)+"%") {
+            target.innerHTML = counter + "%"
+            counter += 1
+        }
+        else {
+            target.innerHTML = number + "%";
+            clearInterval(ID);
+        }
+
+    }, 40);
+}
+
+
+
+
+
+function InitializeStudentDetails(){
+
+    // Setting up the Greetings //
+    let currDate = new Date();
+    let greetings = document.getElementById("greetings");
+    studentData = getStudentDetails();
+
+    greetings.innerText = (currDate.getHours() < 12)? "Good Morning" : (currDate.getHours() < 17)? "Good Afternoon" : "Good Evening";
+    greetings.innerText += (" " + studentData.name);
+    
+    
+
+    // Seeting up the Fee and Attendance Percentages //
+    document.getElementById("submitedFees").innerText = "Submitted =" + " " + studentData.feeSubmitted;
+    document.getElementById("remainingFees").innerText = "Remaining =" + " " + (studentData.totalFee - studentData.feeSubmitted);
+    document.getElementById("totalFees").innerText = "Total =" + " " + studentData.totalFee;
+    
+    let feePercentage = (studentData.feeSubmitted/studentData.totalFee) * 100;
+    updatePercentages('feesProgress' , feePercentage.toFixed(1));
+    updatePercentages('attendanceProgress' , 99.9);
+
+    
+    console.log(studentData)
+
+}
+
+
+
+
+
+
+InitializeStudentDetails()

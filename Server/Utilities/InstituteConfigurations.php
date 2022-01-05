@@ -124,7 +124,9 @@
         $query = "SELECT * FROM StudentInfo WHERE userId = ?;";
         $studentData = array();
         $result = runQuery($databaseConnectionObject, $query, [$request['loggedInUser']], "s");
-        $studentData += [$result->fetch_assoc()];
+        $row = $result->fetch_assoc();
+        $row += ["totalFee" => getColumnValue($databaseConnectionObject, "SELECT * FROM Classes WHERE className = ?;", [$row['class']], "s", "fees")];
+        $studentData += [$row];
         return $studentData;
     }
 

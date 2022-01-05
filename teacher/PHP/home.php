@@ -291,15 +291,13 @@ if (!(isset($_SESSION["isUserLogedIn"]) && isset($_SESSION["userId"]) && isset($
 
 
             <!-- Submission Modal for a Particular Assignment -->
-            <div id="assignmentModal" style="display:none;">
-
-                <div id="submissionContainer">
-
-                                <!-- second button -->
+            <div id="assignmentModal" style="display: none;">
+                
                 <div id="closeSubmissionModal" style=" cursor: pointer; font-size: 20px; ">
                     <i class='bx bx-x'></i>
                 </div>
-                    
+                <div id="submissionContainer">
+
                     <!-- One card starts here -->
                     <!-- <div class="submittedAssignmentCard">
                         <div class="submittedStudentProfile">
@@ -315,7 +313,6 @@ if (!(isset($_SESSION["isUserLogedIn"]) && isset($_SESSION["userId"]) && isset($
 
                 </div>
                 
-
 
             </div>
 

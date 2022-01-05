@@ -124,7 +124,7 @@ if (!(isset($_SESSION["isUserLogedIn"]) && isset($_SESSION["userId"]) && isset($
         <div id="dashboard" class="formsDiv">
 
             <div class="boxHeadingDiv">
-                <h3 class="boxHeading">Good Afternoon Vinit</h3>
+                <h3 id="greetings" class="boxHeading"></h3>
             </div>
 
             <div id="progressContainer">
@@ -141,9 +141,9 @@ if (!(isset($_SESSION["isUserLogedIn"]) && isset($_SESSION["userId"]) && isset($
                         </div>
 
                         <div id="feesDetailsContainer">
-                            <div id="submitedFees"> Submitted = 25000</div>
-                            <div id="remainingFees">Remaining = 25000</div>
-                            <div id="remainingFees">Total = 50000</div>
+                            <div id="submitedFees"></div>
+                            <div id="remainingFees"></div>
+                            <div id="totalFees"></div>
                         </div>
 
                     </div>

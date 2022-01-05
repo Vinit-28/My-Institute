@@ -146,7 +146,7 @@
     align-items: center;
     justify-content: center;    
     overflow-y: hidden;
-    
+    background-color: #5e6e829e;
 }
 
 #submissionContainer{
@@ -157,7 +157,7 @@
     column-gap: 10px;
     row-gap: 10px;
     padding: 0.8rem;
-    background-color: #5e6e829e;
+    background-color: white;
     border-radius: 10px;
     overflow-y: scroll;
 }
@@ -177,10 +177,6 @@
 
 
 
-
-.submittedAssignmentCard:hover{
-    box-shadow: var(--boxShadow);
-}
 .submittedAssignmentCard{
     border-radius: 10px;
     display: flex;
@@ -190,6 +186,7 @@
     padding: 0.3rem;
     background-color: white;
     cursor: pointer;
+    box-shadow: var(--boxShadow);
     transition: box-shadow 200ms ease;
 }
 
@@ -211,12 +208,13 @@
 .submittedButtonContainer{
     width: 100%;
     display: flex;
-    justify-content: space-around;
+    justify-content: flex-end;
+    column-gap: 5px;
     flex-wrap: wrap;
 }
 
 .submittedButtons{
-    font-size: 12px;
+    font-size: 14px;
     padding: 0.2rem;
     border: none;
     background-color: var(--buttonColor);
@@ -328,15 +326,14 @@
         column-gap: 10px;
         row-gap: 10px;
         padding: 0.8rem;
-        background-color: rgba(0, 0, 0, 0.433);
+        background-color: white;
         overflow-y: scroll;
     }
 
-    .submittedAssignmentCard:hover{
-        box-shadow: var(--boxShadow);
-    }
+   
     .submittedAssignmentCard{
         row-gap: 10px;
+        box-shadow: var(--boxShadow);
         width: 100%;
         height: 100px;
         padding: 0.4rem;
