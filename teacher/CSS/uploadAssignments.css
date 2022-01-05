@@ -49,7 +49,7 @@
     display: flex;
     flex-direction: column;
     row-gap: 0.8rem;
-    width: 17rem;
+    width: 16rem;
     height: max-content;
     padding: 0.8rem;
     border-radius: 0.4rem;
@@ -66,11 +66,12 @@
 .assignmentButtonContainer{
     display: flex;
     justify-content: flex-start;
+    column-gap: 5px;
     flex-wrap: wrap;
 }
 
 .assignmentButton{
-    font-size: 14px;
+    font-size: 10px;
     padding: 0.4rem;
     margin-right: 0.4rem;
     margin-top: 0.2rem;
@@ -142,6 +143,7 @@
     width: 100%;
     height: 100%;
     display: flex;
+    align-items: center;
     justify-content: center;    
     overflow-y: hidden;
     
@@ -150,17 +152,28 @@
 #submissionContainer{
     display: flex;
     flex-direction: column;
-    flex-wrap: wrap;
-    width: 300px;
+    width: 30rem;
+    height: 70%;
     column-gap: 10px;
     row-gap: 10px;
     padding: 0.8rem;
-    background-color: rgba(0, 0, 0, 0.433);
+    background-color: #5e6e829e;
+    border-radius: 10px;
     overflow-y: scroll;
 }
 
 
 
+#closeSubmissionModal{
+    align-self: flex-start;
+    cursor: pointer;
+    display: flex !important;
+    background-color: white;
+    border-radius: 50%;
+    justify-content: center;
+    align-items: center;
+    font-size: 25px;
+}
 
 
 
@@ -171,11 +184,8 @@
 .submittedAssignmentCard{
     border-radius: 10px;
     display: flex;
-    flex-direction: column;
     align-items: center;
     width: 100%;
-    /* width: clamp(250px , 100% , 300px); */
-    /* width: 250px; */
     height: 110px;
     padding: 0.3rem;
     background-color: white;
@@ -261,7 +271,15 @@
     }
 
 
+    .submittedButtonContainer{
+        justify-content: center;
+        column-gap: 5px;
+    }
 
+    .submittedAssignmentCard{
+        flex-direction: column;
+        row-gap: 0.4rem;
+    }
 
 
 
@@ -292,16 +310,7 @@
         display: none;
     }
     
-    #closeSubmissionModal1{
-        display: flex !important;
-        width:  30px;
-        height: 30px;
-        background-color: white;
-        border-radius: 50%;
-        justify-content: center;
-        align-items: center;
-        font-size: 25px;
-    }
+    
 
 
     .submittedStudentProfile img{

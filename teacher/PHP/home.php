@@ -291,9 +291,14 @@ if (!(isset($_SESSION["isUserLogedIn"]) && isset($_SESSION["userId"]) && isset($
 
 
             <!-- Submission Modal for a Particular Assignment -->
-            <div id="assignmentModal" style="display: none;">
+            <div id="assignmentModal" style="display:none;">
 
                 <div id="submissionContainer">
+
+                                <!-- second button -->
+                <div id="closeSubmissionModal" style=" cursor: pointer; font-size: 20px; ">
+                    <i class='bx bx-x'></i>
+                </div>
                     
                     <!-- One card starts here -->
                     <!-- <div class="submittedAssignmentCard">
@@ -310,10 +315,7 @@ if (!(isset($_SESSION["isUserLogedIn"]) && isset($_SESSION["userId"]) && isset($
 
                 </div>
                 
-                <!-- second button -->
-                <div id="closeSubmissionModal" style=" cursor: pointer; font-size: 20px; ">
-                    <i class='bx bx-x'></i>
-                </div>
+
 
             </div>
 
@@ -692,7 +694,6 @@ if (!(isset($_SESSION["isUserLogedIn"]) && isset($_SESSION["userId"]) && isset($
         
         $("#setAttendance").height($(window).height() * 80 / 100);
         $("#div4").height($(window).height() * 80 / 100);
-        $("#uploadAssignmentContainer").height($("#div4").height() * 80 / 100);
         
     } else {
         $($("#mynavigationBar").children()[0]).css("margin-top", $("#mynavbar").height() * 23 / 100);
@@ -701,7 +702,6 @@ if (!(isset($_SESSION["isUserLogedIn"]) && isset($_SESSION["userId"]) && isset($
         $("#setAttendance").height($(window).height() * 83 / 100);
         $("#studentContainer").height($('#setAttendance').height() * 57 / 100);
         $("#div4").height($(window).height() * 85 / 100);
-        $("#uploadAssignmentContainer").height($("#div4").height() * 75 / 100);
     }
 
 
