@@ -267,7 +267,7 @@ function closeModal(){
 
 
 // Function to open the Modal to display the Selected Person's Details and Root/Teacher can modify it too //
-function openModalForSelectedPerson(selectedPerson){
+function openModalForSelectedPerson(){
     // Getting the information of the Selected Person //
     let selectedPersonProfile =  relatedPersons[this.id];
     // Getting Tags //
@@ -292,7 +292,7 @@ function openModalForSelectedPerson(selectedPerson){
     let closeModalButton = document.createElement("button");
 
 
-    
+   
     // Assigning data to their Attributes //
     updateDetailsButton.type = closeModalButton.type =  "button";
     updateDetailsButton.innerText = "Update Details";
@@ -329,6 +329,7 @@ function openModalForSelectedPerson(selectedPerson){
         depositedFees.value = (selectedPersonProfile.feeSubmitted + " ( Deposited Fees ) " );
         let totalFee = getTotalFees(selectedPersonProfile.class);
         remainingFees.value = (totalFee-selectedPersonProfile.feeSubmitted + " ( Remaining Fees ) " );
+        updateClass.disabled = false;
     }
     // Otherwise class dropdown menu will be disabled //
     else{

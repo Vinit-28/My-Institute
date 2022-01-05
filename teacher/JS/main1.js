@@ -279,6 +279,7 @@ function openModalForSelectedPerson(selectedPerson){
         depositedFees.value = (selectedPersonProfile.feeSubmitted + " ( Deposited Fees ) " );
         let totalFee = getTotalFees(selectedPersonProfile.class);
         remainingFees.value = (totalFee-selectedPersonProfile.feeSubmitted + " ( Remaining Fees ) " );
+        updateClass.disabled = false;
     }
     // Otherwise class dropdown menu will be disabled //
     else{

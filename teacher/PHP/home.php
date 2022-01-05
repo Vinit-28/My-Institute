@@ -423,7 +423,7 @@ if (!(isset($_SESSION["isUserLogedIn"]) && isset($_SESSION["userId"]) && isset($
                         file</button>
                     <input style="display: none;" id="testFile" accept=".xls" required autocomplete="OFF" type="file"
                         placeholder="Joining Link" name="classLink">
-                    <button type="button">See file pattern</button>
+                    <button onclick="window.open('http://localhost/Server/UersRelatedDocs/testFilePattern.xls', '_blank');" type="button">See file pattern</button>
                     <button type="submit">Upload</button>
                 </form>
 
@@ -762,8 +762,7 @@ if (!(isset($_SESSION["isUserLogedIn"]) && isset($_SESSION["userId"]) && isset($
             fillUpPersonalDetails();
         }
         else if ($(person).attr("value") == "#div4") {
-            // fillUpPersonalDetails();
-            // openUploadNewAssignmentForm();
+            showUploadedAssignments();
         }
     }
     
