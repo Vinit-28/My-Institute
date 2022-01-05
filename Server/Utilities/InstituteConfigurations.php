@@ -259,12 +259,16 @@
     // Function to get all the Submissions of a particular Assignment // 
     function getAssignmentSubmissions($databaseConnectionObject, $request){
 
+        $tempAppDatabase = get_DatabaseConnectionObject("App_Database"); //Making another Database Object for Profile of the Students Who Submitted Assignment //
         $databaseConnectionObject->select_db($request['instituteId']);
         $query = "SELECT * FROM AssignmentSubmissions WHERE assignmentId=?;";
         $result = runQuery($databaseConnectionObject, $query, [$request['assignmentId']], "i");
         $submissions = array();
         $counter=1;
         while($row = $result->fetch_assoc()){
+            
+            $row += ["studentName"=>getColumnValue($databaseConnectionObject, "SELECT * FROM StudentInfo WHERE userId = ?;",[$row['submittedBy']], "s", "name"), "profilePath"=>getColumnValue($tempAppDatabase, "SELECT * FROM AppUsers WHERE userId = ?;",[$row['submittedBy']], "s", "profilePath")];
+
             $submissions += [$counter=>$row];
             $counter+=1;
         }
@@ -285,6 +289,7 @@
         while($row = $result->fetch_assoc()){
             unlink($row['submittedFileLinkMachine']);
         }
+        
         // Removing from the Database //
         $query = "DELETE FROM AssignmentSubmissions WHERE submittedBy=? AND assignmentId=?;";
         $result = runQuery($databaseConnectionObject, $query, [$request['submittedBy'], $request['assignmentId']], "si", true);

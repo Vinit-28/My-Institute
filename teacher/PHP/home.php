@@ -164,7 +164,7 @@ if (!(isset($_SESSION["isUserLogedIn"]) && isset($_SESSION["userId"]) && isset($
 
         <!-- Personal Profile Div -->
 
-        <div value="#teacherProfileDiv" id="teacherProfileDiv" class="formsDiv" style="display: none;">
+        <div value="#teacherProfileDiv" id="teacherProfileDiv" class="formsDiv">
             <div class="boxHeadingDiv">
                 <h3 class="boxHeading">Personl Profile</h3>
             </div>
@@ -271,7 +271,7 @@ if (!(isset($_SESSION["isUserLogedIn"]) && isset($_SESSION["userId"]) && isset($
 
 
         <!-- Upload Assignments Div -->
-        <div id="div4" about="uploadAssignments" class="formsDiv">
+        <div id="div4" about="uploadAssignments" class="formsDiv" style="display: none;">
             
             <div class="boxHeadingDiv">
                 <h3 class="boxHeading">Upload Assignment</h3>
@@ -289,51 +289,34 @@ if (!(isset($_SESSION["isUserLogedIn"]) && isset($_SESSION["userId"]) && isset($
                     class="downloadOptions">Update Assignment</button>
             </div>
 
+
+            <!-- Submission Modal for a Particular Assignment -->
             <div id="assignmentModal" style="display: none;">
 
                 <div id="submissionContainer">
-
-                    <!-- one close button -->
-                    <div id="closeSubmissionModal1" style="display: none;">
-                        <i class='bx bx-x'></i>
-                    </div>
                     
                     <!-- One card starts here -->
-                    <div class="submittedAssignmentCard">
+                    <!-- <div class="submittedAssignmentCard">
                         <div class="submittedStudentProfile">
                             <img src="../IMAGES/profile.jpg" alt="">
                             <div class="submittedStudentName">Aman Khushalani</div>
                         </div>
                         <div class="submittedButtonContainer">
-                            <div class="submittedButtons">View Assignment</div>
-                            <div class="submittedButtons">Delete Assignment</div>
+                            <a class="submittedButtons">View Submission</a>
+                            <a class="submittedButtons">Delete Submission</a>
                         </div>
-                    </div>
+                    </div> -->
                     <!-- One card ends here -->
-                    
-                    
+
                 </div>
                 
-                
-                <!-- second close button -->
-                <div id="closeSubmissionModal2" style=" cursor: pointer; font-size: 20px; ">
+                <!-- second button -->
+                <div id="closeSubmissionModal" style=" cursor: pointer; font-size: 20px; ">
                     <i class='bx bx-x'></i>
                 </div>
 
             </div>
 
-            <!-- Script to maintain modal of uploaded modals -->
-            <script>
-                function openModal(){
-                    document.getElementById('assignmentModal').style.display = 'flex'
-                }
-                document.getElementById('closeSubmissionModal1').addEventListener('click' , function(){
-                    document.getElementById('assignmentModal').style.display = 'none';
-                })
-                document.getElementById('closeSubmissionModal2').addEventListener('click' , function(){
-                    document.getElementById('assignmentModal').style.display = 'none';
-                })
-            </script>
 
             <div id="uploadAssignmentContainer">
                 

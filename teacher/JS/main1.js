@@ -405,7 +405,7 @@ function getUploadNewAssignmentForm(){
     uploadAssignmentContainer.innerHTML = "";
 
     // Creating Tags //
-    let divForm = document.createElement("div");
+    // let divForm = document.createElement("div");
     let form = document.createElement("form");
     let uploadedBy = document.createElement("input");
     let subjectName = document.createElement("input");
@@ -605,10 +605,10 @@ function getUploadedAssignmentCard(assignmentDetails){
 
     
     // Assigning values to their Attributes //
-    form.classList.add("classItem");
+    form.classList.add("assignmentItem");
     classSelectorDiv.classList.add("classSelector");
     classDescriptionDiv.classList.add("classDescription");
-    buttonsDiv.classList.add("joinClassButton");
+    // buttonsDiv.classList.add("joinClassButton");
     
     liveClassCardCheckbox.type = "checkbox";
     liveClassCardCheckbox.name = "uploadedAssignmentCard";
@@ -628,15 +628,15 @@ function getUploadedAssignmentCard(assignmentDetails){
     classTimeDiv.classList.add("classTime");
     classTimeDiv.innerText = "Timing :- " + assignmentDetails.assignmentDeadline + " to " + assignmentDetails.assignmentDeadline;
 
-    buttonsDiv.classList.add("joinClassButton");
-    assignmentFileLink.classList.add("classJoinButton");
+    buttonsDiv.classList.add("assignmentButtonContainer");
+    assignmentFileLink.classList.add("assignmentButton");
     assignmentFileLink.target = "_blank";
     assignmentFileLink.href = assignmentDetails.assignmentFileLinkHref;
     assignmentFileLink.innerText = "Assignment File";
 
-    submissionLink.classList.add("classJoinButton");
+    submissionLink.classList.add("assignmentButton");
     submissionLink.innerText = "View Submissions";
-    submissionLink.addEventListener("click", ()=>{console.log(assignmentDetails.assignmentId)});
+    submissionLink.addEventListener("click", ()=>{viewAssignmentSubmission(assignmentDetails.assignmentId);});
 
 
     // Wrapping up the tags //
@@ -677,8 +677,9 @@ function showUploadedAssignments(){
         }
     }
 
+    // If no assignments to show //
     if( !uploadAssignmentContainer.children.length ){
-        alert("No Uploaded Assignments to Show !!!");
+        // alert("No Uploaded Assignments to Show !!!");
     }
 }
 
@@ -814,7 +815,6 @@ function updateUploadedAssignment(){
 function deleteUploadedAssignments(){
 
     let selectedItems = getSelectedItems("uploadedAssignmentCard");
-    console.log("wkegm");
     if( selectedItems.length ){
 
         // Creating Some Variables //
@@ -855,24 +855,146 @@ function deleteUploadedAssignments(){
 
 
 
+// Function to get the Assignment Submission card for the Modal // 
+function getSubmissionCard(submissionDetails){
+
+    // Creating tags //
+    let submittedAssignmentCard = document.createElement("div");
+    let submittedStudentProfile = document.createElement("div");
+    let profileImg = document.createElement("img");
+    let submittedStudentName = document.createElement("div");
+    let submittedButtonContainer = document.createElement("div");
+    let viewSubmission = document.createElement("a");
+    let deleteSubmission = document.createElement("a");
+
+    // Assigning Values & Adding Classes //
+    submittedAssignmentCard.classList.add("submittedAssignmentCard");
+    submittedStudentProfile.classList.add("submittedStudentProfile");
+    submittedStudentName.classList.add("submittedStudentName");submittedButtonContainer
+    submittedButtonContainer.classList.add("submittedButtonContainer");
+    viewSubmission.classList.add("submittedButtons");
+    deleteSubmission.classList.add("submittedButtons");
+
+    profileImg.src = submissionDetails.profilePath
+    submittedStudentName.innerText = submissionDetails.studentName + " (" + submissionDetails.submittedBy + ") ";
+    deleteSubmission.innerText = "Delete Submission";
+    deleteSubmission.addEventListener("click", ()=>{deleteAssignmentSubmission(submissionDetails, submittedAssignmentCard);});
+    viewSubmission.innerText = "View Submission";
+    viewSubmission.href = submissionDetails.submittedFileLinkHref;
+    viewSubmission.target = "_blank";
+
+
+    // Wrapping up the tags //
+    submittedButtonContainer.appendChild(viewSubmission);
+    submittedButtonContainer.appendChild(deleteSubmission);
+    submittedStudentProfile.appendChild(profileImg);
+    submittedStudentProfile.appendChild(submittedStudentName);
+    submittedAssignmentCard.appendChild(submittedStudentProfile);
+    submittedAssignmentCard.appendChild(submittedButtonContainer);
+
+    return submittedAssignmentCard;
+}
+
+
+
+// Function to open the Modal to display all the submissions for a particular Assignment //
+function viewAssignmentSubmission(assignmentId){
+
+    // Creating Some Variables //
+    let data = {
+        "task" : "Show Assignment Submissions", 
+        "loggedInUser" : document.getElementById("userId").textContent, 
+        "instituteId" : document.getElementById("instituteId").textContent, 
+        "authority" : document.getElementById("authority").textContent,
+        "sessionId" : document.getElementById("sessionId").textContent,
+        "assignmentId" : assignmentId
+    };
+
+    let onLoadFunction = function(){
+
+        if( this.status != 200 ){
+            alert("Something Went Wrong!");
+        }
+        else{
+            let responseText = this.responseText.replace(/(\r\n|\n|\r)/gm, "");
+            if( responseText.includes("Success") ){
+
+                let submissions = JSON.parse(responseText).submissions;
+                let submissionContainer = document.getElementById("submissionContainer");
+                submissionContainer.innerHTML = "";
+
+                for(let key in submissions){
+                    submissionContainer.appendChild(getSubmissionCard(submissions[key]));
+                }
+                
+                // If Submissions found to display in the Modal //
+                if( submissionContainer.children.length )
+                    document.getElementById("assignmentModal").style.display = "flex";
+                else
+                    alert("No Submissions Found !!!");
+            }
+            else{
+                alert(responseText);
+            }
+        }
+    }
+
+    // Making the AJAX Request //
+    makeAJAXRequest("POST", "../../Server/Utilities/InstituteSpecificUtilities.php", data, onLoadFunction);
+
+}
+
+
+
+
+// Function to delete a Particular Student's Submission for a Particular Assignment //
+function deleteAssignmentSubmission(submissionDetails, submittedAssignmentCard){
+    
+    // Creating Some Variables //
+    let data = {
+        "task" : "Delete Assignment Submission", 
+        "loggedInUser" : document.getElementById("userId").textContent, 
+        "instituteId" : document.getElementById("instituteId").textContent, 
+        "authority" : document.getElementById("authority").textContent,
+        "sessionId" : document.getElementById("sessionId").textContent,
+        "submittedBy" : submissionDetails.submittedBy,
+        "assignmentId" : submissionDetails.assignmentId
+    };
+
+    let onLoadFunction = function(){
+
+        if( this.status != 200 ){
+            alert("Something Went Wrong!");
+        }
+        else{
+            let responseText = this.responseText.replace(/(\r\n|\n|\r)/gm, "");
+            if( responseText.includes("Success") ){
+                submittedAssignmentCard.remove();
+                // If no Submissions Left to Display //
+                if( document.getElementById("submissionContainer").children.length == 0 )
+                    document.getElementById("assignmentModal").style.display = "none";
+            }
+            else{
+                alert(responseText);
+            }
+        }
+    }
+
+    // Making the AJAX Request //
+    makeAJAXRequest("POST", "../../Server/Utilities/InstituteSpecificUtilities.php", data, onLoadFunction);
+}
+
+
+
+
 // Binding the Upload Assignments Buttons to their respective handlers //
 document.getElementById("uploadAssignment").addEventListener("click", openUploadNewAssignmentForm);
 document.getElementById("showAssignments").addEventListener("click", showUploadedAssignments);
 document.getElementById("deleteAssignments").addEventListener("click", deleteUploadedAssignments);
 document.getElementById("updateAssignment").addEventListener("click", updateUploadedAssignment);
-
-
-
-
-
-
-
-
-
-
-
-
-
+document.getElementById('closeSubmissionModal').addEventListener('click' , function(){
+    document.getElementById('assignmentModal').style.display = 'none';
+})
 
 
 
