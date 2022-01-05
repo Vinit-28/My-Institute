@@ -1,0 +1,334 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200&display=swap');
+
+
+*, *:before, *:after {
+    box-sizing: border-box;
+    --fontFamily : Poppins, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    --backgroundColor : #edf2f9;
+    --navigationBarColor : rgb(209, 225, 248);
+    --textColor : #5e6e82;
+    --textHoverColor : #cad0d6;
+    --activeTextColor : #2864c5;
+    --hoverDarkColor : rgb(35, 43, 53);
+    --buttonColor : rgba(44, 124, 229, 0.844);
+    --buttonHover : rgb(44, 123, 229);
+    --formBorder : #d8e2ef;
+    --littleHeadings : #344050;
+    --backgroundDark : #0b1727;
+    --boxShadow : 0 .5rem 1rem rgba(0,0,0,.15) ;
+}
+
+
+
+
+
+#div4::-webkit-scrollbar,
+#uploadAssignmentContainer::-webkit-scrollbar{
+    display: none;
+}
+
+#div4{
+    overflow-y:hidden;
+}
+#uploadAssignmentContainer{
+    margin-top: 5px;
+    display: flex;
+    column-gap: 10px;
+    row-gap: 10px;
+    flex-wrap: wrap;
+    overflow-y:scroll;
+    margin-bottom: 100px;
+}
+
+#uploadAssignmentContainer:last-child{
+    margin-bottom: 100px;
+}
+
+.assignmentItem{
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    row-gap: 0.8rem;
+    width: 245px;
+    height: max-content;
+    padding: 0.8rem;
+    border-radius: 0.4rem;
+    background-color: var(--backgroundColor);
+    transition: box-shadow 200ms ease;
+}
+
+.assignmentItem:hover{
+    box-shadow: var(--boxShadow);
+}
+
+
+
+.assignmentButtonContainer{
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+}
+
+.assignmentButton{
+    font-size: 12px;
+    padding: 0.2rem;
+    border: none;
+    background-color: var(--buttonColor);
+    cursor: pointer;
+    color: white;
+    border-radius: 0.2rem;
+    transition: background-color 250ms ease;
+    text-decoration: none; 
+    font-weight: bolder;
+}
+
+.assignmentButton:active , .assignmentButton:focus{
+    outline: none;
+}
+.assignmentButton:hover{
+    background-color: var(--buttonHover);
+}
+
+
+@media screen and (max-width : 770px) and (min-width : 701px) 
+{
+
+    #uploadAssignmentContainer{
+        position: relative;
+    }
+    
+    #uploadAssignmentContainer:last-child{
+        margin-bottom: 100px;
+    }
+    
+    .assignmentItem{
+        position: relative;
+        cursor: pointer;
+        display: flex;
+        flex-direction: column;
+        row-gap: 0.8rem;
+        width: 100%;
+        height: max-content;
+        padding: 0.8rem;
+        border-radius: 0.4rem;
+        background-color: var(--backgroundColor);
+        transition: box-shadow 200ms ease;
+    }
+
+    .assignmentButton{
+        padding: 0.3rem;
+    }
+    
+}
+
+
+
+
+
+
+
+
+#assignmentModal::-webkit-scrollbar , #submissionContainer::-webkit-scrollbar{
+    display: none;
+}
+
+#assignmentModal{
+    z-index: 200;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;    
+    overflow-y: hidden;
+    
+}
+
+#submissionContainer{
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    width: 300px;
+    column-gap: 10px;
+    row-gap: 10px;
+    padding: 0.8rem;
+    background-color: rgba(0, 0, 0, 0.433);
+    overflow-y: scroll;
+}
+
+
+
+
+
+
+
+.submittedAssignmentCard:hover{
+    box-shadow: var(--boxShadow);
+}
+.submittedAssignmentCard{
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    /* width: clamp(250px , 100% , 300px); */
+    /* width: 250px; */
+    height: 110px;
+    padding: 0.3rem;
+    background-color: white;
+    cursor: pointer;
+    transition: box-shadow 200ms ease;
+}
+
+.submittedStudentProfile{
+    display: flex;
+    align-items: center;
+    column-gap: 5px;
+    padding: 0.4rem;
+    white-space: nowrap;
+}
+
+.submittedStudentProfile img{
+    width:  40px;
+    height: 40px;
+    border-radius: 50%;
+}
+
+
+.submittedButtonContainer{
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+}
+
+.submittedButtons{
+    font-size: 12px;
+    padding: 0.2rem;
+    border: none;
+    background-color: var(--buttonColor);
+    cursor: pointer;
+    color: white;
+    border-radius: 0.2rem;
+    transition: background-color 250ms ease;
+    text-decoration: none; 
+    font-weight: bolder;
+}
+
+.submittedButtons:active , .submittedButtons:focus{
+    outline: none;
+}
+.submittedButtons:hover{
+    background-color: var(--buttonHover);
+}
+
+
+
+
+
+
+
+@media screen and (max-width : 543px) and (min-width : 10px) 
+{
+
+    #uploadAssignmentContainer{
+        position: relative;
+    }
+    
+    #uploadAssignmentContainer:last-child{
+        margin-bottom: 100px;
+    }
+    
+    .assignmentItem{
+        position: relative;
+        cursor: pointer;
+        display: flex;
+        flex-direction: column;
+        row-gap: 0.8rem;
+        width: 100%;
+        height: max-content;
+        padding: 0.8rem;
+        border-radius: 0.4rem;
+        background-color: var(--backgroundColor);
+        transition: box-shadow 200ms ease;
+    }
+
+    .assignmentButton{
+        padding: 0.3rem;
+    }
+
+
+
+
+
+
+
+}
+
+
+
+
+
+@media screen and (max-width : 400px) and (min-width : 10px) {
+
+    #assignmentModal{
+        z-index: 200;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;    
+        overflow-y: hidden;
+        
+    }
+
+
+    #closeSubmissionModal2{
+        display: none;
+    }
+    
+    #closeSubmissionModal1{
+        display: flex !important;
+        width:  30px;
+        height: 30px;
+        background-color: white;
+        border-radius: 50%;
+        justify-content: center;
+        align-items: center;
+        font-size: 25px;
+    }
+
+
+    .submittedStudentProfile img{
+        width:  30px;
+        height: 30px;
+        border-radius: 50%;
+    }
+
+
+    #submissionContainer{
+        display: flex;
+        flex-direction: column;
+        flex-wrap: wrap;
+        width: 100%;
+        column-gap: 10px;
+        row-gap: 10px;
+        padding: 0.8rem;
+        background-color: rgba(0, 0, 0, 0.433);
+        overflow-y: scroll;
+    }
+
+    .submittedAssignmentCard:hover{
+        box-shadow: var(--boxShadow);
+    }
+    .submittedAssignmentCard{
+        row-gap: 10px;
+        width: 100%;
+        height: 100px;
+        padding: 0.4rem;
+    }
+
+}

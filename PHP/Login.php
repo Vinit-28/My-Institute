@@ -29,7 +29,7 @@
         <h1 id="heading1"><i class='bx bxs-graduation bx-tada'></i>&nbsp;My Institute !</h1>
 
         <div id="formContainer">
-            <div>
+            <div style="position: relative; width:80%">
                 <form action="" id="form">
                     <input class="formInput" type="text" placeholder="User Id" id="userId" autocomplete="off">
                     <br id="break1">
