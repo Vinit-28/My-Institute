@@ -27,11 +27,13 @@ if (!(isset($_SESSION["isUserLogedIn"]) && isset($_SESSION["userId"]) && isset($
     <link rel="stylesheet" href="../CSS/mynavbar.css">
     <link rel="stylesheet" href="../CSS/mynavigationbar.css">
     <link rel="stylesheet" href="../CSS/mainPage.css">
+    <link rel="stylesheet" href="../CSS/div4.css">
     <link rel="stylesheet" href="../CSS/searchBar.css">
     <link rel="stylesheet" href="../CSS/progress.css">
     <link rel="stylesheet" href="../CSS/formsCss.css">
     <link rel="stylesheet" href="../CSS/downloads.css">
     <link rel="stylesheet" href="../CSS/div7.css">
+    <link rel="stylesheet" href="../CSS/setattendance.css">
     <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
     <title>Root Dashboard</title>
 </head>
@@ -149,6 +151,10 @@ if (!(isset($_SESSION["isUserLogedIn"]) && isset($_SESSION["userId"]) && isset($
             <div class="mynavigationItem" value="#div7">
                 <i class='mynavigationItemIcon bx bx-grid-alt'></i>
                 <span class="mynavigationItemName">Institute's Classes</span>
+            </div>
+            <div class="mynavigationItem" value="#setAttendance">
+                <i class='mynavigationItemIcon bx bx-check-square'></i>
+                <span class="mynavigationItemName">Set Attendance</span>
             </div>
         </div>
 
@@ -325,6 +331,13 @@ if (!(isset($_SESSION["isUserLogedIn"]) && isset($_SESSION["userId"]) && isset($
                 <input required autocomplete="off" id="add-pinCode" type="number" placeholder="*PIN Code">
                 <button type="submit" name="submitPerson" id="submitAddPersonForm">Submit Details</button>
             </form>
+            <hr>
+            <form class="forms">
+                <input type="file" name="" id="" accept=".xls" onsubmit="return false;">
+                <div></div>
+                <button>See Pattern</button>
+                <button>Upload File</button>
+            </form>
         </div>
 
         <!-- Add Person Div End -->
@@ -463,7 +476,43 @@ if (!(isset($_SESSION["isUserLogedIn"]) && isset($_SESSION["userId"]) && isset($
 
 
 
+        <!-- set attendance Div  -->
+        <div id="setAttendance" class="formsDiv" style="display: none;">
+            <div class="boxHeadingDiv">
+                <h3 class="boxHeading">Mark Attendance</h3>
+            </div>
 
+            <div class="forms">
+                <input type="date" name="" id="attDate" max="2021-12-21">
+                <select name="" id="">
+                    <option value="">Select a class</option>
+                    <option value="">BCA I yr</option>
+                    <option value="">BCA II yr</option>
+                    <option value="">BCA III yr</option>
+                </select>
+            </div>
+
+                <form id="studentContainer" class="internalContainer">
+    
+                    <!-- <div class="attStudent">
+                        <input type="checkbox">
+                        <img class="attStudentImg" src="../IMAGES/profile.jpg" alt="">
+                        <div class="attStudentName">Aman Khushalani</div>
+                        <div class="attStudentClass">BCA III Yr.</div>
+                    </div> -->
+                    
+                    <div id="submitAttendanceContainer" class="forms">
+                        <button class="">Update</button>
+                        <!-- <button class="">Update</button> -->
+                    </div>
+    
+                </form>
+
+        </div>
+
+        <!-- set attendance Div end -->
+        
+        
 
 
 
@@ -549,6 +598,8 @@ if (!(isset($_SESSION["isUserLogedIn"]) && isset($_SESSION["userId"]) && isset($
 
         $($("#mynavigationBar").children()[0]).css("margin-top", $("#mynavbar").height() * 22 / 100);
         $("#mynavigationBar").height($(window).height() * 88 / 100);
+        
+        $("#div4").height($(window).height() * 80 / 100);
 
         $("#downloads").height($(window).height() * 65 / 100);
         $("#downloadContainer").height($("#downloads").height() * 95 / 100);
@@ -558,6 +609,7 @@ if (!(isset($_SESSION["isUserLogedIn"]) && isset($_SESSION["userId"]) && isset($
         $($("#mynavigationBar").children()[0]).css("margin-top", $("#mynavbar").height() * 23 / 100);
         $("#downloadContainer").height($(window).height() * 60 / 100);
         $("#searchResults").height($(window).height() * 80 / 100);
+        $("#div4").height($(window).height() * 80 / 100);
     }
 
 
