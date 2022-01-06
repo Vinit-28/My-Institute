@@ -118,6 +118,7 @@
 }
 .suggestedPersonProfile img{
     width: 2.5rem;
+    height: 2.3rem;
     border-radius: 50%;
 }
 .suggestedPersonDetails{
@@ -237,6 +238,7 @@
     
     .suggestedPersonProfile img{
         width: 1.8rem;
+        height: 1.6rem;
     }
     
     .suggestedPersonDetails{

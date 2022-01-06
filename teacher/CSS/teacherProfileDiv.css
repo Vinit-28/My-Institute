@@ -1,6 +1,7 @@
 
 #teacherProfileImg{
     width: 4.7rem; 
+    height: 4.5rem; 
     border-radius: 50%;
 }
 
@@ -8,6 +9,7 @@
 {
     #teacherProfileImg{
         width: 3rem;
+        height: 2.8rem;
     }
 
 }
@@ -15,12 +17,14 @@
 {
     #teacherProfileImg{
         width: 3rem;
+        height: 2.8rem;
     }
 }
 @media screen and (max-width : 779px) and (min-width : 701px) 
 {
     #teacherProfileImg{
         width: 2.7rem;
+        height: 2.5rem;
     }
 }
 

@@ -190,21 +190,19 @@
 
 #selectedImg ,#rootImg, #rootProfileImg{
     width: 4.7rem; 
+    height: 4.5rem;
     border-radius: 50%;
 }
 #modalImg{
     width: 4.7rem; 
+    height: 4.5rem;
     border-radius: 50%;
 }
 
 #selectedProfileFrom input , #selectedProfileFrom select {
     font-size: 0.8rem;
     padding: 0.4rem ;
-    /* font-size: 0.9rem; */
-    /* font-weight: 700; */
     border: 1px solid var(--formBorder);
-    /* background-color: #fff; */
-    /* border-radius: 0.25rem; */
     transition: 200ms ease;
 }
 
@@ -226,7 +224,6 @@
 }
 /* ///////////////////////////////////////////////////////////////////////////////////// */
 
-/* <div id="selectedPersonProfile"  class="selectedFormsDiv"> */
 
 
 
@@ -262,6 +259,7 @@
 
     #selectedImg , #modalImg , #rootImg, #rootProfileImg{
         width: 3rem;
+        height: 2.8rem;
     }
 
 
@@ -276,6 +274,7 @@
     }    
     #selectedImg , #modalImg , #rootImg, #rootProfileImg{
         width: 3rem;
+        height: 2.8rem;
     }
 
 }
@@ -289,6 +288,7 @@
     }    
     #selectedImg , #modalImg, #rootImg, #rootProfileImg{
         width: 2.7rem;
+        height: 2.5rem;
     }
 
 }
@@ -325,7 +325,6 @@
     #profileimgdiv{
         display: flex;
         justify-content: center;
-        /* text-align: center; */
     }
 }
 
