@@ -343,6 +343,18 @@
             }
 
 
+            // If request is to Set the Attendance //
+            else if($request['task'] == "Set Attendance" && ($authority == "teacher" || $authority == "root") ){
+
+                setOrUpdateAttendance($databaseConnectionObject, $request);
+                $response = array(
+                    "result"=>"Success",
+                    "message"=>"Attendance Updated Successfully !!!"
+                );
+                echo json_encode($response);
+            }
+
+
 
 
 

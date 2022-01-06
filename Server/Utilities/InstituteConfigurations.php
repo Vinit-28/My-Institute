@@ -316,4 +316,75 @@
     }
     
 
+    // Function to create a table if that table is not created //
+    function createTableIfNotCreated($databaseConnectionObject, $instituteId, $tableName){
+
+        $databaseConnectionObject->select_db($instituteId);
+        $query = "SHOW TABLES;";
+        $isTableCreated = false;
+
+        // If Query executed Successfully //
+        if( $result = runQuery($databaseConnectionObject, $query, [], "") ){
+            while($row = $result->fetch_assoc()){
+                if( $row["Tables_in_".$instituteId] == $tableName ){
+                    $isTableCreated = true;
+                    break;
+                }
+            }
+        }
+
+        // If table is not Created //
+        if( !$isTableCreated ){
+            // Making a YearYearNo. Table which will store all attendance related information of the specified year // 
+            $query = "CREATE TABLE $tableName(
+                userId VARCHAR(100), 
+                name VARCHAR(100), 
+                class VARCHAR(100), 
+                attendanceDate VARCHAR(100), 
+                updatedBy VARCHAR(100),
+                status VARCHAR(100)
+                );";
+            runQuery($databaseConnectionObject, $query, [], "");
+        }  
+    }
+
+
+    // Function to check whether a person's Attendance entry is in the Table or Not // 
+    function updateAttendanceIfExists($databaseConnectionObject, $personDetails, $attendanceDate, $tableName, $loggedInUser){
+
+        $query = "SELECT * FROM $tableName WHERE userId = ? AND attendanceDate = ?;";
+        $result = runQuery($databaseConnectionObject, $query, [$personDetails['userId'], $attendanceDate], "ss");
+        if($result && $result->num_rows){
+            $query = "UPDATE $tableName SET updatedBy = ?, status = ? WHERE userId = ? AND attendanceDate = ?;";
+            runQuery($databaseConnectionObject, $query, [$loggedInUser, $personDetails['status'], $personDetails['userId'], $attendanceDate], "ssss");
+            return true;
+        }
+        return false;
+    }
+
+
+    // Function to Make a Attendance Entry of a Particular Person in the Table // 
+    function makeAttendanceEntry($databaseConnectionObject, $personDetails, $attendanceDate, $tableName, $className, $loggedInUser){
+        
+        $query = "INSERT INTO $tableName(userId, name, class, attendanceDate, updatedBy, status) VALUES(?,?,?,?,?,?);";
+        runQuery($databaseConnectionObject, $query, [$personDetails['userId'], $personDetails['name'], $className, $attendanceDate, $loggedInUser, $personDetails['status']], "ssssss", true);
+    }
+    
+
+    // Function to submit the Assignment //
+    function setOrUpdateAttendance($databaseConnectionObject, $request){
+
+        $databaseConnectionObject->select_db($request['instituteId']);
+        $tableName = "Year" . $request['year'];
+        createTableIfNotCreated($databaseConnectionObject, $request['instituteId'], $tableName);
+        
+        foreach($request['persons'] as $person){
+
+            if( ! updateAttendanceIfExists($databaseConnectionObject, $person, $request['date'], $tableName, $request['loggedInUser']) ){
+                makeAttendanceEntry($databaseConnectionObject, $person, $request['date'], $tableName, $request['class'], $request['loggedInUser']);
+            }
+        }
+    }
+    
+
 ?>

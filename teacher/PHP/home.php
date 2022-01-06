@@ -294,10 +294,10 @@ if (!(isset($_SESSION["isUserLogedIn"]) && isset($_SESSION["userId"]) && isset($
             <div id="assignmentModal" style="display: none;">
                 
             <div id="submissionContainer">
-
+                <!--        
                 <div class="boxHeadingDiv">
                     <h3 class="boxHeading">Uploaded Assignments</h3>
-                </div>
+                </div> -->
 
 
                 <!-- One card starts here -->
@@ -309,8 +309,7 @@ if (!(isset($_SESSION["isUserLogedIn"]) && isset($_SESSION["userId"]) && isset($
                     </div>
                     <div class="submittedAssignmentCard2">
                         Submitted On = 
-                        <div class="uploadedAssignmentTime">12:00</div>
-                        <div class="uploadedAssignmentDate">01/01/2022</div>
+                        <div class="uploadedAssignmentTime">Wed Jan 05 2022 20:41:03</div>
                     </div>
                     <div class="submittedButtonContainer">
                         <a class="submittedButtons">View Submission</a>
@@ -320,7 +319,7 @@ if (!(isset($_SESSION["isUserLogedIn"]) && isset($_SESSION["userId"]) && isset($
 
                 <!-- One card ends here -->
 
-                <button style="margin:0.6rem 0" id="closeSubmissionModal">Close List</button>
+                <!-- <button style="margin:0.6rem 0" id="closeSubmissionModal">Close List</button> -->
 
             </div>
 
@@ -677,6 +676,8 @@ if (!(isset($_SESSION["isUserLogedIn"]) && isset($_SESSION["userId"]) && isset($
     <p id="instituteId" style="display: none;"><?php echo $_SESSION['instituteId']; ?></p>
     <p id="authority" style="display: none;"><?php echo $_SESSION['authority']; ?></p>
 
+    <?php echo date('M');?>
+    <?php echo date('Y');?>
 </body>
 
 </html>
@@ -685,7 +686,7 @@ if (!(isset($_SESSION["isUserLogedIn"]) && isset($_SESSION["userId"]) && isset($
 <script src="../JS/main1.js"></script>
 <script src="../JS/main2.js"></script>
 
-<script>console.log('enter')
+<script>console.log(Date())
     let windowWidth = $(window).width();
 
 
@@ -738,7 +739,7 @@ if (!(isset($_SESSION["isUserLogedIn"]) && isset($_SESSION["userId"]) && isset($
 
     let lastActiveItem = $("#item1");
     $("#item1").addClass("activeItem");
-    // fillUpPersonalDetails();
+    fillUpPersonalDetails();
 
     function manipulate(person) {
 

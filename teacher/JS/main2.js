@@ -761,3 +761,55 @@ function updatePersonalDetails(e){
 // Binding the updatePersonalDetails button with its handler //
 document.getElementById("updatePersonalDetails").addEventListener("click", updatePersonalDetails);
 
+
+
+
+
+
+
+
+
+
+
+function setAttendance(){
+
+    let data = {
+        "task" : "Set Attendance", 
+        "loggedInUser" : document.getElementById("userId").textContent, 
+        "instituteId" : document.getElementById("instituteId").textContent, 
+        "userId" : document.getElementById("userId").textContent, 
+        "sessionId" : document.getElementById("sessionId").textContent,
+        "authority" : document.getElementById("authority").textContent,
+        "year" : "2022",
+        "date" : "06/01/2022",
+        "month" : "Jan",
+        "class" : "BCA Final Year",
+        "persons" : [
+            {"userId":"student1", "name":"student1", "status":"absent"}
+        ]
+    };
+
+    let onLoadFunction = function(){
+        if( this.status != 200 ){
+            alert("Something Went Wrong!");
+        }
+        else{
+            let responseText = this.responseText.replace(/(\r\n|\n|\r)/gm, "");
+            if( responseText.includes("Success") ){
+                let response = JSON.parse(responseText);
+                alert(response.message);
+            }
+            else{
+                alert(responseText);
+            }
+        }
+    }
+
+    // Making the AJAX Request //
+    makeAJAXRequest("POST", "../../Server/Utilities/InstituteSpecificUtilities.php", data, onLoadFunction);
+
+}
+
+
+
+document.getElementById("markAttendance").addEventListener("click", setAttendance);

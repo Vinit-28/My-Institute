@@ -862,6 +862,9 @@ function getSubmissionCard(submissionDetails){
     let submittedStudentProfile = document.createElement("div");
     let profileImg = document.createElement("img");
     let submittedStudentName = document.createElement("div");
+    let submittedAssignmentCard2 = document.createElement("div");
+    let uploadedAssignmentTime = document.createElement("div");
+
     let submittedButtonContainer = document.createElement("div");
     let viewSubmission = document.createElement("a");
     let deleteSubmission = document.createElement("a");
@@ -873,6 +876,8 @@ function getSubmissionCard(submissionDetails){
     submittedButtonContainer.classList.add("submittedButtonContainer");
     viewSubmission.classList.add("submittedButtons");
     deleteSubmission.classList.add("submittedButtons");
+    submittedAssignmentCard2.classList.add("submittedAssignmentCard2");
+    uploadedAssignmentTime.classList.add("uploadedAssignmentTime");
 
     profileImg.src = submissionDetails.profilePath
     submittedStudentName.innerText = submissionDetails.studentName + " (" + submissionDetails.submittedBy + ") ";
@@ -881,16 +886,21 @@ function getSubmissionCard(submissionDetails){
     viewSubmission.innerText = "View Submission";
     viewSubmission.href = submissionDetails.submittedFileLinkHref;
     viewSubmission.target = "_blank";
+    submittedAssignmentCard2.innerText = "Submitted On =";
+    uploadedAssignmentTime.innerText = " " + submissionDetails.submittedDateTime.replace("GMT+0530 (India Standard Time)","");
 
-
+    
     // Wrapping up the tags //
     submittedButtonContainer.appendChild(viewSubmission);
     submittedButtonContainer.appendChild(deleteSubmission);
+    submittedAssignmentCard2.appendChild(uploadedAssignmentTime);
     submittedStudentProfile.appendChild(profileImg);
     submittedStudentProfile.appendChild(submittedStudentName);
     submittedAssignmentCard.appendChild(submittedStudentProfile);
+    submittedAssignmentCard.appendChild(submittedAssignmentCard2);
     submittedAssignmentCard.appendChild(submittedButtonContainer);
 
+    console.log(submissionDetails);
     return submittedAssignmentCard;
 }
 
@@ -918,17 +928,35 @@ function viewAssignmentSubmission(assignmentId){
             let responseText = this.responseText.replace(/(\r\n|\n|\r)/gm, "");
             if( responseText.includes("Success") ){
 
+                
                 let submissions = JSON.parse(responseText).submissions;
                 let submissionContainer = document.getElementById("submissionContainer");
                 submissionContainer.innerHTML = "";
 
+                // Creating some default elements of the Modal //
+                let submissionModalHeading = document.createElement("div");
+                let h3 = document.createElement("h3");
+                let closeButton = document.createElement("button");
+                submissionModalHeading.classList.add("boxHeadingDiv");
+                h3.classList.add("boxHeading");
+                h3.innerText = "Uploaded Assignments";
+                closeButton.style.margin = "0.6rem 0";
+                closeButton.addEventListener("click", ()=>{document.getElementById('assignmentModal').style.display = 'none';});
+                closeButton.innerText = "Close List";
+                closeButton.id = "closeSubmissionModal";
+
+                submissionModalHeading.appendChild(h3);
+                submissionContainer.appendChild(submissionModalHeading);
+                
                 for(let key in submissions){
                     submissionContainer.appendChild(getSubmissionCard(submissions[key]));
                 }
                 
                 // If Submissions found to display in the Modal //
-                if( submissionContainer.children.length )
+                if( submissionContainer.children.length ){
                     document.getElementById("assignmentModal").style.display = "flex";
+                    submissionContainer.appendChild(closeButton);
+                }
                 else
                     alert("No Submissions Found !!!");
             }
@@ -991,9 +1019,6 @@ document.getElementById("uploadAssignment").addEventListener("click", openUpload
 document.getElementById("showAssignments").addEventListener("click", showUploadedAssignments);
 document.getElementById("deleteAssignments").addEventListener("click", deleteUploadedAssignments);
 document.getElementById("updateAssignment").addEventListener("click", updateUploadedAssignment);
-document.getElementById('closeSubmissionModal').addEventListener('click' , function(){
-    document.getElementById('assignmentModal').style.display = 'none';
-})
 
 
 
