@@ -196,21 +196,19 @@
 
 #selectedImg{
     width: 4.7rem; 
+    height: 4.5rem;
     border-radius: 50%;
 }
 #modalImg{
     width: 4.7rem; 
+    height: 4.5rem;
     border-radius: 50%;
 }
 
 #selectedProfileFrom input , #selectedProfileFrom select {
     font-size: 0.8rem;
     padding: 0.4rem ;
-    /* font-size: 0.9rem; */
-    /* font-weight: 700; */
     border: 1px solid var(--formBorder);
-    /* background-color: #fff; */
-    /* border-radius: 0.25rem; */
     transition: 200ms ease;
 }
 
@@ -266,11 +264,9 @@
         grid-template-columns: repeat(2, minmax( 3rem  , auto));
     }    
 
-    #selectedImg{
+    #selectedImg , #modalImg{
         width: 3rem;
-    }
-    #modalImg{
-        width: 3rem;
+        height: 2.8rem;
     }
 
 }
@@ -282,11 +278,9 @@
     .forms{
         grid-template-columns: repeat(2, minmax( 3rem  , auto));
     }    
-    #selectedImg{
+    #selectedImg , #modalImg{
         width: 3rem;
-    }
-    #modalImg{
-        width: 3rem;
+        height: 2.8rem;
     }
 }
 @media screen and (max-width : 779px) and (min-width : 701px) 
@@ -297,11 +291,9 @@
     .forms{
         grid-template-columns: repeat(2, minmax( 3rem  , auto));
     }    
-    #selectedImg{
+    #selectedImg , #modalImg{
         width: 2.7rem;
-    }
-    #modalImg{
-        width: 2.7rem;
+        height: 2.5rem;
     }
 }
 

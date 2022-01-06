@@ -293,25 +293,37 @@ if (!(isset($_SESSION["isUserLogedIn"]) && isset($_SESSION["userId"]) && isset($
             <!-- Submission Modal for a Particular Assignment -->
             <div id="assignmentModal" style="display: none;">
                 
-                <div id="closeSubmissionModal" style=" cursor: pointer; font-size: 20px; ">
-                    <i class='bx bx-x'></i>
-                </div>
-                <div id="submissionContainer">
+            <div id="submissionContainer">
 
-                    <!-- One card starts here -->
-                    <!-- <div class="submittedAssignmentCard">
-                        <div class="submittedStudentProfile">
-                            <img src="../IMAGES/profile.jpg" alt="">
-                            <div class="submittedStudentName">Aman Khushalani</div>
-                        </div>
-                        <div class="submittedButtonContainer">
-                            <a class="submittedButtons">View Submission</a>
-                            <a class="submittedButtons">Delete Submission</a>
-                        </div>
-                    </div> -->
-                    <!-- One card ends here -->
-
+                <div class="boxHeadingDiv">
+                    <h3 class="boxHeading">Uploaded Assignments</h3>
                 </div>
+
+
+                <!-- One card starts here -->
+
+                <!-- <div class="submittedAssignmentCard">
+                    <div class="submittedStudentProfile">
+                        <img src="../IMAGES/profile.jpg" alt="">
+                        <div class="submittedStudentName">Aman Khushalani</div>
+                    </div>
+                    <div class="submittedAssignmentCard2">
+                        Submitted On = 
+                        <div class="uploadedAssignmentTime">12:00</div>
+                        <div class="uploadedAssignmentDate">01/01/2022</div>
+                    </div>
+                    <div class="submittedButtonContainer">
+                        <a class="submittedButtons">View Submission</a>
+                        <a class="submittedButtons">Delete Submission</a>
+                    </div>
+                </div> -->
+
+                <!-- One card ends here -->
+
+                <button style="margin:0.6rem 0" id="closeSubmissionModal">Close List</button>
+
+            </div>
+
                 
 
             </div>
