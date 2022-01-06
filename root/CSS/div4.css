@@ -1,0 +1,7 @@
+#div4{
+    overflow-x: hidden;
+    overflow-y: scroll;
+}
+#div4::-webkit-scrollbar{
+    display: none;
+}
