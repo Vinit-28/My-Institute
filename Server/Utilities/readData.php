@@ -90,7 +90,7 @@ function validate_row($array)
 
 
     $gender = strtoupper($row[3]);
-    if ($gender == "M" || $gender == "F") {
+    if ($gender == "MALE" || $gender == "FEMALE" || $gender == "OTHER") {
     } else {
         return array(0 , 3);
     }
@@ -220,17 +220,12 @@ $excel = new PhpExcelReader;
 $instituteID = "";
 
 
-function readData($filePath){
+function readData($databaseConnectionObject, $filePath, $institutionId){
 
     global $excel;
-
-
-    $excel->read('./test.xls');
-    // $excel->read($filePath);
-
+    $excel->read($filePath);
     $sheet = $excel->sheets[0];
-
-
+    $successfullInsertions = 0;
 
     if (check_headings($sheet) == 1) {
 
@@ -263,13 +258,18 @@ function readData($filePath){
             $result = sheetData($x, $sheet);
             if ($result[0] == 0) 
             {
-                echo "<script>alert('There is error in " . $reason[$result[1]] . " of row number = " . $result[2] . "')</script>";
-                return 0;
+                return [
+                    "result"=>"Failed",
+                    "message"=>"There is error in " . $reason[$result[1]] . " of row number = " . $result[2],
+                    "successfullInsertions"=>0
+                ];
             }
             else
             {
-                $class = $sheet['cells'][$x][5];
-                // Vinit function to check and create class
+                $className = $sheet['cells'][$x][6];
+
+                // Creating a Class If Not Created // 
+                createClassIfNotCreated($databaseConnectionObject, $className, $institutionId);
             }
             $x++;
         }
@@ -281,7 +281,6 @@ function readData($filePath){
             while ($x <= $numberOfRows) 
             {
                 // INSTITUTE_ID	NAME	EMAIL	GENDER	DESIGNATION	CLASS	PHONE	AADHAR	ADDRESS	CITY	STATE	PIN	PASSWORD
-
                 $instituteName = $sheet['cells'][$x][1];
                 $personName = $sheet['cells'][$x][2];
                 $personEmail = $sheet['cells'][$x][3];
@@ -293,20 +292,28 @@ function readData($filePath){
                 $personAddress = $sheet['cells'][$x][9];
                 $personCity = $sheet['cells'][$x][10];
                 $personState = $sheet['cells'][$x][11];
-                $personPassword = $sheet['cells'][$x][12];
+                $personCityPinCode = $sheet['cells'][$x][12];
+                $personPassword = $sheet['cells'][$x][13];
+                $personId = $institutionId . "_" . $personAadhar;
 
-                // insert this data in database !!
-                
+                // Wrapping up the Data/Row in a Single Obkect //
+                $userDetails = ["instituteId"=>$institutionId, "userId"=>$personId, "password"=>password_hash($personPassword, PASSWORD_BCRYPT), "email"=>$personEmail, "instituteName"=>$instituteName, "designation"=>$personDesignation, "name"=>$personName, "gender"=>$personGender, "phoneNo"=>$personPhone, "adharCardNo"=>$personAadhar, "address"=>$personAddress, "city"=>$personCity, "state"=>$personState, "pinCode"=>$personCityPinCode, "class"=>$personClass];
+
+                // Inserting the Data in the Institute's DataBase //
+                makeTeacherOrStudentRegistered($databaseConnectionObject, $userDetails);
+                $successfullInsertions += 1;
                 $x++;
             }
-            // echo "<script>alert('Success !')</script>";
         }
         
     }
+    return [
+        "result"=>"Success",
+        "message"=>"Persons Added Successfully !!!",
+        "successfullInsertions"=>$successfullInsertions
+    ];
 }
 
-
-readData('text.xls');
 
 
 ?>

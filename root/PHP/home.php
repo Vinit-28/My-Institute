@@ -333,10 +333,10 @@ if (!(isset($_SESSION["isUserLogedIn"]) && isset($_SESSION["userId"]) && isset($
             </form>
             <hr>
             <form class="forms">
-                <input type="file" name="" id="" accept=".xls" onsubmit="return false;">
+                <input type="file"id="addPersonsFile" accept=".xls">
                 <div></div>
-                <button>See Pattern</button>
-                <button>Upload File</button>
+                <button id="addPersonFilePattern">See File Pattern</button>
+                <button id="uploadAddPersonFile">Upload File</button>
             </form>
         </div>
 

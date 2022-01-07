@@ -28,18 +28,28 @@
                 
                 $request['password'] = password_hash($request['password'], PASSWORD_BCRYPT);
                 $databaseConnectionObject->select_db("App_Database");
-
                 $request['instituteName'] = getColumnValue($databaseConnectionObject, "SELECT * FROM AppUsers WHERE userId = ?", [$request['instituteId']], "s", "instituteName");
 
                 makeTeacherOrStudentRegistered($databaseConnectionObject, $request);
-
 
                 $response = array(
                     "result"=>"Success",
                     "message"=>"Person Added Successfully !!!",
                 );
+            
+                // Sending the response //
+                echo json_encode($response);
+            }
+
+
+            // If the request is to Add a Persons(Student/Teacher) in the Institute's Database (Uploading Excel File) //
+            else if( $request['task'] == 'Add Persons' && $authority == "root" ){
                 
+                $databaseConnectionObject->select_db("App_Database");
+                $request['instituteName'] = getColumnValue($databaseConnectionObject, "SELECT * FROM AppUsers WHERE userId = ?", [$request['instituteId']], "s", "instituteName");
                 
+                $response = readAddPersonsExcelFile($databaseConnectionObject, $request, $_FILES["addPersonsFile"]["name"], $_FILES["addPersonsFile"]["tmp_name"]);
+
                 // Sending the response //
                 echo json_encode($response);
             }
@@ -353,8 +363,6 @@
                 );
                 echo json_encode($response);
             }
-
-
 
 
 

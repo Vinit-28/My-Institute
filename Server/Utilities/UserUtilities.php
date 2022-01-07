@@ -32,6 +32,7 @@
             email VARCHAR(100), 
             gender VARCHAR(100), 
             designation VARCHAR(100), 
+            class VARCHAR(100), 
             phoneNo VARCHAR(100), 
             adharCardNo VARCHAR(100), 
             address VARCHAR(100), 
@@ -98,7 +99,7 @@
         runQuery($instituteDatabase, $query, [], "");
 
 
-        // Making a f Table which will store all Uploaded Assignments information // 
+        // Making a Table which will store all Uploaded Assignments information // 
         $query = "CREATE TABLE UploadedAssignments(
             assignmentId BIGINT(8) AUTO_INCREMENT PRIMARY kEY, 
             uploadedBy VARCHAR(100), 
@@ -133,7 +134,8 @@
         mkdir($path . "/uploadedFiles"); //Download-Upload Files
         mkdir($path . "/profilePhotos"); //Profile Photos of Institute's Persons
         mkdir($path . "/uploadedAssignments"); //Uploaded Assignment File
-        mkdir($path . "/AssignmentsSubmissions");//Submitted Answer/File to the Assignment
+        mkdir($path . "/AssignmentsSubmissions"); //Submitted Answer/File to the Assignment
+        mkdir($path . "/TemporaryDocuments"); //A Temporary Folder that will store some temporary files
         
     }
 
@@ -159,8 +161,8 @@
         // If the new User is a Teacher //
         if( $userDetails['designation'] == "teacher" || $userDetails['designation'] == "Teacher" ){
             
-            $query = "INSERT INTO TeacherInfo(userId, name, email, gender, designation, phoneNo, adharCardNo, address, city, state, pinCode) VALUES(?,?,?,?,?,?,?,?,?,?,?);";
-            runQuery($databaseConnectionObject, $query, [ $userDetails['userId'], $userDetails['name'], $userDetails['email'], $userDetails['gender'], $userDetails['designation'], $userDetails['phoneNo'], $userDetails['adharCardNo'], $userDetails['address'], $userDetails['city'], $userDetails['state'], $userDetails['pinCode'] ], "sssssssssss", true);
+            $query = "INSERT INTO TeacherInfo(userId, name, email, gender, designation, class, phoneNo, adharCardNo, address, city, state, pinCode) VALUES(?,?,?,?,?,?,?,?,?,?,?,?);";
+            runQuery($databaseConnectionObject, $query, [ $userDetails['userId'], $userDetails['name'], $userDetails['email'], $userDetails['gender'], $userDetails['designation'], $userDetails['class'], $userDetails['phoneNo'], $userDetails['adharCardNo'], $userDetails['address'], $userDetails['city'], $userDetails['state'], $userDetails['pinCode'] ], "ssssssssssss", true);
         }
         // If the new User is a Student //
         else if( $userDetails['designation'] == "student" || $userDetails['designation'] == "Student" ){
@@ -169,9 +171,6 @@
             runQuery($databaseConnectionObject, $query, [ $userDetails['userId'], $userDetails['name'], $userDetails['email'], $userDetails['gender'], $userDetails['designation'], $userDetails['class'], $userDetails['phoneNo'], $userDetails['adharCardNo'], $userDetails['address'], $userDetails['city'], $userDetails['state'], $userDetails['pinCode'], 0], "ssssssssssssi", true);
         }
     }
-
-
-
 
 
     // Checking whether the user is authorized or not (Will be used for login purpose)//
@@ -299,9 +298,9 @@
 
         if( strtolower($request['designation']) == "teacher" ){
 
-            $query = "UPDATE TeacherInfo SET name = ?, gender = ?, phoneNo = ?, adharCardNo = ?, address = ?, city = ?, state = ?, pinCode = ? WHERE userId = ?";
+            $query = "UPDATE TeacherInfo SET name = ?, gender = ?, phoneNo = ?, adharCardNo = ?, address = ?, city = ?, state = ?, pinCode = ?, class = ? WHERE userId = ?";
 
-            $result = runQuery($databaseConnectionObject, $query, [$request['name'], $request['gender'], $request['phoneNo'], $request['adharCardNo'], $request['address'], $request['city'], $request['state'], $request['pinCode'], $request['userId']], "sssssssss", true);
+            $result = runQuery($databaseConnectionObject, $query, [$request['name'], $request['gender'], $request['phoneNo'], $request['adharCardNo'], $request['address'], $request['city'], $request['state'], $request['pinCode'], $request['class'], $request['userId']], "ssssssssss", true);
         
         }
         else if( strtolower($request['designation']) == "student" ){

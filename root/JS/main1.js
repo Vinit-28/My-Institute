@@ -100,8 +100,69 @@ function addPersonInTheDatabase(e){
     makeAJAXRequest("POST", "../../Server/Utilities/InstituteSpecificUtilities.php", personData, onLoadFunction);
 }
 
+
+
+// Function to upload Add Person Excel File on the Server //
+function uploadAddPersonFile(e){
+
+    e.preventDefault();
+
+    // Creating Some Variables //
+    let data = {
+        "task" : "Add Persons", 
+        "loggedInUser" : document.getElementById("userId").textContent, 
+        "instituteId" : document.getElementById("instituteId").textContent, 
+        "authority" : document.getElementById("authority").textContent,
+        "sessionId" : document.getElementById("sessionId").textContent,
+    };
+
+    let xhr = new XMLHttpRequest();
+    let formData = new FormData();
+    let addPersonsFile = document.getElementById("addPersonsFile").files[0];      
+    
+    formData.append("request", JSON.stringify(data));   
+    formData.append("addPersonsFile", addPersonsFile);
+    
+    xhr.timeout = 10000;
+    xhr.open("POST", '../../Server/Utilities/InstituteSpecificUtilities.php'); 
+    
+    // Function to be executed When the request has made and got the response from the server //
+    xhr.onload = function(){
+
+        // if( this.status != 200 ){
+        //     alert("Something Went Wrong!");
+        // }
+        // else{
+        //     let responseText = this.responseText.replace(/(\r\n|\n|\r)/gm, "");
+        //     if( responseText.includes("Success") || responseText.includes("Failed") ){
+        //         let response = JSON.parse(responseText);
+        //         let message = (response.result == "Success")? (response.message + "\nNumber of Persons Added = " + response.successfullInsertions) : response.message
+        //         alert(message);
+        //     }
+        //     else{
+        //         alert(responseText);
+        //     }
+        // }
+        alert(this.responseText);
+    }
+    xhr.send(formData);
+}
+
+
+
+// Function to open Add Person Excel File Pattern //
+function addPersonFilePattern(e){
+
+    e.preventDefault();
+    window.open('http://localhost/Server/UserRelatedDocs/sampleFile.xls', '_blank');
+}
+
+
+
 // Binding the Function addPersonInTheDatabase to the button submitAddPersonForm //
 document.getElementById("submitAddPersonForm").addEventListener("click", addPersonInTheDatabase);
+document.getElementById("uploadAddPersonFile").addEventListener("click", uploadAddPersonFile);
+document.getElementById("addPersonFilePattern").addEventListener("click", addPersonFilePattern);
 
 
 
@@ -247,9 +308,9 @@ function getTotalFees(className){
 // Function to check whether the details of the selected person is Modified or not //
 function isDataModified(updatedData, selectedPerson){
 
-    if( selectedPerson.designation.toLowerCase() == "student" && updatedData.class != selectedPerson.class) return true;
+    // if( selectedPerson.designation.toLowerCase() == "student" && updatedData.class != selectedPerson.class) return true;
     
-    return (updatedData.name != selectedPerson.name || updatedData.phoneNo != selectedPerson.phoneNo || updatedData.address != selectedPerson.address || updatedData.city != selectedPerson.city || updatedData.pinCode != selectedPerson.pinCode || updatedData.state != selectedPerson.state || updatedData.adharCardNo != selectedPerson.adharCardNo || updatedData.gender != selectedPerson.gender || updatedData.designation != selectedPerson.designation);
+    return (updatedData.name != selectedPerson.name || updatedData.phoneNo != selectedPerson.phoneNo || updatedData.address != selectedPerson.address || updatedData.city != selectedPerson.city || updatedData.pinCode != selectedPerson.pinCode || updatedData.state != selectedPerson.state || updatedData.adharCardNo != selectedPerson.adharCardNo || updatedData.gender != selectedPerson.gender || updatedData.designation != selectedPerson.designation || updatedData.class != selectedPerson.class);
 }
 
 
@@ -302,6 +363,7 @@ function openModalForSelectedPerson(){
     appendClassDropdownMenu("update-class", ()=>{
         updateClass.selectedIndex =  getIndexOfValue(updateClass.options, selectedPersonProfile.class);
     });
+
     modal.style.display = "flex";
     selectedImg.src = selectedPersonProfile.profilePath;
     updatePersonId.value = selectedPersonProfile.userId;
@@ -323,19 +385,22 @@ function openModalForSelectedPerson(){
     modalForm.appendChild(updateDetailsButton);
 
 
-    // If the Selected Person is a student //
+    // If the Selected Person is a Student //
     if( selectedPersonProfile.designation.toLowerCase() == "student" ){
         depositedFees.style.display = remainingFees.style.display = "block";
         depositedFees.value = (selectedPersonProfile.feeSubmitted + " ( Deposited Fees ) " );
         let totalFee = getTotalFees(selectedPersonProfile.class);
         remainingFees.value = (totalFee-selectedPersonProfile.feeSubmitted + " ( Remaining Fees ) " );
-        updateClass.disabled = false;
+        updateClass.options[0].innerText = "Class";
     }
-    // Otherwise class dropdown menu will be disabled //
+    // If the Selected Person is a Teacher //
     else{
         depositedFees.style.display = "none";
         remainingFees.style.display = "none";
-        updateClass.disabled = true;
+        updateClass.options[0].innerText = "Class Teacher Of";
+        if( document.getElementById("authority").textContent.toLowerCase() == "teacher" ){
+            updateDetailsButton.disabled = true;
+        }
     }
 
     // Function to update details of the selected person //
@@ -362,6 +427,12 @@ function openModalForSelectedPerson(){
             "pinCode" : updatePinCode.value,
         };
         
+        // If Person's Class is not Selected //
+        if( selectedPersonProfile.designation.toLowerCase() == "student" && updateClass.selectedIndex == 0 ){
+            alert("Please Select a Class");
+            return;
+        }
+
         // If data is modified //
         if( isDataModified(updatedData, selectedPersonProfile) ){
             
@@ -395,10 +466,10 @@ function openModalForSelectedPerson(){
             alert("Nothing to update !!!");
         }
     }
-
-        
+    
     updateDetailsButton.addEventListener("click", updateDetailsOfSelectedPerson);
     closeModalButton.addEventListener("click", closeModal);
+
 }
 
 
@@ -789,6 +860,7 @@ function appendClassDropdownMenu(classDropdownMenuId, callback=null){
             if( responseText.includes("Success") || responseText.includes("Failed") ){
                 let response = JSON.parse(responseText);
                 instituteClasses = response.classes;
+                console.log(instituteClasses);
                 if(response.result == "Success"){
                     for(let key in response.classes){    
                         // Creating an option tag With the value of ClassName //
@@ -817,15 +889,15 @@ function appendClassDropdownMenu(classDropdownMenuId, callback=null){
 // Function to make Class Dropdown Menu disabled/enabled according to the designation Selected //
 function changeDesignation(designationId, classId){
 
-let designation = document.getElementById(designationId);
+    let designation = document.getElementById(designationId);
     let designationValue = designation.options[designation.selectedIndex].value;
     let Class = document.getElementById(classId);
     Class.selectedIndex = 0;
     if( designationValue.toLowerCase() == "teacher" ){
-        Class.disabled = true;
+        Class.options[0].innerText = "Class Teacher Of";
     }
     else{
-        Class.disabled = false;
+        Class.options[0].innerText = "Class";
     }
 }
 

@@ -1,6 +1,7 @@
 
 <?php
 
+    include "./readData.php";
 
     // Function to check whether a Class alraedy exits in the Institute Database or Not //
     function isClassExists($databaseConnectionObject, $className){
@@ -384,6 +385,42 @@
                 makeAttendanceEntry($databaseConnectionObject, $person, $request['date'], $tableName, $request['class'], $request['loggedInUser']);
             }
         }
+    }
+
+
+    // Function to Create a Class if the Specified Class does not Exists //
+    function createClassIfNotCreated($databaseConnectionObject, $className, $instituteId){
+
+        $databaseConnectionObject->select_db($instituteId);
+        $query = "SELECT * FROM Classes WHERE className = ?;";
+        $result = runQuery($databaseConnectionObject, $query, [$className], "s");
+
+        // If that Class is Not Created //
+        if( !($result && $result->num_rows) ){
+            $query = "INSERT INTO Classes(className, fees) VALUES(?,?);";
+            $result = runQuery($databaseConnectionObject, $query, [$className, 0], "si", true);
+        }   
+    }
+
+
+    // Function to Read Add Persons Excel File and Will also insert into the Institute's Database //
+    function readAddPersonsExcelFile($databaseConnectionObject, $request, $fileName, $tmpName){
+
+        $databaseConnectionObject->select_db($request['instituteId']);
+
+        $filePath = ("InstituteFolders/". $request['instituteId'] . "/" . "TemporaryDocuments/" . $fileName);
+
+        $machinePath = getcwd();
+        $machinePath = str_replace("Server/Utilities", $filePath, $machinePath);
+        move_uploaded_file($tmpName, $machinePath);
+        
+        // Reading the Excel File Data and Adding Persons in the Institute's Database //
+        $response = readData($databaseConnectionObject, $machinePath, $request['instituteId']);
+
+        // Removing the Excel File from the Server // 
+        unlink($machinePath);
+
+        return $response;
     }
     
 
