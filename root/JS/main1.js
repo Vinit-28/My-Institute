@@ -22,6 +22,17 @@ function makeAJAXRequest(requesType, serverUrl, data, onLoadFunction, async=true
 
 
 
+// Function to Convert string to integer if possible //
+function isStringConvertableToNumber(stringValue){
+
+    let num = Number(stringValue);
+
+    if( isNaN(num) ){
+       return [false, 0];
+    }   
+    return [true, num];
+}
+
 
 // ------------------------------- Add Person ------------------------------- // 
 
@@ -308,7 +319,7 @@ function getTotalFees(className){
 // Function to check whether the details of the selected person is Modified or not //
 function isDataModified(updatedData, selectedPerson){
 
-    // if( selectedPerson.designation.toLowerCase() == "student" && updatedData.class != selectedPerson.class) return true;
+    if( selectedPerson.designation.toLowerCase() == "student" && updatedData.fees != selectedPerson.fees) return true;
     
     return (updatedData.name != selectedPerson.name || updatedData.phoneNo != selectedPerson.phoneNo || updatedData.address != selectedPerson.address || updatedData.city != selectedPerson.city || updatedData.pinCode != selectedPerson.pinCode || updatedData.state != selectedPerson.state || updatedData.adharCardNo != selectedPerson.adharCardNo || updatedData.gender != selectedPerson.gender || updatedData.designation != selectedPerson.designation || updatedData.class != selectedPerson.class);
 }
@@ -392,6 +403,37 @@ function openModalForSelectedPerson(){
         let totalFee = getTotalFees(selectedPersonProfile.class);
         remainingFees.value = (totalFee-selectedPersonProfile.feeSubmitted + " ( Remaining Fees ) " );
         updateClass.options[0].innerText = "Class";
+
+        // Adding Some Event Listeners to the Deposited Fees Input Field //
+        depositedFees.addEventListener("focusin",()=>{depositedFees.value = depositedFees.value.replace(" ( Deposited Fees ) ", "");});
+
+        depositedFees.addEventListener("focusout",()=>{
+            depositedFees.value = depositedFees.value.replace(" ( Deposited Fees ) ", "");
+            depositedFees.value += " ( Deposited Fees ) ";
+        });
+
+        depositedFees.addEventListener("input",()=>{
+
+            let lst = isStringConvertableToNumber(depositedFees.value);
+            let isPossible = lst[0], depositedFeesValue = lst[1];
+
+            if( isPossible == false ){
+                alert("Deposited Fees should always be in number !!!");
+                depositedFees.value = "0";
+            }
+            else if( depositedFeesValue > totalFee ){
+                alert("Deposited Fees can't be greater than the Total Fees !!!");
+                depositedFees.value = "0";
+            }
+            else if( depositedFeesValue < 0 ){
+                alert("Deposited Fees can't be lesser than the 0 !!!");
+                depositedFees.value = "0";
+            }
+            
+            // If deeposited Values is not able to be converted in integer then it will be always set to 0 //
+            remainingFees.value = (totalFee-depositedFees.value + " ( Remaining Fees ) " );
+        });
+        
     }
     // If the Selected Person is a Teacher //
     else{
@@ -428,9 +470,13 @@ function openModalForSelectedPerson(){
         };
         
         // If Person's Class is not Selected //
-        if( selectedPersonProfile.designation.toLowerCase() == "student" && updateClass.selectedIndex == 0 ){
-            alert("Please Select a Class");
-            return;
+        if( selectedPersonProfile.designation.toLowerCase() == "student" ){
+            updatedData["fees"] = document.getElementById("depositedFees").value.replace(" ( Deposited Fees ) ","");
+            
+            if( updateClass.selectedIndex == 0 ){
+                alert("Please Select a Class");
+                return;
+            }
         }
 
         // If data is modified //

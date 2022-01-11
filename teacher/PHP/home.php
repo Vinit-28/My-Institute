@@ -663,10 +663,7 @@ if (!(isset($_SESSION["isUserLogedIn"]) && isset($_SESSION["userId"]) && isset($
         </div>
 
         <!-- set attendance Div end -->
-        
-        
-        
-        
+    
 
     </div>
 
@@ -676,8 +673,6 @@ if (!(isset($_SESSION["isUserLogedIn"]) && isset($_SESSION["userId"]) && isset($
     <p id="instituteId" style="display: none;"><?php echo $_SESSION['instituteId']; ?></p>
     <p id="authority" style="display: none;"><?php echo $_SESSION['authority']; ?></p>
 
-    <?php echo date('M');?>
-    <?php echo date('Y');?>
 </body>
 
 </html>

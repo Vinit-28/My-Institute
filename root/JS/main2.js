@@ -269,7 +269,7 @@ document.getElementById("deleteFilesButton").addEventListener("click", deleteUpl
 // Function to Create a Form for Live Class Creation //
 function getLiveClassCreatorForm(){
 
-    // Creating Tags //
+    // Creating Tags // 
     let liveClassLaunchContainer = document.createElement("div");
     let forms = document.createElement("form");
     let hostName = document.createElement("input");
@@ -433,6 +433,28 @@ function openLaunchClassForm(){
 }
 
 
+
+// Function to Check whether the Current Date and the Specified Date is Same or Not //
+function isDateSame(specifiedDate){
+    let currDateTime = new Date();
+    specifiedDate = new Date(specifiedDate);
+
+    return (specifiedDate.getDate() == currDateTime.getDate() && specifiedDate.getMonth() == currDateTime.getMonth() && specifiedDate.getFullYear() == currDateTime.getFullYear());
+}
+
+
+
+// Function to Check whether the Current Time is in the range of Specified Time Duration //
+function isTimeInRange(startingTime, endingTime){
+    
+    let currDateTime = new Date();
+    let currTime = currDateTime.getHours() + ":" + currDateTime.getMinutes();
+
+    return (currTime >= startingTime && currTime <= endingTime);
+}
+
+
+
 // Function to Make a Live Class Card //
 function getLiveClassCard(liveClassDetails, disabled){
 
@@ -478,30 +500,37 @@ function getLiveClassCard(liveClassDetails, disabled){
     classTimeDiv.innerText = "Timing :- " + liveClassDetails.startingTime + " to " + liveClassDetails.endingTime;
 
 
-    // aClassLink.classList.add("classJoinButton");
 
     aClassLink.target = "_blank";
     aClassLink.href = liveClassDetails.joiningLink;
     aClassLink.innerText = "Join Class";
-
-
+    joinClassButtonDiv.addEventListener("click", ()=>{window.open(liveClassDetails.joiningLink, "_blank");});
+    
+    
     // Wrapping up the tags //
     classSelectorDiv.appendChild(liveClassCardCheckbox);
     classSelectorDiv.appendChild(classHeadingDiv);
     classSelectorDiv.appendChild(hostNameDiv);
-
+    
     classSubtopicsUL.appendChild(pTopicDescription);
     classSubtopicsUL.appendChild(classDateDiv);
     classSubtopicsUL.appendChild(classTimeDiv);
-
+    
     classDescriptionDiv.appendChild(classTitleDiv);
     classDescriptionDiv.appendChild(classSubtopicsUL);
-
+    
     joinClassButtonDiv.appendChild(aClassLink);
-
+    
     form.appendChild(classSelectorDiv);
     form.appendChild(classDescriptionDiv);
     form.appendChild(joinClassButtonDiv);
+
+
+    // Disable the Join Class Link if the current date & time is not in the range of scheduled Live Class date & time //
+    if( ! (isDateSame(liveClassDetails.classDate) && isTimeInRange(liveClassDetails.startingTime, liveClassDetails.endingTime) ) ){
+        aClassLink.style.pointerEvents = joinClassButtonDiv.style.pointerEvents = "none";
+        joinClassButtonDiv.style.backgroundColor = "#76a3ddd7";
+    }
 
     return form;
 }

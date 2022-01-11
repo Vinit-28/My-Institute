@@ -271,6 +271,28 @@ function showDownloadFiles(){
 
 
 
+// Function to Check whether the Current Date and the Specified Date is Same or Not //
+function isDateSame(specifiedDate){
+    let currDateTime = new Date();
+    specifiedDate = new Date(specifiedDate);
+
+    return (specifiedDate.getDate() == currDateTime.getDate() && specifiedDate.getMonth() == currDateTime.getMonth() && specifiedDate.getFullYear() == currDateTime.getFullYear());
+}
+
+
+
+// Function to Check whether the Current Time is in the range of Specified Time Duration //
+function isTimeInRange(startingTime, endingTime){
+    
+    let currDateTime = new Date();
+    let currTime = currDateTime.getHours() + ":" + currDateTime.getMinutes();
+
+    return (currTime >= startingTime && currTime <= endingTime);
+}
+
+
+
+
 // Function to Make a Live Class Card //
 function getLiveClassCard(liveClassDetails){
 
@@ -318,30 +340,6 @@ function getLiveClassCard(liveClassDetails){
     classJoinButton.style.textAlign = "center";
 
 
-
-    // <!-- This is a whole live class form -->
-    //     <div class="classItem">
-    //         <div class="classSelector">
-    //             <div class="classSelector">C++</div>
-    //             &nbsp;&nbsp;&nbsp;
-    //             <div class="hostName">(Tarun Sharma)</div>
-    //         </div>
-    //         <div class="classDescription">
-    //             <div class="classTitle">Oop's</div>
-    //             <ul class="classSubtopics">
-    //                 <p>Polymorphism, Encapsulation , Objects</p>
-    //                 <div class="classDate">Date :- 25-Nov-2021</div>
-    //                 <div class="classTime">Timing :- 10:00 AM to 11:00 AM</div>
-    //             </ul>
-    //         </div>
-
-    //         <div style=" display: flex; text-align: center; justify-content: center;">
-    //             <a href="" class="classJoinButton">Join Class</a>
-    //         </div>
-    //     </div>
-    // <!-- This is a whole live class form End-->
-    
-
     // Wrapping up the tags //
     joinClassDiv.appendChild(classJoinButton);
     classSubtopics.appendChild(pTopicDescription);
@@ -355,8 +353,38 @@ function getLiveClassCard(liveClassDetails){
     classItem.appendChild(classSelector);
     classItem.appendChild(classDescription);
     classItem.appendChild(joinClassDiv);
+    
+    // Disable the Join Class Link if the current date & time is not in the range of scheduled Live Class date & time //
+    if( ! (isDateSame(liveClassDetails.classDate) && isTimeInRange(liveClassDetails.startingTime, liveClassDetails.endingTime) ) ){
+        classJoinButton.style.pointerEvents = joinClassDiv.style.pointerEvents = "none";
+        classJoinButton.style.backgroundColor = "#76a3ddd7";
+    }
 
     return classItem;
+}
+
+
+
+
+// Function to check whether a Live Class is an Upcoming Live Class or Not //
+function isClassUpcomingClass(classDate, startingTime, endingTime){
+
+    let currDateTime = new Date();
+    classDate = new Date(classDate);
+    let currTime = currDateTime.getHours() + ":" + currDateTime.getMinutes();
+
+    // Cases that can come which will define it's a live class :-
+    // 1. If live class is scheduled in upcoming days but not for today
+    // 2. If live class is scheduled for today
+    // 3. If live class is scheduled for today and the current time is lesser than the staring time of the live class 
+    // 4. If live class is scheduled for today and the current time is in between the staring time of the live class and the ending time of the live class
+
+    if( currDateTime.getDate() <= classDate.getDate() && currDateTime.getMonth() <= classDate.getMonth() && currDateTime.getFullYear() <= classDate.getFullYear() ){
+        
+        if( currDateTime.getDate() < classDate.getDate() || currTime <= startingTime || (currTime >= startingTime && currTime <= endingTime) ) return true;
+    }
+
+    return false;
 }
 
 
@@ -390,11 +418,10 @@ function showLiveClasses(classFilter){
                 for(let key in response.liveClasses){
 
                     let classVisibility = response.liveClasses[key].liveClassVisibility.toLowerCase();
-                    console.log(classVisibility);
-                    console.log(studentData.class);
-                    if( classVisibility == "everyone" || classVisibility == "all students" || studentData.class.toLowerCase() == classVisibility ){
+
+                    if( isClassUpcomingClass(response.liveClasses[key].classDate, response.liveClasses[key].startingTime, response.liveClasses[key].endingTime) && (classVisibility == "everyone" || classVisibility == "all students" || studentData.class.toLowerCase() == classVisibility ) ){
+                        
                         liveClassContainer.appendChild(getLiveClassCard(response.liveClasses[key]));
-                        console.log("appended");
                     }
                 }
                 // If No Live Classes are scheduled //

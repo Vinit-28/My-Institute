@@ -99,6 +99,13 @@ function submitAssignment(assignmentId){
 
 
 
+// Funtion to get the Proper Date Format //
+function getProperDateTime(dateObject){
+
+    let dateTime = dateObject.toString();
+    return dateTime.replace("GMT+0530 (India Standard Time)","");
+}
+
 
 // Function to Make a Uploaded File Card //
 function getAssignmentCard(assignmentDetails){
@@ -118,6 +125,9 @@ function getAssignmentCard(assignmentDetails){
     let aUploadAss =  document.createElement("a");
     let aViewSub =  document.createElement("a");
     let fileInput = document.createElement("input");
+
+    let uploadedDateTime = new Date(assignmentDetails.uploadedDateTime);
+    let deadlineTime = new Date(assignmentDetails.assignmentDeadline);
 
 
     // Adding Classes and Assigning Values to their Attributes //
@@ -139,8 +149,8 @@ function getAssignmentCard(assignmentDetails){
     hostName.innerText = " " + "( " + assignmentDetails.uploadedBy + " )";
     classTitle.innerText = assignmentDetails.assignmentTitle;
     pDescription.innerText = assignmentDetails.assignmentDescription;
-    classDate.innerText = assignmentDetails.assignmentDeadline;
-    classTime.innerText = assignmentDetails.assignmentDeadline;
+    classDate.innerText = "Uploaded Time : " + getProperDateTime(uploadedDateTime);
+    classTime.innerText = "Deadline Time : " + getProperDateTime(deadlineTime);
     aUploadAss.innerText = "Upload Assignment";
     aViewSub.innerText = "View Submitted File";
     fileInput.type = "file";
@@ -188,6 +198,28 @@ function getAssignmentCard(assignmentDetails){
 
 
 
+// Function to check whether an assignment's Deadline has passed or Not //
+function isAssignmentDeadlineCrossed(assignmentDeadline){
+    
+    let currDateTime = new Date();
+    assignmentDeadline = new Date(assignmentDeadline);
+    let currTime = currDateTime.getHours() + ":" + currDateTime.getMinutes();
+    let deadlineTime = assignmentDeadline.getHours() + ":" + assignmentDeadline.getMinutes();
+
+    // Cases that can come which will define that Assignment can be Submitted :-
+    // 1. If Assignment Deadline is in upcoming days but not for today
+    // 2. If Assignment Deadline is for today
+    // 3. If Assignment Deadline is for today and the current time is lesser than the deadline time of the Assignment 
+
+    if( currDateTime.getDate() <= assignmentDeadline.getDate() && currDateTime.getMonth() <= assignmentDeadline.getMonth() && currDateTime.getFullYear() <= assignmentDeadline.getFullYear() ){
+        
+        if( currDateTime.getDate() < assignmentDeadline.getDate() || currTime <= deadlineTime ) return true;
+    }
+
+    return false;
+}
+
+
 
 // Function to show the Assignments to the Student //
 function showAssignmentsTab(){
@@ -196,7 +228,9 @@ function showAssignmentsTab(){
     let uploadedAssignments = getUploadedAssignments(false);
     assignmentContainer.innerHTML = "";
     for(let key in uploadedAssignments){
-        assignmentContainer.appendChild(getAssignmentCard(uploadedAssignments[key]));
+        if( isAssignmentDeadlineCrossed(uploadedAssignments[key].assignmentDeadline) ){
+            assignmentContainer.appendChild(getAssignmentCard(uploadedAssignments[key]));
+        }
     }
 
     if( !assignmentContainer.children.length ){

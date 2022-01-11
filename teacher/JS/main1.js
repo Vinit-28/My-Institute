@@ -583,6 +583,14 @@ function getUploadedAssignments(asyncRequest=true){
 
 
 
+// Funtion to get the Proper Date Format //
+function getProperDateTime(dateObject){
+
+    let dateTime = dateObject.toString();
+    return dateTime.replace("GMT+0530 (India Standard Time)","");
+}
+
+
 
 // Function to Make a Uploaded File Card //
 function getUploadedAssignmentCard(assignmentDetails){
@@ -601,6 +609,9 @@ function getUploadedAssignmentCard(assignmentDetails){
     let classTimeDiv = document.createElement("div");
     let assignmentFileLink = document.createElement("a");
     let submissionLink = document.createElement("a");
+
+    let uploadedDateTime = new Date(assignmentDetails.uploadedDateTime);
+    let deadlineTime = new Date(assignmentDetails.assignmentDeadline);
 
     
     // Assigning values to their Attributes //
@@ -623,9 +634,9 @@ function getUploadedAssignmentCard(assignmentDetails){
     classSubtopicsUL.classList.add("classSubtopics");
     pTopicDescription.innerText = assignmentDetails.assignmentDescription;
     classDateDiv.classList.add("classDate");
-    classDateDiv.innerText = assignmentDetails.assignmentDeadline;
+    classDateDiv.innerText = "Uploaded Time : " + getProperDateTime(uploadedDateTime);
     classTimeDiv.classList.add("classTime");
-    classTimeDiv.innerText = "Timing :- " + assignmentDetails.assignmentDeadline + " to " + assignmentDetails.assignmentDeadline;
+    classTimeDiv.innerText = "Deadline Time : " + getProperDateTime(deadlineTime);
 
     buttonsDiv.classList.add("assignmentButtonContainer");
     assignmentFileLink.classList.add("assignmentButton");

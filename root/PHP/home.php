@@ -74,10 +74,10 @@ if (!(isset($_SESSION["isUserLogedIn"]) && isset($_SESSION["userId"]) && isset($
                 <input required autocomplete="off" id="update-state" type="text" placeholder="*State">
                 <input required autocomplete="off" id="update-pinCode" type="number" placeholder="*PIN Code">
 
-                <input disabled style="display: none;" required autocomplete="off" id="depositedFees" type="text"
-                    placeholder="*State">
+                <input style="display: none;" required autocomplete="off" id="depositedFees" type="text"
+                    placeholder="Deposited Fees">
                 <input disabled style="display: none;" required autocomplete="off" id="remainingFees" type="text"
-                    placeholder="*PIN Code">
+                    placeholder="Remaining Fees">
 
                 <!-- <button type="button" id="updateDetails" >Update Details</button> -->
                 <!-- <button type="button" id="closeModal" >Go Back</button> -->

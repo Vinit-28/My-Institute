@@ -429,6 +429,28 @@ function openLaunchClassForm(){
 }
 
 
+
+// Function to Check whether the Current Date and the Specified Date is Same or Not //
+function isDateSame(specifiedDate){
+    let currDateTime = new Date();
+    specifiedDate = new Date(specifiedDate);
+
+    return (specifiedDate.getDate() == currDateTime.getDate() && specifiedDate.getMonth() == currDateTime.getMonth() && specifiedDate.getFullYear() == currDateTime.getFullYear());
+}
+
+
+
+// Function to Check whether the Current Time is in the range of Specified Time Duration //
+function isTimeInRange(startingTime, endingTime){
+    
+    let currDateTime = new Date();
+    let currTime = currDateTime.getHours() + ":" + currDateTime.getMinutes();
+
+    return (currTime >= startingTime && currTime <= endingTime);
+}
+
+
+
 // Function to Make a Live Class Card //
 function getLiveClassCard(liveClassDetails, inputDisabled=false){
 
@@ -478,6 +500,8 @@ function getLiveClassCard(liveClassDetails, inputDisabled=false){
     aClassLink.target = "_blank";
     aClassLink.href = liveClassDetails.joiningLink;
     aClassLink.innerText = "Join Class";
+    joinClassButtonDiv.addEventListener("click", ()=>{window.open(liveClassDetails.joiningLink, "_blank");});
+
 
 
     // Wrapping up the tags //
@@ -498,8 +522,40 @@ function getLiveClassCard(liveClassDetails, inputDisabled=false){
     form.appendChild(classDescriptionDiv);
     form.appendChild(joinClassButtonDiv);
 
+
+    // Disable the Join Class Link if the current date & time is not in the range of scheduled Live Class date & time //
+    if( ! (isDateSame(liveClassDetails.classDate) && isTimeInRange(liveClassDetails.startingTime, liveClassDetails.endingTime) ) ){
+        aClassLink.style.pointerEvents = joinClassButtonDiv.style.pointerEvents = "none";
+        // joinClassButtonDiv.style.backgroundColor = "#76a3ddd7";
+        aClassLink.style.backgroundColor = "#76a3ddd7";
+    }
+
     return form;
 }
+
+
+
+// Function to check whether a Live Class is an Upcoming Live Class or Not //
+function isClassUpcomingClass(classDate, startingTime, endingTime){
+
+    let currDateTime = new Date();
+    classDate = new Date(classDate);
+    let currTime = currDateTime.getHours() + ":" + currDateTime.getMinutes();
+
+    // Cases that can come which will define it's a live class :-
+    // 1. If live class is scheduled in upcoming days but not for today
+    // 2. If live class is scheduled for today
+    // 3. If live class is scheduled for today and the current time is lesser than the staring time of the live class 
+    // 4. If live class is scheduled for today and the current time is in between the staring time of the live class and the ending time of the live class
+
+    if( currDateTime.getDate() <= classDate.getDate() && currDateTime.getMonth() <= classDate.getMonth() && currDateTime.getFullYear() <= classDate.getFullYear() ){
+        
+        if( currDateTime.getDate() < classDate.getDate() || currTime <= startingTime || (currTime >= startingTime && currTime <= endingTime) ) return true;
+    }
+
+    return false;
+}
+
 
 
 // Function to Show all the Hsoted Classes //
@@ -532,13 +588,15 @@ function showLiveClasses(classFilter){
 
                 for(let key in response.liveClasses){
 
+                    
                     if( classFilter == "hosted" ){
                         if( response.liveClasses[key].hostName == data.loggedInUser )
-                            liveClassContainer.appendChild(getLiveClassCard(response.liveClasses[key]));
+                        liveClassContainer.appendChild(getLiveClassCard(response.liveClasses[key]));
                     }
                     else{
                         let classVisibility = response.liveClasses[key].liveClassVisibility.toLowerCase();
-                        if( response.liveClasses[key].hostName == data.loggedInUser || classVisibility == "everyone" || classVisibility == "all teachers" ){
+                        if( isClassUpcomingClass(response.liveClasses[key].classDate, response.liveClasses[key].startingTime, response.liveClasses[key].endingTime) && ( response.liveClasses[key].hostName == data.loggedInUser || classVisibility == "everyone" || classVisibility == "all teachers" ) ){
+                            
                             liveClassContainer.appendChild(getLiveClassCard(response.liveClasses[key], true));
                         }
                     }
