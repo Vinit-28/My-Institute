@@ -244,7 +244,13 @@ function showDownloadFiles(){
                     }
                 }
                 if(response.uploadedFiles.length == 0){
-                    alert("No Files to Show !!!");
+                    // alert("No Files to Show !!!");
+                    // let mymessagediv = document.createElement('div')
+                    // mymessagediv.style.color = 'red'
+                    // mymessagediv.style.textAlign = "center"
+                    // mymessagediv.style.marginTop = "10px"
+                    // mymessagediv.innerHTML = "No files to download aman!";
+                    // downloadContainer.appendChild(mymessagediv)
                 }
             }
             else{
@@ -426,7 +432,15 @@ function showLiveClasses(classFilter){
                 }
                 // If No Live Classes are scheduled //
                 if( response.liveClasses.length < 1 ){
-                    alert("No Live Classes Scheduled !!!");
+                    let mymessagediv = document.createElement('div')
+                    mymessagediv.style.color = 'red'
+                    mymessagediv.style.width = '100%'
+                    mymessagediv.style.height = 'max-content'
+                    mymessagediv.style.textAlign = "center"
+                    mymessagediv.style.margin = "0 auto"
+                    mymessagediv.innerText = "No Live Classes Scheduled !";
+                    liveClassContainer.appendChild(mymessagediv)
+                    
                 }
             }
             else{

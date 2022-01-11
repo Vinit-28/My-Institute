@@ -234,6 +234,14 @@ function showAssignmentsTab(){
     }
 
     if( !assignmentContainer.children.length ){
-        alert("No Uploaded Assignments !!!");
+        let mymessagediv = document.createElement('div')
+        mymessagediv.style.color = 'red'
+        mymessagediv.style.width = '100%'
+        mymessagediv.style.height = 'max-content'
+        mymessagediv.style.textAlign = "center"
+        mymessagediv.style.margin = "0 auto"
+        mymessagediv.innerText = "No Uploaded Assignments !";
+        assignmentContainer.appendChild(mymessagediv)
+        // alert("No Uploaded Assignments !!!");
     }
 }

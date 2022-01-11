@@ -688,7 +688,17 @@ function showUploadedAssignments(){
     }
 
     // If no assignments to show //
-    if( !uploadAssignmentContainer.children.length ){
+    if( !uploadAssignmentContainer.children.length )
+    {
+        let mymessagediv = document.createElement('div')
+        mymessagediv.style.color = "red"
+        mymessagediv.style.textAlign = "center"
+        mymessagediv.style.margin = "10px auto"
+        mymessagediv.innerHTML = "No Uploaded Assignments to Show !"
+
+        uploadAssignmentContainer.appendChild(mymessagediv)
+
+
         // alert("No Uploaded Assignments to Show !!!");
     }
 }

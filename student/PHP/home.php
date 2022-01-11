@@ -790,6 +790,13 @@ if (!(isset($_SESSION["isUserLogedIn"]) && isset($_SESSION["userId"]) && isset($
             fillUpPersonalDetails();
         } else if ($(person).attr("value") == "#div6") {
             showDownloadFiles();
+
+            let div = document.createElement('div')
+            div.style.color = 'red'
+            div.style.textAlign = "center"
+            div.style.marginTop = "10px"
+            div.innerHTML = "No files to download !";
+            downloadContainer.appendChild(div)
         } else if ($(person).attr("value") == "#div5") {
             showLiveClasses();
         } else if ($(person).attr("value") == "#studentProfileDiv") {

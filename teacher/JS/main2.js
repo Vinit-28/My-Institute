@@ -177,7 +177,13 @@ function showUploadedFiles(){
                     }
                 }
                 if(response.uploadedFiles.length == 0){
-                    alert("No Files to Show !!!");
+                    let mymessagediv = document.createElement('div')
+                    mymessagediv.style.color = "red"
+                    mymessagediv.style.textAlign = "center"
+                    mymessagediv.style.margin = "10px auto"
+                    mymessagediv.innerHTML = "No Uploaded Files to Show !"
+                    form.appendChild(mymessagediv)
+                    // alert("No Files to Show !!!");
                 }
             }
             else{
@@ -603,7 +609,12 @@ function showLiveClasses(classFilter){
                 }
                 // If No Live Classes are scheduled //
                 if( response.liveClasses.length < 1 ){
-                    alert("No Live Classes Scheduled !!!");
+                    let mymessagediv = document.createElement('div')
+                    mymessagediv.style.color = "red"
+                    mymessagediv.style.marginTop = "10px"
+                    mymessagediv.innerHTML = "No Live Classes Scheduled !"
+                    liveClassContainer.appendChild(mymessagediv)
+                    // alert("No Live Classes Scheduled !!!");
                 }
             }
             else{

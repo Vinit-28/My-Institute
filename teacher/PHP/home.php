@@ -752,6 +752,12 @@ if (!(isset($_SESSION["isUserLogedIn"]) && isset($_SESSION["userId"]) && isset($
         else if ($(person).attr("value") == "#div4") {
             showUploadedAssignments();
         }
+        else if ($(person).attr("value") == "#div6") {
+            showUploadedFiles();
+        }
+        else if ($(person).attr("value") == "#div5") {
+            showLiveClasses("hosted")
+        }
     }
     
 
