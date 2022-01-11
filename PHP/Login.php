@@ -33,7 +33,10 @@
                 <form action="" id="form">
                     <input class="formInput" type="text" placeholder="User Id" id="userId" autocomplete="off">
                     <br id="break1">
-                    <input class="formInput" type="password" placeholder="Password" id="password">
+                    <div style="display: flex; align-items: center;" class="formInput">
+                        <input class="formInput" type="password" placeholder="Password" id="password">
+                        <img src="../Images/hide-solid-24.png" alt="" style="cursor: pointer; width: 1.6rem; height: 1.6rem;" id="showPasswordButton">
+                    </div>
                     <br>
                     <div id="btnContainer">
                         <button type="submit" id="login">Login</button>
@@ -119,6 +122,33 @@
 
         })
     </script>
+
+
+
+<script>
+
+    document.getElementById('showPasswordButton').addEventListener('click' , function(){
+                            
+        var a = (document.getElementById('showPasswordButton').src).split('/');
+        let element = document.getElementById('showPasswordButton');
+        let input = document.getElementById('password');
+        
+        if(a[a.length-1] == 'show-solid-24.png')
+        {
+            // element.src = './hide-solid-24.png'
+            element.src = '../Images/hide-solid-24.png'
+            input.type = "password"
+        }
+        else
+        {
+            // element.src = './show-solid-24.png'
+            element.src = '../Images/show-solid-24.png'
+            input.type = "text"
+        }
+
+
+    })
+</script>
 
 </body>
 
