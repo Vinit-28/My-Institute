@@ -178,7 +178,12 @@ function showUploadedFiles(){
                     }
                 }
                 if(response.uploadedFiles.length == 0){
-                    alert("No Files to Show !!!");
+                    let mynullmessage = 'No Files to Show !';
+                    form.style.color = "red"
+                    form.style.display = "flex"
+                    form.style.textAlign = "center"
+                    form.innerHTML = mynullmessage
+                    // alert("No Files to Show !!!");
                 }
             }
             else{
@@ -604,7 +609,12 @@ function showLiveClasses(classFilter){
                 }
                 // If No Live Classes are scheduled //
                 if( response.liveClasses.length < 1 ){
-                    alert("No Live Classes Scheduled !!!");
+                    let mynullmessage = 'No Live Classes Scheduled !';
+                    liveClassContainer.style.color = "red"
+                    liveClassContainer.style.display = "flex"
+                    liveClassContainer.style.justifyContent = "center"
+                    liveClassContainer.innerHTML = mynullmessage
+                    // alert("No Live Classes Scheduled !!!");
                 }
             }
             else{
