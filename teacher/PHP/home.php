@@ -630,32 +630,26 @@ if (!(isset($_SESSION["isUserLogedIn"]) && isset($_SESSION["userId"]) && isset($
                 <h3 class="boxHeading">Mark Attendance</h3>
             </div>
 
-            <div>
-                <button id="markAttendance" class="downloadOptions"   style="font-weight: bold;">&nbsp;&nbsp;Mark&nbsp;&nbsp;</button>
-                <button id="showAttendance" class="downloadOptions"   style="font-weight: bold;">&nbsp;&nbsp;Show&nbsp;&nbsp;</button>
-            </div>
             <div class="forms">
-                <input type="date" name="" id="attDate" max="2021-12-21">
-                <select name="" id="">
+                <input type="date" name="" id="selectedDate" max="<?php echo date("Y-m-d");?>">
+                <select name="" id="selectClassForAttendance">
                     <option value="">Select a class</option>
-                    <option value="">BCA I yr</option>
-                    <option value="">BCA II yr</option>
-                    <option value="">BCA III yr</option>
                 </select>
             </div>
 
                 <form id="studentContainer" class="internalContainer">
-    
-                    <div class="attStudent">
-                        <input type="checkbox">
-                        <img class="attStudentImg" src="../IMAGES/profile.jpg" alt="">
-                        <div class="attStudentName">Aman Khushalani</div>
-                        <div class="attStudentClass">BCA III Yr.</div>
+
+                    <div id="studentAttendanceCards">
+                        <!-- <div class="attStudent">
+                            <input type="checkbox">
+                            <img class="attStudentImg" src="../IMAGES/profile.jpg" alt="">
+                            <div class="attStudentName">Aman Khushalani</div>
+                            <div class="attStudentClass">BCA III Yr.</div>
+                        </div> -->
                     </div>
                     
                     <div id="submitAttendanceContainer" class="forms">
-                        <button class="">Submit</button>
-                        <!-- <button class="">Update</button> -->
+                        <button style="background-color: #76a3ddd7;" disabled id="markAttendance" class="">Submit</button>
                     </div>
     
                 </form>
@@ -745,12 +739,15 @@ if (!(isset($_SESSION["isUserLogedIn"]) && isset($_SESSION["userId"]) && isset($
         $($(person).attr("value")).css("display", "block");
 
         lastActiveItem = $(person);
-
+        console.log($(person).attr("value"));
         if ($(person).attr("value") == "#teacherProfileDiv") {
             fillUpPersonalDetails();
         }
         else if ($(person).attr("value") == "#div4") {
             showUploadedAssignments();
+        }
+        else if($(person).attr("value") == "#setAttendance"){
+            showAttendanceTab();
         }
     }
     

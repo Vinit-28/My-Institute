@@ -363,9 +363,22 @@
                 );
                 echo json_encode($response);
             }
+            
+            
+            // If request is to See/Get the Attendance //
+            else if($request['task'] == "Get Attendance" && ($authority == "teacher" || $authority == "root") ){
+
+                $personAttendance = getAttendance($databaseConnectionObject, $request);
+                $response = array(
+                    "result"=>"Success",
+                    "personAttendance"=>$personAttendance
+                );
+                echo json_encode($response);
+            }
 
 
 
+            
 
 
             // If request is not valid //

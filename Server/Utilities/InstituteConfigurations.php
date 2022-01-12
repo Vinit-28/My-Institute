@@ -372,7 +372,7 @@
     }
     
 
-    // Function to submit the Assignment //
+    // Function to Set the Attendance in the Database //
     function setOrUpdateAttendance($databaseConnectionObject, $request){
 
         $databaseConnectionObject->select_db($request['instituteId']);
@@ -385,6 +385,47 @@
                 makeAttendanceEntry($databaseConnectionObject, $person, $request['date'], $tableName, $request['class'], $request['loggedInUser']);
             }
         }
+    }
+
+
+    // Function to get the Attendance Status and If Attendance entry not exists then it will create default "Attendance Entry" that is "status = Not-Set, updatedBy = Bot" //
+    function getAttendanceStatus($databaseConnectionObject, $tableName, $request, $personId, $personName){
+
+        $query = "SELECT * FROM $tableName WHERE userId = ? AND attendanceDate = ?;";
+        $result = runQuery($databaseConnectionObject, $query, [$personId, $request['date']], "ss");
+
+        if( $result && $result->num_rows ){
+            return $result->fetch_assoc()['status'];
+        }
+
+        makeAttendanceEntry($databaseConnectionObject, ['userId'=>$personId, 'name'=>$personName, 'status'=>'Not-Set'], $request['date'], $tableName, $request['class'], "Bot");
+        return getAttendanceStatus($databaseConnectionObject, $tableName, $request, $personId, $personName);
+    }
+
+
+    // Function to Get the Attendance From the Database //
+    function getAttendance($databaseConnectionObject, $request){
+
+        $databaseConnectionObject->select_db($request['instituteId']);
+        $tempDatabaseConnectionObject = get_DatabaseConnectionObject("App_Database");
+
+        $tableName = "Year" . $request['year'];
+        createTableIfNotCreated($databaseConnectionObject, $request['instituteId'], $tableName);
+        
+        $query = "SELECT userId, name FROM StudentInfo WHERE class = ?;";
+        $result = runQuery($databaseConnectionObject, $query, [$request['class']], "s");
+        $personAttendance = array();
+        $counter = 1;
+
+
+        while($row = $result->fetch_assoc()){
+            $row += ["status"=>getAttendanceStatus($databaseConnectionObject, $tableName, $request, $row['userId'], $row['name']), "profilePath" => getColumnValue($tempDatabaseConnectionObject, "SELECT * FROM AppUsers WHERE userId = ?;",[$row['userId']], "s", "profilePath"), "class"=>$request['class']];
+
+            $personAttendance += [$counter=>$row];
+            $counter += 1;
+        }
+
+        return $personAttendance;
     }
 
 
@@ -401,7 +442,7 @@
             $result = runQuery($databaseConnectionObject, $query, [$className, 0], "si", true);
         }   
     }
-
+    
 
     // Function to Read Add Persons Excel File and Will also insert into the Institute's Database //
     function readAddPersonsExcelFile($databaseConnectionObject, $request, $fileName, $tmpName){
@@ -422,6 +463,4 @@
 
         return $response;
     }
-    
-
 ?>

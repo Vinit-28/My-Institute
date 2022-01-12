@@ -403,7 +403,6 @@ function openLaunchClassForm(){
             "liveClassVisibility" : liveClassVisibility.options[liveClassVisibility.selectedIndex].value,
         };
 
-        // console.log(data);
         let onLoadFunction = function(){
             if( this.status != 200 ){
                 alert("Something Went Wrong!");
@@ -421,7 +420,6 @@ function openLaunchClassForm(){
                     alert(responseText);
                 }
             }
-            // console.log(this.responseText);
         }
 
         // Making AJAX Request //
@@ -791,7 +789,6 @@ function updatePersonalDetails(e){
                 alert(responseText);
             }
         }
-        console.log(this.responseText);
     }
     xhr.send(formData);
 }
@@ -799,3 +796,231 @@ function updatePersonalDetails(e){
 
 // Binding the updatePersonalDetails button with its handler //
 document.getElementById("updatePersonalDetails").addEventListener("click", updatePersonalDetails);
+
+
+
+
+
+
+
+
+
+
+// ---------------------------------- Set Attendance ---------------------------------- //
+
+
+// Function to get the list of persons selected by the user to make attendance persent and absent //
+function getPersonsForAttendance(){
+
+    let persons = [];
+    let personAttendanceCards = document.getElementsByName("personAttendanceCard");
+
+    for(let card of personAttendanceCards){
+
+        let lst = card.value.split("+-/*%");
+        persons.push({
+            "userId" : lst[0],
+            "name" : lst[1],
+            "status" : (card.checked == true)? "present" : "absent"
+        });
+    }
+    return persons;
+}
+
+
+
+// Functio to set the Attendance of students of the selected class for the selected date //
+function setAttendance(selectedClass, selectedDate){
+
+    // Creating some Data Variables //
+    let dateObject = new Date(selectedDate);
+    let data = {
+        "task" : "Set Attendance", 
+        "loggedInUser" : document.getElementById("userId").textContent, 
+        "instituteId" : document.getElementById("instituteId").textContent, 
+        "userId" : document.getElementById("userId").textContent, 
+        "sessionId" : document.getElementById("sessionId").textContent,
+        "authority" : document.getElementById("authority").textContent,
+        "year" : dateObject.getFullYear(),
+        "date" : dateObject.getDate() + "/" + (dateObject.getMonth()+1) + "/" + dateObject.getFullYear(),
+        "class" : selectedClass,
+        "persons" : getPersonsForAttendance()
+    };
+
+    let onLoadFunction = function(){
+        if( this.status != 200 ){
+            alert("Something Went Wrong!");
+        }
+        else{
+            let responseText = this.responseText.replace(/(\r\n|\n|\r)/gm, "");
+            if( responseText.includes("Success") ){
+                let response = JSON.parse(responseText);
+                alert(response.message);
+            }
+            else{
+                alert(responseText);
+            }
+        }
+    }
+
+    // Making the AJAX Request //
+    makeAJAXRequest("POST", "../../Server/Utilities/InstituteSpecificUtilities.php", data, onLoadFunction);
+}
+
+
+
+// Function to get the attendance of students of the selected class for the selected date // 
+function getAttendance(selectedClass, selectedDate){
+
+    // Creating some Data Variables //
+    let dateObject = new Date(selectedDate);
+    let personAttendance = {};
+    let data = {
+        "task" : "Get Attendance", 
+        "loggedInUser" : document.getElementById("userId").textContent, 
+        "instituteId" : document.getElementById("instituteId").textContent, 
+        "userId" : document.getElementById("userId").textContent, 
+        "sessionId" : document.getElementById("sessionId").textContent,
+        "authority" : document.getElementById("authority").textContent,
+        "year" : dateObject.getFullYear(),
+        "date" : dateObject.getDate() + "/" + (dateObject.getMonth()+1) + "/" + dateObject.getFullYear(),
+        "class" : selectedClass,
+    };
+
+    let onLoadFunction = function(){
+        if( this.status != 200 ){
+            alert("Something Went Wrong!");
+        }
+        else{
+            let responseText = this.responseText.replace(/(\r\n|\n|\r)/gm, "");
+            if( responseText.includes("Success") ){
+                let response = JSON.parse(responseText);
+                personAttendance = response.personAttendance;
+                
+                // If no students found for the Selected Class //
+                if( personAttendance['1'] == undefined ){
+                    alert("No Students are Enrolled in the Selected Class !!!");
+                }
+            }
+            else{
+                alert(responseText);
+            }
+        }
+    }
+
+    // Making the AJAX Request //
+    makeAJAXRequest("POST", "../../Server/Utilities/InstituteSpecificUtilities.php", data, onLoadFunction, false);
+    return personAttendance;
+}
+
+
+
+// Making the Attendance Card of a Person/User/Student //
+function getPersonAttendanceCard(personDetails){
+
+    // Creating the Tags //
+    let attStudent = document.createElement("div");
+    let checkbox = document.createElement("input");
+    let attStudentImg = document.createElement("img");
+    let attStudentName = document.createElement("div");
+    let attStudentClass = document.createElement("div");
+
+
+    // Assigning values and Adding Classes to the Tags //
+    attStudent.classList.add("attStudent");
+    attStudentImg.classList.add("attStudentImg");
+    attStudentName.classList.add("attStudentName");
+    attStudentClass.classList.add("attStudentClass");
+
+    checkbox.type = "checkbox";
+    checkbox.value = personDetails.userId + "+-/*%" + personDetails.name; // "+-/*%" will work as a delimeter //
+    checkbox.name = "personAttendanceCard";
+    attStudentImg.src = personDetails.profilePath;
+    attStudentName.innerText = personDetails.name;
+    attStudentClass.innerText = personDetails.class;
+
+    if( personDetails.status.toLowerCase() == "present" ){
+        checkbox.checked = true;
+    }
+
+    // Wrapping up the Tags //
+    attStudent.appendChild(checkbox);
+    attStudent.appendChild(attStudentImg);
+    attStudent.appendChild(attStudentName);
+    attStudent.appendChild(attStudentClass);
+
+    return attStudent;
+}
+
+
+
+// Function to show the attendance of the Selectd Class //
+function showAttendanceOfTheSelectedClass(selectedClass, selectedDate){
+
+
+    if( selectedDate != "" && selectedClass != "" ){
+
+        // let markAttendance = document.getElementById("markAttendance");
+        let studentAttendanceCards = document.getElementById("studentAttendanceCards");
+        
+        // Getting the list of users/students of the selected class(both present and absent) //
+        let personAttendance = getAttendance(selectedClass, selectedDate);
+        
+        studentAttendanceCards.innerHTML = "";
+
+        // Looping through the Persons/User/Students //
+        for(let key in personAttendance){
+            studentAttendanceCards.appendChild(getPersonAttendanceCard(personAttendance[key]));
+        }
+
+        // // Disabling the submit button according to the selected Date and Class //
+        // if( teacherData.class == selectedClass && isDateSame(selectedDate) ){
+        //     markAttendance.disabled = false;
+        //     markAttendance.style.backgroundColor = "#2c7ce5d7";
+        // }
+        // else{
+        //     markAttendance.disabled = true;
+        //     markAttendance.style.backgroundColor = "#76a3ddd7";
+        // }
+    }
+}
+
+
+
+// Function to be Executed when Set Attendance tab is selected by the user //
+function showAttendanceTab(){
+
+    let selectClassForAttendance = document.getElementById("selectClassForAttendance");
+    let selectedDate =  document.getElementById("selectedDate");
+
+    appendClassDropdownMenu("selectClassForAttendance");
+    selectClassForAttendance.options[0].innerHTML = "Select a Class";
+    selectClassForAttendance.options[0].value = "";
+
+
+    // If class is selectd/Changed by the user //
+    selectClassForAttendance.addEventListener("change", ()=>{
+        let selectedClass = selectClassForAttendance.options[selectClassForAttendance.selectedIndex].value;
+        showAttendanceOfTheSelectedClass(selectedClass, selectedDate.value);
+    });
+
+    // If Date is selectd/Changed by the user //
+    selectedDate.addEventListener("input", ()=>{
+        let selectedClass = selectClassForAttendance.options[selectClassForAttendance.selectedIndex].value;
+        showAttendanceOfTheSelectedClass(selectedClass, selectedDate.value);
+    });
+}
+
+
+
+
+// Binding the function to the markAttendance Button //
+document.getElementById("markAttendance").addEventListener("click", (e)=>{
+
+    e.preventDefault();
+    let selectClassForAttendance = document.getElementById("selectClassForAttendance");
+    let selectedDate =  document.getElementById("selectedDate").value;
+    let selectedClass = selectClassForAttendance.options[selectClassForAttendance.selectedIndex].value;
+    // Calling the setAttendance Function which will make request to the server to make attendance in the Database //
+    setAttendance(selectedClass, selectedDate);
+});

@@ -906,7 +906,6 @@ function appendClassDropdownMenu(classDropdownMenuId, callback=null){
             if( responseText.includes("Success") || responseText.includes("Failed") ){
                 let response = JSON.parse(responseText);
                 instituteClasses = response.classes;
-                console.log(instituteClasses);
                 if(response.result == "Success"){
                     for(let key in response.classes){    
                         // Creating an option tag With the value of ClassName //

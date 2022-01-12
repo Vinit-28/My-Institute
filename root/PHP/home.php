@@ -475,7 +475,6 @@ if (!(isset($_SESSION["isUserLogedIn"]) && isset($_SESSION["userId"]) && isset($
         <!-- Add Person Div End -->
 
 
-
         <!-- set attendance Div  -->
         <div id="setAttendance" class="formsDiv" style="display: none;">
             <div class="boxHeadingDiv">
@@ -483,27 +482,25 @@ if (!(isset($_SESSION["isUserLogedIn"]) && isset($_SESSION["userId"]) && isset($
             </div>
 
             <div class="forms">
-                <input type="date" name="" id="attDate" max="2021-12-21">
-                <select name="" id="">
+                <input type="date" name="" id="selectedDate" max="<?php echo date("Y-m-d");?>">
+                <select name="" id="selectClassForAttendance">
                     <option value="">Select a class</option>
-                    <option value="">BCA I yr</option>
-                    <option value="">BCA II yr</option>
-                    <option value="">BCA III yr</option>
                 </select>
             </div>
 
                 <form id="studentContainer" class="internalContainer">
-    
-                    <!-- <div class="attStudent">
-                        <input type="checkbox">
-                        <img class="attStudentImg" src="../IMAGES/profile.jpg" alt="">
-                        <div class="attStudentName">Aman Khushalani</div>
-                        <div class="attStudentClass">BCA III Yr.</div>
-                    </div> -->
+
+                    <div id="studentAttendanceCards">
+                        <!-- <div class="attStudent">
+                            <input type="checkbox">
+                            <img class="attStudentImg" src="../IMAGES/profile.jpg" alt="">
+                            <div class="attStudentName">Aman Khushalani</div>
+                            <div class="attStudentClass">BCA III Yr.</div>
+                        </div> -->
+                    </div>
                     
                     <div id="submitAttendanceContainer" class="forms">
-                        <button class="">Update</button>
-                        <!-- <button class="">Update</button> -->
+                        <button style="background-color: #76a3ddd7;" disabled id="markAttendance" class="">Update Attendance</button>
                     </div>
     
                 </form>
@@ -663,6 +660,9 @@ if (!(isset($_SESSION["isUserLogedIn"]) && isset($_SESSION["userId"]) && isset($
         }
         else if ($(person).attr("value") == "#rootProfileDiv") {
             fillUpPersonalDetails();
+        }
+        else if ($(person).attr("value") == "#setAttendance") {
+            showAttendanceTab();
         }
 
         lastActiveItem = $(person);
