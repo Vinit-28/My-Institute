@@ -234,6 +234,11 @@ function showAssignmentsTab(){
     }
 
     if( !assignmentContainer.children.length ){
-        alert("No Uploaded Assignments !!!");
+        let mynullmessage = "No Uploaded Assignments !";
+        assignmentContainer.style.color = 'red';
+        assignmentContainer.style.textAlign = 'center';
+        assignmentContainer.style.justifyContent = 'center';
+        assignmentContainer.innerHTML = mynullmessage;
+        // alert("No Uploaded Assignments !!!");
     }
 }
