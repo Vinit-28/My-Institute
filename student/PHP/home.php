@@ -38,6 +38,7 @@ if (!(isset($_SESSION["isUserLogedIn"]) && isset($_SESSION["userId"]) && isset($
     <link rel="stylesheet" href="../CSS/quizApp.css">
     <link rel="stylesheet" href="../CSS/studentProfileImg.css">
     <link rel="stylesheet" href="../CSS/uploadAssignment.css">
+    <link rel="stylesheet" href="../CSS/attendanceModal.css">
 
     <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
     <title>Student Dashboard</title>
@@ -68,10 +69,44 @@ if (!(isset($_SESSION["isUserLogedIn"]) && isset($_SESSION["userId"]) && isset($
             </ul>
 
         </div>
-
+        
     </nav>
+    
+    
+    <!-- Student Attedance Modal -->
+
+    <div id="studentAttendanceModal">
+
+        <div  class="formsDiv" id="mainAttendanceContainer">
+
+            <div class="boxHeading attendanceBlockHead">Attendance of January 2020</div>
+            <div class="tableView">
+                <table class="tableHead">
+                    <tr>
+                        <th>Date</th>
+                        <th>Status</th>
+                    </tr>
+                    <tr>
+                        <td>01/01/2020</td>
+                        <td>Present</td>
+                    </tr>
+                </table>
+            </div>
 
 
+            <div id="datepicker" class="forms">
+                <input type="month" name="" id="">
+                <button onclick="return false;">Submit</button>
+            </div>
+        </div>
+    </div>
+
+
+        <!-- Student Attedance Modal End -->
+
+
+
+    
     <div id="mydashboardContainer">
 
         <div id="mynavigationBar">
@@ -118,8 +153,6 @@ if (!(isset($_SESSION["isUserLogedIn"]) && isset($_SESSION["userId"]) && isset($
 
 
 
-
-
         <!-- Student Dash Board  -->
         <div id="dashboard" class="formsDiv">
 
@@ -156,10 +189,11 @@ if (!(isset($_SESSION["isUserLogedIn"]) && isset($_SESSION["userId"]) && isset($
                         <div class="progressCircle">
                             <div class="circle">
                                 <div class="outerCircle"></div>
-                                <div id="attendanceProgress" class="inner"></div>
+                                <div style="cursor: pointer;" id="attendanceProgress" class="inner"></div>
 
                             </div>
                         </div>
+
 
                         <div id="feesDetailsContainer">
                             <div id="">Present = 210</div>
@@ -169,6 +203,20 @@ if (!(isset($_SESSION["isUserLogedIn"]) && isset($_SESSION["userId"]) && isset($
 
                     </div>
                 </div>
+
+
+            <!-- Script to handel display of attendance modal -->
+
+            <script>
+                document.getElementById('attendanceProgress').addEventListener('click' , ()=>{
+                    document.getElementById('studentAttendanceModal').style.display = "flex";
+                })
+                document.getElementById('studentAttendanceModal').addEventListener('click' , ()=>{
+                    document.getElementById('studentAttendanceModal').style.display = "none";
+                })
+            </script>
+            <!-- Script to handel display of attendance modal end-->
+
 
 
             </div>
