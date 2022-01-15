@@ -19,8 +19,8 @@
         $query = "INSERT INTO LoggedInUsers(userId, sessionId) VALUES(?,?);";
         $result = runQuery($databaseConnectionObject, $query, [$instituteId, "offline"], "ss", true);
         
-        $query = "INSERT INTO Institutes(instituteId, instituteName, instituteEmail, institutePhoneNumber, address, city, state, pinCode, profilePath) VALUES(?,?,?,?,?,?,?,?,?);";
-        $result = runQuery($databaseConnectionObject, $query, [$instituteId, $instituteName, $instituteEmail, "", "", "", "", "", "http://localhost/Server/Profiles/noProfile.png"], "sssssssss", true);
+        $query = "INSERT INTO Institutes(instituteId, instituteName, instituteEmail, institutePhoneNumber, address, city, state, pinCode, profilePath, planId, planDate, planValidity) VALUES(?,?,?,?,?,?,?,?,?,?,?,?);";
+        $result = runQuery($databaseConnectionObject, $query, [$instituteId, $instituteName, $instituteEmail, "", "", "", "", "", "http://localhost/Server/Profiles/noProfile.png", 1, date("Y-m-d"), 7], "sssssssssisi", true);
         
     
         // -------------------- Creating Tables for a Institute in its Database -------------------- //

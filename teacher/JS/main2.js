@@ -979,12 +979,14 @@ function getPersonAttendanceCard(personDetails){
 // Function to show the attendance of the Selectd Class //
 function showAttendanceOfTheSelectedClass(selectedClass, selectedDate){
 
-
     if( selectedDate != "" && selectedClass != "" ){
         let teacherData = getTeacherDetails();
         let markAttendance = document.getElementById("markAttendance");
         let studentAttendanceCards = document.getElementById("studentAttendanceCards");
         
+        markAttendance.style.backgroundColor = "#2c7ce5d7";
+        markAttendance.disabled = false;
+
         // Getting the list of users/students of the selected class(both present and absent) //
         let personAttendance = getAttendance(selectedClass, selectedDate);
         
@@ -1004,6 +1006,15 @@ function showAttendanceOfTheSelectedClass(selectedClass, selectedDate){
             markAttendance.disabled = true;
             markAttendance.style.backgroundColor = "#76a3ddd7";
         }
+    }
+    // Disabling the Mark Attendance button if either class is not selected or the date is not selected // 
+    else{
+        
+        let studentAttendanceCards = document.getElementById("studentAttendanceCards");
+        let markAttendance = document.getElementById("markAttendance");
+        markAttendance.style.backgroundColor = "#76a3ddd7";
+        markAttendance.disabled = true;
+        studentAttendanceCards.innerHTML = "";
     }
 }
 

@@ -960,6 +960,10 @@ function showAttendanceOfTheSelectedClass(selectedClass, selectedDate){
 
     if( selectedDate != "" && selectedClass != "" ){
 
+        let updateAttendanceButton = document.getElementById("markAttendance");
+        updateAttendanceButton.style.backgroundColor = "#2c7ce5d7";
+        updateAttendanceButton.disabled = false;
+
         // let markAttendance = document.getElementById("markAttendance");
         let studentAttendanceCards = document.getElementById("studentAttendanceCards");
         
@@ -972,16 +976,15 @@ function showAttendanceOfTheSelectedClass(selectedClass, selectedDate){
         for(let key in personAttendance){
             studentAttendanceCards.appendChild(getPersonAttendanceCard(personAttendance[key]));
         }
-
-        // // Disabling the submit button according to the selected Date and Class //
-        // if( teacherData.class == selectedClass && isDateSame(selectedDate) ){
-        //     markAttendance.disabled = false;
-        //     markAttendance.style.backgroundColor = "#2c7ce5d7";
-        // }
-        // else{
-        //     markAttendance.disabled = true;
-        //     markAttendance.style.backgroundColor = "#76a3ddd7";
-        // }
+    }
+    // Disabling the update button if either class is not selected or the date is not selected // 
+    else{
+        
+        let studentAttendanceCards = document.getElementById("studentAttendanceCards");
+        let updateAttendanceButton = document.getElementById("markAttendance");
+        updateAttendanceButton.style.backgroundColor = "#76a3ddd7";
+        updateAttendanceButton.disabled = true;
+        studentAttendanceCards.innerHTML = "";
     }
 }
 

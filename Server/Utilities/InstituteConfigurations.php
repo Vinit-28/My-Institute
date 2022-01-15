@@ -429,6 +429,43 @@
     }
 
 
+    function getAttendanceBetweenDates($databaseConnectionObject, $userId, $startingDate, $endingDate, $tableName){
+        
+        $personAttendance = array();
+
+        // Getting all the Records //
+        $query = "SELECT * FROM $tableName WHERE attendanceDate >= ? AND attendanceDate <= ? AND userId = ? AND  status <> ?;";
+        $result = runQuery($databaseConnectionObject, $query, [$startingDate, $endingDate, $userId, "Not-Set"], "ssss");
+        $personAttendance += ['attendanceRecords'=>$result->fetch_all(MYSQLI_ASSOC)];
+        
+        // Getting Count of Presents //
+        $query = "SELECT COUNT(status) as presents FROM $tableName WHERE attendanceDate >= ? AND attendanceDate <= ? AND userId = ? AND  status = ?;";
+        $result = runQuery($databaseConnectionObject, $query, [$startingDate, $endingDate, $userId, "present"], "ssss");
+
+        $personAttendance += ["presents"=>$result->fetch_assoc()["presents"]];
+        $personAttendance += ["absents"=> (count($personAttendance['attendanceRecords']) - $personAttendance["presents"]) ];
+        return $personAttendance;
+    }
+
+
+    // Function to Get the Attendance of a Particular Person From the Database //
+    function getParticularPersonAttendance($databaseConnectionObject, $request){
+
+        $databaseConnectionObject->select_db($request['instituteId']);
+        $startingDate = $request['fromDate'] . "/" . $request['fromMonth'] . "/" . $request['fromYear'];
+        $endingDate = $request['toDate'] . "/" . $request['toMonth'] . "/" . $request['toYear'];
+
+        if( $request['fromYear'] != $request['toYear'] ){
+            createTableIfNotCreated($databaseConnectionObject, $request['instituteId'], "Year".$request['fromYear']);
+            createTableIfNotCreated($databaseConnectionObject, $request['instituteId'], "Year".$request['toYear']);
+            return [];
+        }
+        
+        createTableIfNotCreated($databaseConnectionObject, $request['instituteId'], "Year".$request['fromYear']);
+        return getAttendanceBetweenDates($databaseConnectionObject, $request['forUser'], $startingDate, $endingDate, "Year".$request['fromYear']);
+    }
+
+
     // Function to Create a Class if the Specified Class does not Exists //
     function createClassIfNotCreated($databaseConnectionObject, $className, $instituteId){
 

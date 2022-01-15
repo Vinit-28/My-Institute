@@ -40,6 +40,13 @@ function getStudentDetails(){
         "userId" : document.getElementById("userId").textContent, 
         "sessionId" : document.getElementById("sessionId").textContent,
         "authority" : document.getElementById("authority").textContent,
+        "fromDate" : "01",
+        "fromMonth" : "1",
+        "fromYear" : "2022",
+        "toDate" : "15",
+        "toMonth" : "1",
+        "toYear" : "2022",
+        "forUser" : document.getElementById("userId").textContent,
     };
 
     let onLoadFunction = function(){
@@ -51,6 +58,7 @@ function getStudentDetails(){
             if( responseText.includes("Success") ){
                 let response = JSON.parse(responseText);
                 studentData = response.studentData[0];
+                console.log(studentData.studentAttendance);
             }
             else{
                 alert(responseText);
@@ -205,7 +213,6 @@ function showDownloadFiles(){
     let downloads = document.getElementById("downloads");
     let downloadContainer = document.getElementById("downloadContainer");
     
-    console.log("clicked");
 
     studentData = getStudentDetails();
 
@@ -233,7 +240,6 @@ function showDownloadFiles(){
             if( responseText.includes("Success") ){
                 let response = JSON.parse(responseText);
 
-                console.log(studentData.class);
                 let counter = 1;
                 for(let key in response.uploadedFiles){
                     let fileVisibility = response.uploadedFiles[key].fileVisibility.toLowerCase();
@@ -447,7 +453,6 @@ function showLiveClasses(classFilter){
 
     // Making AJAX Request //
     makeAJAXRequest("POST", "../../Server/Utilities/InstituteSpecificUtilities.php", data, onLoadFunction);
-    console.log("classes");
 }
 
 
@@ -497,9 +502,6 @@ function InitializeStudentDetails(){
     let feePercentage = (studentData.feeSubmitted/studentData.totalFee) * 100;
     updatePercentages('feesProgress' , feePercentage.toFixed(1));
     updatePercentages('attendanceProgress' , 99.9);
-
-    
-    console.log(studentData)
 
 }
 

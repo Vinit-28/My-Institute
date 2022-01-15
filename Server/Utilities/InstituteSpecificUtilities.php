@@ -231,6 +231,9 @@
             else if($request['task'] == "Get Student Data" && $authority == "student" ){
                 
                 $studentData = getStudentData($databaseConnectionObject, $request);
+                $studentAttendance = getParticularPersonAttendance($databaseConnectionObject, $request);
+                $studentData["0"] += ["studentAttendance"=>$studentAttendance];
+                
                 $response =array(
                     "result"=>"Success",
                     "studentData"=>$studentData,
@@ -369,6 +372,18 @@
             else if($request['task'] == "Get Attendance" && ($authority == "teacher" || $authority == "root") ){
 
                 $personAttendance = getAttendance($databaseConnectionObject, $request);
+                $response = array(
+                    "result"=>"Success",
+                    "personAttendance"=>$personAttendance
+                );
+                echo json_encode($response);
+            }
+
+
+            // If request is to See/Get the Attendance //
+            else if($request['task'] == "Get Particular Person Attendance" ){
+
+                $personAttendance = getParticularPersonAttendance($databaseConnectionObject, $request);
                 $response = array(
                     "result"=>"Success",
                     "personAttendance"=>$personAttendance

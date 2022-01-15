@@ -178,7 +178,12 @@ if (!(isset($_SESSION["isUserLogedIn"]) && isset($_SESSION["userId"]) && isset($
                             <div id="remainingFees"></div>
                             <div id="totalFees"></div>
                         </div>
-
+                        <!-- <div class="forms" style="display: flex; justify-content:center; flex-direction:column">
+                            <input type="date" value="2020-01-01" disabled>
+                            <input type="text" value="Last Updated : 2020-01-01" disabled>
+                            <div>Last Updated on</div>
+                            <div>Thu Jan 13 2022 22:00:35</div>
+                        </div> -->
                     </div>
                 </div>
 
@@ -201,6 +206,9 @@ if (!(isset($_SESSION["isUserLogedIn"]) && isset($_SESSION["userId"]) && isset($
                             <div id="">Total = 280</div>
                         </div>
 
+                    </div>
+                    <div class="forms" style="display: flex; justify-content:center">
+                        <input type="month" id="amanjimahan">
                     </div>
                 </div>
 

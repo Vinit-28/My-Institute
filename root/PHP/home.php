@@ -491,6 +491,7 @@ if (!(isset($_SESSION["isUserLogedIn"]) && isset($_SESSION["userId"]) && isset($
                 <form id="studentContainer" class="internalContainer">
 
                     <div id="studentAttendanceCards">
+                        <!-- Attendance Card -->
                         <!-- <div class="attStudent">
                             <input type="checkbox">
                             <img class="attStudentImg" src="../IMAGES/profile.jpg" alt="">
@@ -500,7 +501,7 @@ if (!(isset($_SESSION["isUserLogedIn"]) && isset($_SESSION["userId"]) && isset($
                     </div>
                     
                     <div id="submitAttendanceContainer" class="forms">
-                        <button style="background-color: #76a3ddd7;" disabled id="markAttendance" class="">Update Attendance</button>
+                        <button disabled style="background-color: #76a3ddd7;" id="markAttendance" class="">Update Attendance</button>
                     </div>
     
                 </form>

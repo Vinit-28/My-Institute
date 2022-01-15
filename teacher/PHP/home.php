@@ -640,6 +640,7 @@ if (!(isset($_SESSION["isUserLogedIn"]) && isset($_SESSION["userId"]) && isset($
                 <form id="studentContainer" class="internalContainer">
 
                     <div id="studentAttendanceCards">
+                        <!-- Attendance Card -->
                         <!-- <div class="attStudent">
                             <input type="checkbox">
                             <img class="attStudentImg" src="../IMAGES/profile.jpg" alt="">
