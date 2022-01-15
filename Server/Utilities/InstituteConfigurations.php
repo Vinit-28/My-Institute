@@ -429,6 +429,7 @@
     }
 
 
+    // Function to get the attendance of a person between the specified dates //
     function getAttendanceBetweenDates($databaseConnectionObject, $userId, $startingDate, $endingDate, $tableName){
         
         $personAttendance = array();
@@ -449,19 +450,64 @@
     }
 
 
+    // Function to combine the small part of attendance into the larger part // (Used in Combining the Attendance of Two Different Years)
+    function combineAttendance(&$personAttendance, &$newAttendance, &$recordsLength){
+
+        $personAttendance['presents'] += $newAttendance['presents'];
+        $personAttendance['absents'] += $newAttendance['absents'];
+        $personAttendance['totalDays'] += $newAttendance['totalDays'];
+
+        foreach($newAttendance['attendanceRecords'] as $key=>$value){
+            $personAttendance['attendanceRecords'] += [$recordsLength=>$value];
+            $recordsLength += 1;
+        }
+    }
+
+
     // Function to Get the Attendance of a Particular Person From the Database //
     function getParticularPersonAttendance($databaseConnectionObject, $request){
 
         $databaseConnectionObject->select_db($request['instituteId']);
-        // $startingDate = $request['fromDate'] . "/" . $request['fromMonth'] . "/" . $request['fromYear'];
         $startingDate = $request['fromYear'] . "-" . $request['fromMonth'] . "-" . $request['fromDate'];
-        // $endingDate = $request['toDate'] . "/" . $request['toMonth'] . "/" . $request['toYear'];
         $endingDate = $request['toYear'] . "-" . $request['toMonth'] . "-" . $request['toDate'];
 
+
+        // If Years of Starting Date & Ending Date do not Matches //
         if( $request['fromYear'] != $request['toYear'] ){
+            
+            $personAttendance = array();
+            $personAttendance += ['presents' => 0, 'absents'=>0, 'totalDays'=>0, 'attendanceRecords'=>array()];
+            $recordsLength = 1;
+
+            // Getting the Starting Year's Attendance //
             createTableIfNotCreated($databaseConnectionObject, $request['instituteId'], "Year".$request['fromYear']);
+            $startYearAtt = getAttendanceBetweenDates($databaseConnectionObject, $request['forUser'], $startingDate, $request['fromYear']."-"."12-31", "Year".$request['fromYear']);
+            
+            combineAttendance($personAttendance, $startYearAtt, $recordsLength);
+
+
+            // Getting the Middle Years Attendance If Any Middle Year Exists Between Starting & Ending Date //
+            $currYear = ((int)$request['fromYear'])+1;
+            $endingYear = ((int)$request['toYear']);
+            
+            while($currYear < $endingYear){
+
+                // Getting the Current/Middle Year's Attendance //
+                createTableIfNotCreated($databaseConnectionObject, $request['instituteId'], "Year".$currYear);
+                $middleYearAtt = getAttendanceBetweenDates($databaseConnectionObject, $request['forUser'], $currYear."-1-1", $currYear . "-12-31", "Year".$currYear);
+                
+                combineAttendance($personAttendance, $middleYearAtt, $recordsLength);
+                $currYear+=1;
+            }
+
+
+            // Getting the Last Year's Attendance //
             createTableIfNotCreated($databaseConnectionObject, $request['instituteId'], "Year".$request['toYear']);
-            return [];
+            $lastYearAtt = getAttendanceBetweenDates($databaseConnectionObject, $request['forUser'], $request['toYear']."-"."1-1", $endingDate, "Year".$request['toYear']);
+
+            combineAttendance($personAttendance, $lastYearAtt, $recordsLength);
+
+            return $personAttendance;
         }
         
         createTableIfNotCreated($databaseConnectionObject, $request['instituteId'], "Year".$request['fromYear']);

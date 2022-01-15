@@ -57,7 +57,6 @@ function getDefaultAttendanceDates(){
 function getStudentDetails(){
 
     let dates = getDefaultAttendanceDates();
-
     let data = {
         "task" : "Get Student Data", 
         "loggedInUser" : document.getElementById("userId").textContent, 
@@ -73,7 +72,7 @@ function getStudentDetails(){
         "toYear" : dates[1].getFullYear(),
         "forUser" : document.getElementById("userId").textContent,
     };
-
+    
     let onLoadFunction = function(){
         if( this.status != 200 ){
             alert("Something Went Wrong!");
@@ -524,15 +523,14 @@ function initializeStudentDetails(){
     document.getElementById("remainingFees").innerText = "Remaining =" + " " + (studentData.totalFee - studentData.feeSubmitted);
     document.getElementById("totalFees").innerText = "Total =" + " " + studentData.totalFee;
     
-
     // Seeting up the Attendance Details //
     document.getElementById("totalPresents").innerText = "Presents =" + " " + studentAttendance.presents;
     document.getElementById("totalLeaves").innerText = "Leaves =" + " " + studentAttendance.absents;
     document.getElementById("totalDays").innerText = "Total =" + " " + studentAttendance.totalDays;
     
 
-    let feePercentage = (studentData.feeSubmitted/studentData.totalFee) * 100;
-    let attendancePercentage = (studentAttendance.presents/studentAttendance.totalDays) * 100;
+    let feePercentage = (studentData.totalFee == 0)? 100.0 : (studentData.feeSubmitted/studentData.totalFee) * 100;
+    let attendancePercentage = (studentAttendance.totalDays == 0)? 100.0 : ((studentAttendance.presents/studentAttendance.totalDays) * 100);
     updatePercentages('feesProgress', feePercentage.toFixed(1));
     updatePercentages('attendanceProgress', attendancePercentage.toFixed(1));
 }
