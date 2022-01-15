@@ -2,6 +2,7 @@
 
 // Declaring Some Global Variables //
 let studentData = {};
+let studentAttendance = {};
 
 
 
@@ -30,8 +31,32 @@ function makeAJAXRequest(requesType, serverUrl, data, onLoadFunction, async=true
 // ---------------------------------- Update Personal Details ---------------------------------- //
 
 
+// Function to get the Default Date For the Attendance //
+function getDefaultAttendanceDates(){
+
+    let currDate = new Date();
+    let starting, ending;
+
+    if( currDate.getDate() == 1 && currDate.getMonth() == 0 ){
+        currDate.setDate(currDate.getDate()-1);
+        starting = currDate.getFullYear() + "/1/1", ending = currDate.getFullYear() + "/12/31";
+    }
+    else if( currDate.getDate() == 2 && currDate.getMonth() == 0 ){
+        starting = ending = currDate.getFullYear() + "/1/1";
+    }
+    else{
+        currDate.setDate(currDate.getDate()-1);
+        starting = currDate.getFullYear() + "/1/1", ending = currDate.getFullYear() + "/" + (currDate.getMonth()+1) + "/" + currDate.getDate();
+    }
+    return [new Date(starting), new Date(ending)];
+}
+
+
+
 // Function to get the Isntitute Details From the Database //
 function getStudentDetails(){
+
+    let dates = getDefaultAttendanceDates();
 
     let data = {
         "task" : "Get Student Data", 
@@ -40,12 +65,12 @@ function getStudentDetails(){
         "userId" : document.getElementById("userId").textContent, 
         "sessionId" : document.getElementById("sessionId").textContent,
         "authority" : document.getElementById("authority").textContent,
-        "fromDate" : "01",
-        "fromMonth" : "1",
-        "fromYear" : "2022",
-        "toDate" : "15",
-        "toMonth" : "1",
-        "toYear" : "2022",
+        "fromDate" : dates[0].getDate(),
+        "fromMonth" : dates[0].getMonth()+1,
+        "fromYear" : dates[0].getFullYear(),
+        "toDate" : dates[1].getDate(),
+        "toMonth" : dates[1].getMonth()+1,
+        "toYear" : dates[1].getFullYear(),
         "forUser" : document.getElementById("userId").textContent,
     };
 
@@ -59,6 +84,7 @@ function getStudentDetails(){
                 let response = JSON.parse(responseText);
                 studentData = response.studentData[0];
                 console.log(studentData.studentAttendance);
+                studentAttendance = studentData.studentAttendance;
             }
             else{
                 alert(responseText);
@@ -386,8 +412,8 @@ function isClassUpcomingClass(classDate, startingTime, endingTime){
     // Cases that can come which will define it's a live class :-
     // 1. If live class is scheduled in upcoming days but not for today
     // 2. If live class is scheduled for today
-    // 3. If live class is scheduled for today and the current time is lesser than the staring time of the live class 
-    // 4. If live class is scheduled for today and the current time is in between the staring time of the live class and the ending time of the live class
+    // 3. If live class is scheduled for today and the current time is lesser than the starting time of the live class 
+    // 4. If live class is scheduled for today and the current time is in between the starting time of the live class and the ending time of the live class
 
     if( currDateTime.getDate() <= classDate.getDate() && currDateTime.getMonth() <= classDate.getMonth() && currDateTime.getFullYear() <= classDate.getFullYear() ){
         
@@ -481,33 +507,39 @@ function updatePercentages(targetID, number) {
 
 
 
-
-function InitializeStudentDetails(){
+// Function to get the Student Data or Getting the Student Data from the Database //
+function initializeStudentDetails(){
 
     // Setting up the Greetings //
     let currDate = new Date();
     let greetings = document.getElementById("greetings");
     studentData = getStudentDetails();
-
+    
     greetings.innerText = (currDate.getHours() < 12)? "Good Morning" : (currDate.getHours() < 17)? "Good Afternoon" : "Good Evening";
     greetings.innerText += (" " + studentData.name);
     
-    
 
-    // Seeting up the Fee and Attendance Percentages //
+    // Seeting up the Fee Details //
     document.getElementById("submitedFees").innerText = "Submitted =" + " " + studentData.feeSubmitted;
     document.getElementById("remainingFees").innerText = "Remaining =" + " " + (studentData.totalFee - studentData.feeSubmitted);
     document.getElementById("totalFees").innerText = "Total =" + " " + studentData.totalFee;
     
-    let feePercentage = (studentData.feeSubmitted/studentData.totalFee) * 100;
-    updatePercentages('feesProgress' , feePercentage.toFixed(1));
-    updatePercentages('attendanceProgress' , 99.9);
 
+    // Seeting up the Attendance Details //
+    document.getElementById("totalPresents").innerText = "Presents =" + " " + studentAttendance.presents;
+    document.getElementById("totalLeaves").innerText = "Leaves =" + " " + studentAttendance.absents;
+    document.getElementById("totalDays").innerText = "Total =" + " " + studentAttendance.totalDays;
+    
+
+    let feePercentage = (studentData.feeSubmitted/studentData.totalFee) * 100;
+    let attendancePercentage = (studentAttendance.presents/studentAttendance.totalDays) * 100;
+    updatePercentages('feesProgress', feePercentage.toFixed(1));
+    updatePercentages('attendanceProgress', attendancePercentage.toFixed(1));
 }
 
 
 
 
 
-
-InitializeStudentDetails()
+// Calling the initializeStudentDetails to get the Student Data or Getting the Student Data from the Database //
+initializeStudentDetails()

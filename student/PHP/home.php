@@ -102,7 +102,7 @@ if (!(isset($_SESSION["isUserLogedIn"]) && isset($_SESSION["userId"]) && isset($
     </div>
 
 
-        <!-- Student Attedance Modal End -->
+    <!-- Student Attedance Modal End -->
 
 
 
@@ -178,17 +178,11 @@ if (!(isset($_SESSION["isUserLogedIn"]) && isset($_SESSION["userId"]) && isset($
                             <div id="remainingFees"></div>
                             <div id="totalFees"></div>
                         </div>
-                        <!-- <div class="forms" style="display: flex; justify-content:center; flex-direction:column">
-                            <input type="date" value="2020-01-01" disabled>
-                            <input type="text" value="Last Updated : 2020-01-01" disabled>
-                            <div>Last Updated on</div>
-                            <div>Thu Jan 13 2022 22:00:35</div>
-                        </div> -->
                     </div>
                 </div>
 
                 <div class="individualProgressCard">
-                    <div class="progressCardHeading">Attendance Records</div>
+                    <div class="progressCardHeading">Attendance</div>
                     <div class="progressHolder">
 
                         <div class="progressCircle">
@@ -199,17 +193,16 @@ if (!(isset($_SESSION["isUserLogedIn"]) && isset($_SESSION["userId"]) && isset($
                             </div>
                         </div>
 
-
                         <div id="feesDetailsContainer">
-                            <div id="">Present = 210</div>
-                            <div id="">Leaves = 8</div>
-                            <div id="">Total = 280</div>
+                            <div id="totalPresents"></div>
+                            <div id="totalLeaves"></div>
+                            <div id="totalDays"></div>
                         </div>
 
                     </div>
-                    <div class="forms" style="display: flex; justify-content:center">
+                    <!-- <div class="forms" style="display: flex; justify-content:center">
                         <input type="month" id="amanjimahan">
-                    </div>
+                    </div> -->
                 </div>
 
 

@@ -341,7 +341,7 @@
                 userId VARCHAR(100), 
                 name VARCHAR(100), 
                 class VARCHAR(100), 
-                attendanceDate VARCHAR(100), 
+                attendanceDate DATE, 
                 updatedBy VARCHAR(100),
                 status VARCHAR(100)
                 );";
@@ -434,7 +434,7 @@
         $personAttendance = array();
 
         // Getting all the Records //
-        $query = "SELECT * FROM $tableName WHERE attendanceDate >= ? AND attendanceDate <= ? AND userId = ? AND  status <> ?;";
+        $query = "SELECT * FROM $tableName WHERE attendanceDate BETWEEN ? AND ? AND userId = ? AND  status <> ?;";
         $result = runQuery($databaseConnectionObject, $query, [$startingDate, $endingDate, $userId, "Not-Set"], "ssss");
         $personAttendance += ['attendanceRecords'=>$result->fetch_all(MYSQLI_ASSOC)];
         
@@ -443,7 +443,8 @@
         $result = runQuery($databaseConnectionObject, $query, [$startingDate, $endingDate, $userId, "present"], "ssss");
 
         $personAttendance += ["presents"=>$result->fetch_assoc()["presents"]];
-        $personAttendance += ["absents"=> (count($personAttendance['attendanceRecords']) - $personAttendance["presents"]) ];
+        $personAttendance += ["absents"=> (count($personAttendance['attendanceRecords']) - $personAttendance["presents"])];
+        $personAttendance += ["totalDays"=> $personAttendance['presents'] + $personAttendance["absents"]];
         return $personAttendance;
     }
 
@@ -452,8 +453,10 @@
     function getParticularPersonAttendance($databaseConnectionObject, $request){
 
         $databaseConnectionObject->select_db($request['instituteId']);
-        $startingDate = $request['fromDate'] . "/" . $request['fromMonth'] . "/" . $request['fromYear'];
-        $endingDate = $request['toDate'] . "/" . $request['toMonth'] . "/" . $request['toYear'];
+        // $startingDate = $request['fromDate'] . "/" . $request['fromMonth'] . "/" . $request['fromYear'];
+        $startingDate = $request['fromYear'] . "-" . $request['fromMonth'] . "-" . $request['fromDate'];
+        // $endingDate = $request['toDate'] . "/" . $request['toMonth'] . "/" . $request['toYear'];
+        $endingDate = $request['toYear'] . "-" . $request['toMonth'] . "-" . $request['toDate'];
 
         if( $request['fromYear'] != $request['toYear'] ){
             createTableIfNotCreated($databaseConnectionObject, $request['instituteId'], "Year".$request['fromYear']);

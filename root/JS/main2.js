@@ -842,7 +842,7 @@ function setAttendance(selectedClass, selectedDate){
         "sessionId" : document.getElementById("sessionId").textContent,
         "authority" : document.getElementById("authority").textContent,
         "year" : dateObject.getFullYear(),
-        "date" : dateObject.getDate() + "/" + (dateObject.getMonth()+1) + "/" + dateObject.getFullYear(),
+        "date" : dateObject.getFullYear() + "-" + (dateObject.getMonth()+1) + "-" + dateObject.getDate(),
         "class" : selectedClass,
         "persons" : getPersonsForAttendance()
     };
@@ -883,7 +883,7 @@ function getAttendance(selectedClass, selectedDate){
         "sessionId" : document.getElementById("sessionId").textContent,
         "authority" : document.getElementById("authority").textContent,
         "year" : dateObject.getFullYear(),
-        "date" : dateObject.getDate() + "/" + (dateObject.getMonth()+1) + "/" + dateObject.getFullYear(),
+        "date" : dateObject.getFullYear() + "-" + (dateObject.getMonth()+1) + "-" + dateObject.getDate(),
         "class" : selectedClass,
     };
 
