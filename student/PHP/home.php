@@ -77,25 +77,24 @@ if (!(isset($_SESSION["isUserLogedIn"]) && isset($_SESSION["userId"]) && isset($
 
     <div id="studentAttendanceModal">
 
+        <div id="closeAttendanceModalButton"><i class='bx bx-x'></i></div>
+
         <div  class="formsDiv" id="mainAttendanceContainer">
 
             <div class="boxHeading attendanceBlockHead">Attendance of January 2020</div>
             <div class="tableView">
-                <table class="tableHead">
-                    <tr>
-                        <th>Date</th>
-                        <th>Status</th>
-                    </tr>
-                    <tr>
-                        <td>01/01/2020</td>
-                        <td>Present</td>
-                    </tr>
-                </table>
+
+                <div class="attendanceItem formsDiv ">
+                    <div class="attendanceDate">01-01-2020</div>
+                    <div class="attendanceStatus">Present</div>
+                </div>
+
             </div>
 
 
             <div id="datepicker" class="forms">
-                <input type="month" name="" id="">
+                <input type="date" name="" id="">
+                <input type="date" name="" id="">
                 <button onclick="return false;">Submit</button>
             </div>
         </div>
@@ -206,17 +205,6 @@ if (!(isset($_SESSION["isUserLogedIn"]) && isset($_SESSION["userId"]) && isset($
                 </div>
 
 
-            <!-- Script to handel display of attendance modal -->
-
-            <script>
-                document.getElementById('attendanceProgress').addEventListener('click' , ()=>{
-                    document.getElementById('studentAttendanceModal').style.display = "flex";
-                })
-                document.getElementById('studentAttendanceModal').addEventListener('click' , ()=>{
-                    document.getElementById('studentAttendanceModal').style.display = "none";
-                })
-            </script>
-            <!-- Script to handel display of attendance modal end-->
 
 
 
@@ -227,6 +215,7 @@ if (!(isset($_SESSION["isUserLogedIn"]) && isset($_SESSION["userId"]) && isset($
         </div>
 
         <script src="../JS/percentage.js"></script>
+        <script src="../JS/attendance.js"></script>
 
 
 
@@ -726,7 +715,7 @@ if (!(isset($_SESSION["isUserLogedIn"]) && isset($_SESSION["userId"]) && isset($
 
     $("#mynavigationBar").height($(window).height());
 
-    if (windowWidth >= 701) {
+    if ($(window).width() >= 701) {
 
         $("#dashboard").height($(window).height() * 80 / 100);
 
@@ -768,8 +757,8 @@ if (!(isset($_SESSION["isUserLogedIn"]) && isset($_SESSION["userId"]) && isset($
 
     $(window).resize(function () {
 
-        if (windowWidth = 700) {window.location.reload("true");}
-        if (windowWidth >= 701) {
+        if ($(window).width() == 700) {window.location.reload("true");}
+        if ($(window).width() >= 701) {
 
             $("#mynavigationBar").css({
                 "height": $(window).height() * 88 / 100,
@@ -792,7 +781,7 @@ if (!(isset($_SESSION["isUserLogedIn"]) && isset($_SESSION["userId"]) && isset($
             $("#liveClassContainer").height($(window).height() * 60 / 100);
             
             
-            if (windowWidth >= 690 && windowWidth <= 700) 
+            if ($(window).width() >= 690 && $(window).width() <= 700) 
             {
                 $("#mynavigationBar").css({
                     "width": "100%"
@@ -803,13 +792,13 @@ if (!(isset($_SESSION["isUserLogedIn"]) && isset($_SESSION["userId"]) && isset($
 
 
 
-        if (windowWidth >= 701) 
+        if ($(window).width() >= 701) 
         {
-            if (windowWidth >= 701 && windowWidth <= 849) 
+            if ($(window).width() >= 701 && $(window).width() <= 849) 
             {
                 $("#mynavigationBar").css("width", "12rem");
             } 
-            else if (windowWidth >= 850) 
+            else if ($(window).width() >= 850) 
             {
                 $("#mynavigationBar").css("width", "13rem");
             }
