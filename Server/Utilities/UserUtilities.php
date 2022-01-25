@@ -475,44 +475,76 @@
     }
 
 
+    // Function to get the Expiry Date of a Plan From its Start Date and Validity //
+    function getPlanExpiryDate($startDate, $validity){
 
+        $planExpiryDate = date_create($startDate);
 
-
-
-
-
-
-
-
-
-
-    
-
-
-
-
-
-
-    // Function to Delete either one or all institutes from the database // (For Development Purpose Only)
-    function cleanDatabase($databaseConnectionObject, $instituteId=""){
-
-        $databaseConnectionObject->select_db("App_Database");
-        $res = runQuery($databaseConnectionObject, "SELECT userId FROM AppUsers;", [], "");
-
-        if( $res && $res->num_rows > 0){
-
-            while($row = $res->fetch_assoc()){
-
-                if( $row['userId'] == $instituteId || $instituteId == "" ){
-                    $databaseConnectionObject->query("DELETE FROM AppUsers WHERE userId = '" . $row['userId'] . "';");
-                    $databaseConnectionObject->query("DELETE FROM LoggedInUsers WHERE userId = '". $row['userId'] . "';");
-                    if( isDatabaseExists($databaseConnectionObject, $row['userId']) )
-                        $databaseConnectionObject->query("DROP DATABASE " . $row['userId'] . ";");
-                }
-            }
-        }
-        
+        // Converting the plan start to plan's end date //
+        date_add($planExpiryDate, date_interval_create_from_date_string($validity . " days"));
+        return date_format($planExpiryDate, "D, d M Y");
     }
 
+
+    // Function to get the User/User's Institute Current Plan Details //
+    function getUserPlanDetails($databaseConnectionObject, $instituteId){
+
+        $databaseConnectionObject->select_db("App_Database");
+        $query = "SELECT planId, planDate, planValidity FROM Institutes WHERE instituteId = ?;";
+        $result = runQuery($databaseConnectionObject, $query, [$instituteId], "s");
+        $userPlanDetails = $result->fetch_assoc();
+        $planStartDate = date_create($userPlanDetails['planDate']);
+        $currDate = date("Y-m-d");
+
+        // Converting the plan start to plan's end date //
+        date_add($planStartDate, date_interval_create_from_date_string($userPlanDetails['planValidity'] . " days"));
+
+        $userPlanDetails += ['planEndDate'=>date_format($planStartDate, "Y-m-d")]; 
+        $userPlanDetails += ['isPlanExpired'=>($currDate <= $userPlanDetails['planEndDate'])? "No" : "Yes"]; 
+        return $userPlanDetails;
+    }
+
+
+    // Function to generate the Order Id for an institute //
+    function generateOrderId($databaseConnectionObject, $userId){
+
+        $query = "SELECT COUNT(userId) as rechargeCount FROM RechargePayments;";
+        $result = runQuery($databaseConnectionObject, $query, [], "");
+        $rechargeCount = 1;
+
+        if( $result && $result->num_rows ){
+            $rechargeCount = $result->fetch_assoc()['rechargeCount'] + 1;
+        }
+
+        return ("ORDREC_" . $userId . "__" . $rechargeCount); 
+    }
+
+
+    // Function to the Plan Details by Plan Id(Selected) //
+    function getPlanDetails($databaseConnectionObject, $planId){
+
+        $query = "SELECT * FROM RechargePlans WHERE planId = ?;";
+        $result = runQuery($databaseConnectionObject, $query, [$planId], "i");
+        return $result->fetch_assoc();
+    }
+    
+    
+    // Function to update the Profile Image of the User //
+    function updateInstituteRechargeDetails($databaseConnectionObject, $request){
+        
+        $databaseConnectionObject->select_db("App_Database");
+        $newOrderId = generateOrderId($databaseConnectionObject, $request['loggedInUser']);
+        $planDetails = getPlanDetails($databaseConnectionObject, $request['planId']);
+        $todayDate = date("Y-m-d");
+
+        $query = "INSERT INTO RechargePayments(userId, orderId, paymentId, planId, planAmount, date) VALUES(?,?,?,?,?,?);";
+        runQuery($databaseConnectionObject, $query, [$request['loggedInUser'], $newOrderId, $request['paymentId'], $planDetails['planId'], $planDetails['planAmount'], $todayDate], "sssiis", true);
+        
+
+        $query = "UPDATE Institutes SET planId = ?, planDate = ?, planValidity = ? WHERE instituteId = ?;";
+        runQuery($databaseConnectionObject, $query, [$planDetails['planId'], $todayDate, $planDetails['planValidity'], $request['loggedInUser']], "isis");
+
+        return $planDetails;
+    }
 
 ?>

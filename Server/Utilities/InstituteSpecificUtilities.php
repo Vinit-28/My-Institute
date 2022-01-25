@@ -23,8 +23,23 @@
 
             $authority = getColumnValue($databaseConnectionObject, "SELECT * FROM AppUsers WHERE userId = ?", [$request['loggedInUser']], "s", "authority");
 
+            
+            // If the request is to Update Institute's Recahrge Plan Details //
+            if( $request['task'] == 'Update Institute Recharge Details' && $authority == "root" ){
+                
+                $updatedPlanDetails = updateInstituteRechargeDetails($databaseConnectionObject, $request);
+                $response = array(
+                    "result"=>"Success",
+                    "planExpiryDate"=>getPlanExpiryDate(date("Y-m-d"), $updatedPlanDetails['planValidity']),
+                );
+            
+                // Sending the response //
+                echo json_encode($response);
+            }
+
+
             // If the request is to Add a Person(Student/Teacher) in the Institute's Database //
-            if( $request['task'] == 'Add Person' && $authority == "root" ){
+            else if( $request['task'] == 'Add Person' && $authority == "root" ){
                 
                 $request['password'] = password_hash($request['password'], PASSWORD_BCRYPT);
                 $databaseConnectionObject->select_db("App_Database");

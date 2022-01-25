@@ -11,8 +11,14 @@
         header('Location: ../index.php');
     }
 
+
+    // If the User's / User's Institute Plan has Expired //
+    if( $_SESSION['userPlanDetails']['isPlanExpired'] == "Yes" ){
+
+        header("Location: ./RechargePlans/PHP");
+    }
     // If the Logged In User is the Root User //
-    if( $_SESSION['userDetails']['authority'] == "root" ){
+    else if( $_SESSION['userDetails']['authority'] == "root" ){
 
         header("Location: ../root/PHP/home.php");
     }

@@ -41,20 +41,6 @@
     }
 
 
-    // Function to get the User/User's Institute Current Plan Details //
-    function getUserPlanDetails($databaseConnectionObject, $instituteId){
-
-        $databaseConnectionObject->select_db("App_Database");
-        $query = "SELECT planId, planDate, planValidity FROM Institutes WHERE instituteId = ?;";
-        $result = runQuery($databaseConnectionObject, $query, [$instituteId], "s");
-
-        if( $result && $result->num_rows ){
-            return $result->fetch_assoc();
-        }
-        die("Something Went Wrong While Logging In !!!");
-    }
-
-
     // If a client has made a request //
     if( isset($_POST['request']) ){
         
@@ -80,21 +66,9 @@
                 $_SESSION['instituteId'] = getColumnValue($databaseConnectionObject, "SELECT * FROM AppUsers Where userId = ?", [$request["userId"]], "s", "instituteId");
                 $_SESSION['authority'] = getColumnValue($databaseConnectionObject, "SELECT * FROM AppUsers Where userId = ?", [$request["userId"]], "s", "authority");
                 
-                $userPlanDetails = getUserPlanDetails($databaseConnectionObject, $_SESSION['instituteId']);
-                $planStartDate = date_create($userPlanDetails['planDate']);
-                $currDate = date("Y-m-d");
-
-                // Converting the plan start to plan's end date //
-                date_add($planStartDate, date_interval_create_from_date_string($userPlanDetails['planValidity'] . " days"));
-
-                $userPlanDetails += ['planEndDate'=>date_format($planStartDate, "Y-m-d")]; 
-                $userPlanDetails += ['isPlanExpired'=>($currDate <= $userPlanDetails['planEndDate'])? "No" : "Yes"]; 
-                $_SESSION['userPlanDetails'] = $userPlanDetails;
-
                 // Making the user Online and storing the session id in the database //
                 makeUserOnline($databaseConnectionObject, $request["userId"], $sessionId);
 
-                
                 $response = array(
                     "result"=>"Success",
                     "message"=>"",
@@ -125,7 +99,6 @@
             // Sending the response //
             echo json_encode($response);
         }
-
 
 
         // If the request is for Logout //

@@ -2,8 +2,8 @@
 <?php
 
     // Importing the required modules //
-    require "../Server/Utilities/DatabaseConfigurations.php";
-    require "../Server/Utilities/UserUtilities.php";
+    require "../../../Server/Utilities/DatabaseConfigurations.php";
+    require "../../../Server/Utilities/UserUtilities.php";
 
 
     // Function to check whether the user is Authenticated or not //
@@ -16,15 +16,12 @@
         if( ( isset($_SESSION["isUserLogedIn"]) && isset($_SESSION["userId"]) && isset($_SESSION["sessionId"]) && (isUserOnline($databaseConnectionObject, $_SESSION["userId"], $_SESSION["sessionId"])) ) ){
             
             // Getting and Setting the details of the user //
-            $query = "SELECT * FROM AppUsers WHERE userId = ?";
-            $result = runQuery($databaseConnectionObject, $query, [$_SESSION['userId']], "s");
-            $userDetails = $result->fetch_assoc();
-            $_SESSION['userDetails'] = $userDetails;
             $_SESSION['userPlanDetails'] = getUserPlanDetails($databaseConnectionObject, $_SESSION['userDetails']['instituteId']);
             $databaseConnectionObject->close();
-            
+
             return true;
         }
+
         return false;
     }
 

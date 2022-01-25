@@ -19,11 +19,12 @@
             $result = runQuery($databaseConnectionObject, $query, [$_SESSION['userId']], "s");
             $userDetails = $result->fetch_assoc();
             $_SESSION['userDetails'] = $userDetails;
+            $_SESSION['userPlanDetails'] = getUserPlanDetails($databaseConnectionObject, $_SESSION['userDetails']['instituteId']);
 
             $databaseConnectionObject->close();
           
             // If the authentic person's authority is matched with the specified authorizedAuthority //
-            if( strcasecmp($_SESSION['userDetails']['authority'], $authorizedAuthority) == 0 ){
+            if( strcasecmp($_SESSION['userDetails']['authority'], $authorizedAuthority) == 0 && $_SESSION['userPlanDetails']['isPlanExpired'] == "No" ){
                 return true;
             }
         }
