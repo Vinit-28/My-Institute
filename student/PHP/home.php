@@ -1,19 +1,15 @@
 <?php
 
+require "./UserAuthentication.php";
+
 // Checking the Authenticity of the User //
 session_start();
 
-require "../../Server/Utilities/DatabaseConfigurations.php";
-require "../../Server/Utilities/UserUtilities.php";
-
-$databaseConnectionObject = get_DatabaseConnectionObject("App_Database");
-
-if (!(isset($_SESSION["isUserLogedIn"]) && isset($_SESSION["userId"]) && isset($_SESSION["sessionId"]) && (isUserOnline($databaseConnectionObject, $_SESSION["userId"], $_SESSION["sessionId"])))) {
-
+if( isUserAuthenticated("student") == false ){
     session_destroy();
     header('Location: ../../index.php');
 } else {
-    $_SESSION['userProfile'] = getUserProfilePath($databaseConnectionObject, $_SESSION['instituteId'], $_SESSION['userId']);
+    // $_SESSION['userProfile'] = getUserProfilePath($databaseConnectionObject, $_SESSION['instituteId'], $_SESSION['userId']);
 
 ?>
 
@@ -64,7 +60,7 @@ if (!(isset($_SESSION["isUserLogedIn"]) && isset($_SESSION["userId"]) && isset($
                 <li class="navIcons bx-tada-hover"><i class='bx bxs-bell '></i></li>
                 <li class="navIcons bx-tada-hover"><i class='bx bx-exit  ' id="logout"></i></li>
                 <li class="navIcons">
-                    <?php echo "<img src='" . $_SESSION['userProfile'] . "' alt=''>"; ?>
+                    <?php echo "<img src='" . $_SESSION['userDetails']['profilePath'] . "' alt=''>"; ?>
                 </li>
             </ul>
 
@@ -226,7 +222,7 @@ if (!(isset($_SESSION["isUserLogedIn"]) && isset($_SESSION["userId"]) && isset($
                 <h3 class="boxHeading">Personl Profile</h3>
             </div>
             <div id="">
-                <?php echo '<img id="studentProfileImg" src="' . $_SESSION['userProfile'] . '" alt="">'; ?>
+                <?php echo '<img id="studentProfileImg" src="' . $_SESSION['userDetails']['profilePath'] . '" alt="">'; ?>
             </div>
             <form id="studentProfileForm" action="" method="post" class="forms">
                 <input autocomplete="off" id="personalPersonId" type="text" placeholder="*Student ID">
