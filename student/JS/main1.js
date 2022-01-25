@@ -10,6 +10,12 @@ let studentAttendance = {};
 // Function to make a AJAX request to the Server //
 function makeAJAXRequest(requesType, serverUrl, data, onLoadFunction, async=true){
 
+    // Encoding the Data //
+    for(let key in data){
+        if( typeof(data[key]) == 'string' )
+            data[key] = encodeURIComponent(data[key]);
+    }
+
     // Creating the XHR Object //
     let xhrObject = new XMLHttpRequest();
     xhrObject.open(requesType, serverUrl, async);
@@ -149,6 +155,11 @@ function updatePersonalDetails(e){
         "updatedStudentState" : document.getElementById("personalState").value,
         "updatedStudentPinCode" : document.getElementById("personalPinCode").value,
     };
+
+    // Encoding the Data //
+    for(let key in data){
+        data[key] = encodeURIComponent(data[key]);
+    }
 
     
     let xhr = new XMLHttpRequest();

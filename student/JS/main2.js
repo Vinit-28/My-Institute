@@ -61,6 +61,11 @@ function submitAssignment(assignmentId){
                 "assignmentId":assignmentId,
             };
 
+            // Encoding the Data //
+            for(let key in data){
+                data[key] = encodeURIComponent(data[key]);
+            }
+
             let xhr = new XMLHttpRequest();
             let formData = new FormData();
             let submissionFile = e.target.files[0];      

@@ -74,6 +74,12 @@ function openUploadFileForm(){
             "uploadDateTime" : Date().toString(),
             "uploadedBy" : document.getElementById("userId").textContent
         };
+
+        // Encoding the Data //
+        for(let key in data){
+            data[key] = encodeURIComponent(data[key]);
+        }
+        
         let xhr = new XMLHttpRequest();
         let formData = new FormData();
         let fileToBeUploaded = document.getElementById("uploadedFile").files[0];      
@@ -753,6 +759,10 @@ function updatePersonalDetails(e){
         "updatedInstitutePinCode" : document.getElementById("personalPinCode").value,
     };
 
+    // Encoding the Data //
+    for(let key in data){
+        data[key] = encodeURIComponent(data[key]);
+    }
     
     let xhr = new XMLHttpRequest();
     let formData = new FormData();

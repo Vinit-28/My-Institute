@@ -9,6 +9,12 @@ let uploadedAssignments = {};
 // Function to make a AJAX request to the Server //
 function makeAJAXRequest(requesType, serverUrl, data, onLoadFunction, async=true){
 
+    // Encoding the Data //
+    for(let key in data){
+        if( typeof(data[key]) == 'string' )
+            data[key] = encodeURIComponent(data[key]);
+    }
+
     // Creating the XHR Object //
     let xhrObject = new XMLHttpRequest();
     xhrObject.open(requesType, serverUrl, async);
@@ -513,6 +519,11 @@ function openUploadNewAssignmentForm(){
             "assignmentVisibility": selectVisibility.options[selectVisibility.selectedIndex].value,
         };
 
+        // Encoding the Data //
+        for(let key in data){
+            data[key] = encodeURIComponent(data[key]);
+        }
+
         let xhr = new XMLHttpRequest();
         let formData = new FormData();
         
@@ -783,6 +794,11 @@ function updateUploadedAssignment(){
                 "uploadedDateTime": Date(),
                 "assignmentVisibility": selectVisibility.options[selectVisibility.selectedIndex].value,
             };
+
+            // Encoding the Data //
+            for(let key in data){
+                data[key] = encodeURIComponent(data[key]);
+            }
     
             let xhr = new XMLHttpRequest();
             let formData = new FormData();
