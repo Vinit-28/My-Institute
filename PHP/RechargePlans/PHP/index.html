@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./payment.css">
+    <link href='https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css' rel='stylesheet'>
+
+    <title>Document</title>
+</head>
+<body>
+
+    <div id="paymentDiv">
+
+        <div id="firstHeading">
+            Pricing
+        </div>
+        
+        <div id="firstSubHeading">
+            Get you account for a Digital Institute !
+        </div>
+
+
+        <div id="wholeContainer">
+
+            <div id="leftButton" class="arrow"><i class='bx bx-chevron-left'></i></div>
+
+            <div id="plansContainer">
+
+                <div class="plan">
+                    <div class="planSlot1">
+                        <div class="planName">Aman Plan</div>
+                        <div class="planPrice">
+                            <span class="dollar">$</span>
+                            13.55
+                            <span class="monthly">/month</span>
+                        </div>
+                    </div>
+                    
+                    <div class="planSlot2">
+                        <div class="planTag">
+                            A Basic plan with 1 week Free !
+                        </div>
+                        <ul class="planPoints">
+                            <li><i class='bx bx-check'></i>Live Classes</li>
+                            <li><i class='bx bx-check'></i>Take Assignments</li>
+                            <li><i class='bx bx-check'></i>Individual Account</li>
+                            <li><i class='bx bx-check'></i>Conduct Tests</li>
+                        </ul>
+                    </div>
+    
+                    <div class="planButton">Buy Plan</div>
+                </div>
+
+                
+            </div>
+
+            <div id="rightButton" class="arrow"><i class='bx bx-chevron-right'></i></div>
+
+        </div>
+
+    </div>
+</body>
+</html>
+
+
+<script src="./jquery.js"></script>
+
+<script>
+    
+</script>
+
+
+
+<script>
+
+var scrollAllow = false;
+
+function setAlignment()
+{
+    var number = $('#plansContainer').children().length;
+    var width = $($('#plansContainer').children()[0]).width()
+    var margin = ($('#plansContainer').css("margin-left").split("px"))[0]
+    var totalWidth = width * number + ((number+1)*margin);
+    var parentwidth = $('#plansContainer').width()
+
+
+    if(totalWidth >= parentwidth)
+    {
+        $("#plansContainer").css({"justify-content" : "start"})
+        scrollAllow = true;
+    }
+    
+}
+
+$(window).resize( ()=>{
+    console.log('yes')
+    setAlignment()
+})
+
+var scrolledToLeft = 0
+
+
+let width = $($("#plansContainer").children()[0]).width();
+let margin = $($("#plansContainer").children()[0]).css("margin-right").split("px")[0]
+width = parseInt(width);
+margin = parseInt(margin)*4;
+function moveLeft()
+{
+    scrolledToLeft += (width+margin)
+    $("#plansContainer").scrollLeft(scrolledToLeft);
+}
+function moveRight()
+{
+    scrolledToLeft -= (width+margin)
+    $("#plansContainer").scrollLeft(scrolledToLeft);
+}
+
+
+document.getElementById("leftButton").addEventListener("click" , ()=>{moveLeft();})
+document.getElementById("rightButton").addEventListener("click" , ()=>{moveRight();})
+
+setAlignment();
+
+
+
+
+
+</script>
