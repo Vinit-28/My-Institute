@@ -42,7 +42,7 @@
                         <button type="submit" id="login">Login</button>
                     </div>
                     <div id="anchorContainer">
-                        <a id="forgetAnchor" href="">Forget Password ?</a>
+                        <a target="_blank" id="forgetAnchor" href="./forgotPassword.php">Forget Password ?</a>
                         <a id="askAnchor" href="./SignUp.php">Don't have account ? Sign Up !</a>
                     </div>
                 </form>

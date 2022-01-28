@@ -10,7 +10,6 @@
     else{
 ?>
 
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -29,72 +28,45 @@
         <div id="firstHeading">
             Pricing
         </div>
-        
+
         <div id="firstSubHeading">
             Get you account for a Digital Institute !
         </div>
 
-        <div id="plansContainer">
 
-            
-            <div class="plan">
-                <div class="planSlot1">
-                    <div class="planName">Aman Plan</div>
-                    <div class="planPrice">
-                        <span class="dollar">$</span>
-                        13.55
-                        <span class="monthly">/month</span>
-                    </div>
-                </div>
-                
-                <div class="planSlot2">
-                    <div class="planTag">
-                        A Basic plan with 1 week Free !
-                    </div>
-                    <ul class="planPoints">
-                        <li><i class='bx bx-check'></i>Live Classes</li>
-                        <li><i class='bx bx-check'></i>Take Assignments</li>
-                        <li><i class='bx bx-check'></i>Individual Account</li>
-                        <li><i class='bx bx-check'></i>Conduct Tests</li>
-                    </ul>
-                </div>
+        <div id="wholeContainer">
 
-                <div class="planButton" onclick="buyNow(2, 1000);">Buy Plan</div>
+            <div id="leftButton" class="arrow"><i class='bx bx-chevron-left'></i></div>
+
+            <!-- Plans Container Start -->
+            <div id="plansContainer">
+
+                <!-- Plan Card Start -->
+                <div class="plan">
+                    <div class="planSlot1">
+                        <div class="planName">Plan Name</div>
+                        <div class="planPrice"><span class="currency">Rs</span><p>1000</p><span class="monthly">/month</span></div>
+                    </div>
+                    
+                    <div class="planSlot2">
+                        <div class="planTag">Plan TagLine</div>
+                        <ul class="planPoints">
+                            <li><i class='bx bx-check'></i>Live Classes</li>
+                        </ul>
+                    </div>
+
+                    <div class="planButton" onclick="buyNow(planId);">Buy Plan</div>
+                </div>
+                <!-- Plan Card END -->
+
             </div>
-            
-            <div class="plan">
-                <div class="planSlot1">
-                    <div class="planName">Basic Plan</div>
-                    <div class="planPrice">
-                        <span class="dollar">$</span>
-                        13.55
-                        <span class="monthly">/month</span>
-                    </div>
-                </div>
-                
-                <div class="planSlot2">
-                    <div class="planTag">
-                        A Basic plan with 1 week Free !
-                    </div>
-                    <ul class="planPoints">
-                        <li><i class='bx bx-check'></i>Live Classes</li>
-                        <li><i class='bx bx-check'></i>Take Assignments</li>
-                        <li><i class='bx bx-check'></i>Individual Account</li>
-                        <li><i class='bx bx-check'></i>Conduct Tests</li>
-                    </ul>
-                </div>
+            <!-- Plans Container END -->
 
-                <div class="planButton">Buy Plan</div>
-            </div>
-            
-            
+            <div id="rightButton" class="arrow"><i class='bx bx-chevron-right'></i></div>
+
         </div>
-    </div>
 
-    <p id="userId" style="display: none;"><?php echo $_SESSION['userId']; ?></p>
-    <p id="sessionId" style="display: none;"><?php echo $_SESSION['sessionId']; ?></p>
-    <p id="instituteId" style="display: none;"><?php echo $_SESSION['instituteId']; ?></p>
-    <p id="authority" style="display: none;"><?php echo $_SESSION['authority']; ?></p>
+    </div>
 
     <?php
 

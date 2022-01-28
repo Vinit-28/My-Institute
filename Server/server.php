@@ -113,7 +113,59 @@
             );
                 
             // Sending the response //
-            echo $response;
+            echo json_encode($response);
+        }
+
+
+        // If the request is to get all the Recharge Plans //
+        else if( $request['task'] == 'Get Recharge Plans' ){
+
+            $response = array(
+                "result"=>"Success",
+                "rechargePlans"=>getRechargePlans($databaseConnectionObject),
+            );
+                
+            // Sending the response //
+            echo json_encode($response);
+        }
+
+
+        // If the request is to make a password reset request //
+        else if( $request['task'] == 'Password Reset Request' ){
+
+            $response = array(
+                "result"=>"Success",
+            );
+            $response += makePasswordRequest($databaseConnectionObject, $request['userId']);
+                
+            // Sending the response //
+            echo json_encode($response);
+        }
+
+
+        // If the request is to Verify OTP //
+        else if( $request['task'] == 'Verify OTP' ){
+
+            $response = array(
+                "result"=>"Success",
+            );
+            $response += verifyOTP($databaseConnectionObject, $request); 
+            
+            // Sending the response //
+            echo json_encode($response);
+        }
+
+
+        // If the request is to Change Password //
+        else if( $request['task'] == 'Change Password' ){
+
+            $response = array(
+                "result"=>"Success",
+            );
+            $response += changePassword($databaseConnectionObject, $request); 
+            
+            // Sending the response //
+            echo json_encode($response);
         }
     }
 ?>

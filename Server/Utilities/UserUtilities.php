@@ -536,15 +536,263 @@
         $newOrderId = generateOrderId($databaseConnectionObject, $request['loggedInUser']);
         $planDetails = getPlanDetails($databaseConnectionObject, $request['planId']);
         $todayDate = date("Y-m-d");
-
+        
         $query = "INSERT INTO RechargePayments(userId, orderId, paymentId, planId, planAmount, date) VALUES(?,?,?,?,?,?);";
         runQuery($databaseConnectionObject, $query, [$request['loggedInUser'], $newOrderId, $request['paymentId'], $planDetails['planId'], $planDetails['planAmount'], $todayDate], "sssiis", true);
         
-
+        
         $query = "UPDATE Institutes SET planId = ?, planDate = ?, planValidity = ? WHERE instituteId = ?;";
         runQuery($databaseConnectionObject, $query, [$planDetails['planId'], $todayDate, $planDetails['planValidity'], $request['loggedInUser']], "isis");
-
+        
         return $planDetails;
     }
+    
 
+    // Function to get all the RechargePlan Details from the database //
+    function getRechargePlans($databaseConnectionObject){
+
+        $databaseConnectionObject->select_db("App_Database");
+        $query = "SELECT * FROM RechargePlans WHERE planId NOT IN (?);";
+        $result = runQuery($databaseConnectionObject, $query, [1], "i");
+        $rechargePlans = array();
+
+        while($row = $result->fetch_assoc()){
+            $rechargePlans += [$row['planId']=>$row];
+        }
+        return $rechargePlans;
+    }
+
+
+    // Function to generate a random Alpha-Numeric OTP //
+    function generateRandomId($digit){
+
+        $OTP = "";
+        for($i=0; $i<$digit; $i++){
+
+            $candidates = array(rand(48, 57), rand(65, 90), rand(97, 122)); // (0-9, A-Z, a-z)
+            $selectedIndex = rand(0,2);
+            $OTP .= chr($candidates[$selectedIndex]);
+        }
+        return $OTP;
+    }
+
+
+    // Function to make a new Password Reset Request //
+    function createNewPasswordResetRequest($databaseConnectionObject, $userId){
+
+        $digit = 6;
+        $OTP = generateRandomId($digit);
+        $OTPHashed = password_hash($OTP, PASSWORD_BCRYPT);
+        $query = "INSERT INTO PasswordResetRequests(userId, timeStamp, OTP) VALUES(?, ?, ?);";
+        runQuery($databaseConnectionObject, $query, [$userId, time(), $OTPHashed], "sss", true);
+        return $OTP;
+    }
+
+
+    // Function to check whether a password reset request has made before or not //
+    function hasPasswordResetRequestMadeBefore($databaseConnectionObject, $userId){
+
+        // Password Reset Request Validity //
+        $passwordResetRequestValidity = 300; // Five Minutes 
+
+        $query = "SELECT * FROM PasswordResetRequests WHERE userId = ?;";
+        $result = runQuery($databaseConnectionObject, $query, [$userId], "s");
+        
+        if( $result && $result->num_rows ){
+            
+            $arr = $result->fetch_assoc();
+            $currentTimeStamp = time();
+            
+            if( $currentTimeStamp < ($arr['timeStamp'] + $passwordResetRequestValidity) ){
+                return true;
+            }
+            else{
+                $query = "DELETE FROM PasswordResetRequests WHERE userId = ?;";
+                runQuery($databaseConnectionObject, $query, [$userId], "s", true);
+                return false;
+            }
+        }
+        return false;
+    }
+
+
+    // Function to make a Password Reset Request if possible //
+    function makePasswordRequest($databaseConnectionObject, $userId){
+        
+        // Declaring some request response variables //
+        $message = "";
+        $isRequestMade = false;
+        
+        $databaseConnectionObject->select_db("App_Database");
+        $query = "SELECT email, emailVerified FROM AppUsers WHERE userId = ?;";
+        $result = runQuery($databaseConnectionObject, $query, [$userId], "s");
+
+        // If user account does not exists //
+        if( !$result || $result->num_rows == 0 ){
+            $message = "Invalid UserId !!!";
+            $isRequestMade = "false";
+        }
+        // If user account exists //
+        else{
+
+            $arr = $result->fetch_assoc();
+            // If the user's email is not verified //
+            if( $arr['emailVerified'] == "false" ){
+                $message = "Email Linked to Your Account is not Verified !!!";
+                $isRequestMade = "false";
+            }
+            // If the user's email is verified //
+            else{
+                // If a password reset request has already been in progress //
+                if( hasPasswordResetRequestMadeBefore($databaseConnectionObject, $userId) ){
+                    $message = "Request Already in Progress !!!";
+                    $isRequestMade = "false";
+                }
+                // Creating a new password reset request //
+                else{
+                    $OTP = createNewPasswordResetRequest($databaseConnectionObject, $userId);
+                    $message = "Password Reset Request Made Successfully !!!";
+                    $isRequestMade = "true";
+                }
+            }
+        }
+        return ["isRequestMade"=>$isRequestMade, "message"=>$message, "OTP"=>$OTP];
+    }
+
+
+    // Function to Update OTP or Storing the the postVerifyingOTPID key in the database for further user Identification //
+    function updateOTPID($databaseConnectionObject, $userId, $hashedID){
+
+        $databaseConnectionObject->select_db("App_Database");
+        $query = "UPDATE PasswordResetRequests SET OTP = ?, timeStamp = ? WHERE userId = ?;";
+        runQuery($databaseConnectionObject, $query, [$hashedID, time(), $userId], "sss");
+    }
+
+
+    // Function to verify the OTP sent to the User (For Reseting the Password)//
+    function verifyOTP($databaseConnectionObject, $request){
+
+        // Password Reset Request Validity //
+        $passwordResetRequestValidity = 300; // Five Minutes 
+        $isOTPVerified = "false";
+        $message = "";
+        $postVerifyingOTPID = ""; // a random id will be generated and will work as a security key between the authorized user and server  //
+
+        $databaseConnectionObject->select_db("App_Database");
+
+        // Getting the record of the password change request from the database //
+        $query = "SELECT * FROM PasswordResetRequests WHERE userId = ?;";
+        $result = runQuery($databaseConnectionObject, $query, [$request['userId']], "s");
+        
+
+        // If there is valid request record available in the database // 
+        if( $result && $result->num_rows ){
+            
+            $arr = $result->fetch_assoc();
+            $currentTimeStamp = time();
+            
+            // If the request is currently running //
+            if( $currentTimeStamp < ($arr['timeStamp'] + $passwordResetRequestValidity) ){
+                
+                // If the OTP matches //
+                if( password_verify($request['OTP'], $arr["OTP"]) ){
+                    
+                    $isOTPVerified = "true";
+                    $message = "OTP Verified Successfully";
+                    $postVerifyingOTPID = generateRandomId(10); // a random is Id between server and authorized user as a security key //
+                    
+                    // Updating OTP or Storing the the postVerifyingOTPID key in the database for further user Identification //
+                    updateOTPID($databaseConnectionObject, $request['userId'], password_hash($postVerifyingOTPID, PASSWORD_BCRYPT));
+                }
+                // If the OTP does not matches //
+                else{
+                    $isOTPVerified = "false";
+                    $message = "Invalid OTP";
+                }
+            }
+            // If the request has expired //
+            else{
+                $query = "DELETE FROM PasswordResetRequests WHERE userId = ?;";
+                runQuery($databaseConnectionObject, $query, [$request['userId']], "s", true);
+                $isOTPVerified = "false";
+                $message = "OTP Has Expired !!!";
+            }
+        }
+        // If there is not a valid request record avaailable in the database // 
+        else{
+            $isOTPVerified = "false";
+            $message = "Invalid OTP Request !!!";
+        }
+
+        // Returining the OTP verification request response to the user //
+        return ["isOTPVerified"=>$isOTPVerified, "message"=>$message, "postVerifyingOTPID"=>$postVerifyingOTPID];
+    }
+
+
+    // Function to Change the password in the Database //
+    function updatePassword($databaseConnectionObject, $userId, $newPassword){
+
+        $query = "UPDATE AppUsers SET password = ? WHERE userId = ?;";
+        runQuery($databaseConnectionObject, $query, [password_hash($newPassword, PASSWORD_BCRYPT), $userId], "ss", true);
+        
+        $query = "DELETE FROM PasswordResetRequests WHERE userId = ?;";
+        runQuery($databaseConnectionObject, $query, [$userId], "s", true);
+    }
+
+
+    // Function to change the Password if the request is valid //
+    function changePassword($databaseConnectionObject, $request){
+
+        $databaseConnectionObject->select_db("App_Database");
+
+        // Password Reset Request Validity //
+        $passwordResetRequestValidity = 300; // Five Minutes 
+        $isPasswordChanged = "false";
+        $message = "";
+        
+        // Getting the record of the password change request from the database //
+        $query = "SELECT * FROM PasswordResetRequests WHERE userId = ?;";
+        $result = runQuery($databaseConnectionObject, $query, [$request['userId']], "s");
+        
+
+        // If there is valid request record avaailable in the database // 
+        if( $result && $result->num_rows ){
+            
+            $arr = $result->fetch_assoc();
+            $currentTimeStamp = time();
+            
+            // If the request is currently running //
+            if( $currentTimeStamp < ($arr['timeStamp'] + $passwordResetRequestValidity) ){
+                
+                // If the postOTPVerifyingId matches (Authorized User) // 
+                if( password_verify($request['postVerifyingOTPID'], $arr["OTP"]) ){
+                    
+                    // Changing the password in the database //
+                    $isPasswordChanged = "true";
+                    $message = "Password Changed Successfully !!!";
+                    updatePassword($databaseConnectionObject, $request['userId'], $request['newPassword']);
+                }
+                // If the postOTPVerifyingId does not matches (Unauthorized User) //
+                else{
+                    $isPasswordChanged = "false";
+                    $message = "You are not Authorised to Change the Password !!!";
+                }
+            }
+            // If the request has expired //
+            else{
+                $query = "DELETE FROM PasswordResetRequests WHERE userId = ?;";
+                runQuery($databaseConnectionObject, $query, [$request['userId']], "s", true);
+                $isPasswordChanged = "false";
+                $message = "Password Change Request Has Expired !!!";
+            }
+        }
+        // If there is not a valid request record avaailable in the database // 
+        else{
+            $isPasswordChanged = "false";
+            $message = "Invalid Password Change Request !!!";
+        }
+
+        // returning the password reset request response //
+        return ["isPasswordChanged"=>$isPasswordChanged, "message"=>$message];
+    }
 ?>

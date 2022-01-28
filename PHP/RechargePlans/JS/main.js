@@ -1,5 +1,60 @@
 
+// Declaring some Global Variables //
+let scrollAllow = false;
+let rechargePlans = {};
 
+
+// Function to set the allignment //
+function setAlignment()
+{
+    var number = $('#plansContainer').children().length;
+    var width = $($('#plansContainer').children()[0]).width()
+    var margin = ($('#plansContainer').css("margin-left").split("px"))[0]
+    var totalWidth = width * number + ((number+1)*margin);
+    var parentwidth = $('#plansContainer').width()
+
+
+    if(totalWidth >= parentwidth)
+    {
+        $("#plansContainer").css({"justify-content" : "start"})
+        scrollAllow = true;
+    }
+    
+}
+
+$(window).resize( ()=>{
+    console.log('yes')
+    setAlignment()
+})
+
+var scrolledToLeft = 0
+
+
+let width = $($("#plansContainer").children()[0]).width();
+let margin = $($("#plansContainer").children()[0]).css("margin-right").split("px")[0]
+width = parseInt(width);
+margin = parseInt(margin)*4;
+function moveLeft()
+{
+    scrolledToLeft += (width+margin)
+    $("#plansContainer").scrollLeft(scrolledToLeft);
+}
+function moveRight()
+{
+    scrolledToLeft -= (width+margin)
+    $("#plansContainer").scrollLeft(scrolledToLeft);
+}
+
+
+document.getElementById("leftButton").addEventListener("click" , ()=>{moveLeft();})
+document.getElementById("rightButton").addEventListener("click" , ()=>{moveRight();})
+
+setAlignment();
+
+
+
+
+// --------------------------- Make Payment Section --------------------------- //
 
 // Function to make a AJAX request to the Server //
 function makeAJAXRequest(requesType, serverUrl, data, onLoadFunction, async=true){
@@ -18,33 +73,9 @@ function makeAJAXRequest(requesType, serverUrl, data, onLoadFunction, async=true
 
 
 
-// Function to set the allignment //
-function setAlignment()
-{
-    var number = $('#plansContainer').children().length;
-    var width = $($('#plansContainer').children()[0]).width()
-    var colgap = ($('#plansContainer').css("column-gap").split("px"))[0]
-    var totalWidth = width * number + ((number+1)*colgap);
-    var parentwidth = $('#plansContainer').width()
-
-
-    if(totalWidth >= parentwidth)
-    {
-        $("#plansContainer").css({"justify-content" : "start"})
-    }
-}
-
-$(window).resize( ()=>{
-    console.log('yes')
-    setAlignment()
-})
-setAlignment();
-
-
-
 
 // Make Payment for Recharge Plans //
-function buyNow(planId, planAmount){
+function buyNow(planId){
 
     let authenticity = document.getElementById("authenticity").innerText;
     
@@ -60,7 +91,7 @@ function buyNow(planId, planAmount){
         // Creating Payment Creadentails and Success Handler //
         let paymentCredentials = {
             "key": "rzp_test_jx2TOpgplWSuNP", // My Razorpay Key Id //
-            "amount": (planAmount*100), 
+            "amount": (rechargePlans[planId]['planAmount']*100), 
             "currency": "INR",
             "name": "My-Institute",
             "description": "Institute Recharge Transaction",
@@ -128,3 +159,146 @@ function buyNow(planId, planAmount){
         window.open("../../UserIndex.php", "_self");
     }
 }
+
+
+
+// Function to get the recharge plans from the database //
+function getRechargePlans(){
+
+    // Craeting Some Request & Handler Variables //
+    let data = {
+        "task" : "Get Recharge Plans", 
+    };
+
+    let onLoadFunction = function(){
+        
+        if( this.status != 200 ){
+            alert("Something Went Wrong !!!");
+        }
+        else{
+            
+            let responseText = this.responseText.replace(/(\r\n|\n|\r)/gm, "");
+            
+            if( responseText.includes("Success") ){
+                let response = JSON.parse(responseText);
+                rechargePlans = response['rechargePlans'];
+            }
+            else{
+                alert(responseText);
+            }
+        }
+    }
+
+    // Making the AJAX Request //
+    makeAJAXRequest("POST", "../../../Server/server.php", data, onLoadFunction, false);
+}
+
+
+// Function to make and return a plan Card //
+function getRechargePlanCard(planDetails){
+
+    // Getting the list of Plan Description //
+    let planDescription = planDetails['planDescription'].split("\r\n");
+    
+    // Creating Tags for a Plan Card //
+    let plan = document.createElement("div");
+    let planSlot1 = document.createElement("div");
+    let planName = document.createElement("div");
+    let planPrice = document.createElement("div");
+    let currency = document.createElement("span");
+    let monthly = document.createElement("span");
+    let planSlot2 = document.createElement("div");
+    let planTag = document.createElement("div");
+    let planPoints = document.createElement("ul");
+    let planButton = document.createElement("div");
+    let price = document.createElement("p");
+
+
+    // Adding Classes to the Tags //
+    plan.classList.add("plan");
+    planSlot1.classList.add("planSlot1");
+    planName.classList.add("planName");
+    planPrice.classList.add("planPrice");
+    currency.classList.add("currency");
+    monthly.classList.add("monthly");
+    planSlot2.classList.add("planSlot2");
+    planTag.classList.add("planTag");
+    planPoints.classList.add("planPoints");
+    planButton.classList.add("planButton");
+
+    
+    // Assigning values to their attributes //
+    planName.innerText = planDetails['planName'];
+    currency.innerText = "Rs";
+    price.innerText = planDetails['planAmount'];
+    monthly.innerText = "/month";
+    planTag.innerText = planDetails['planTagline'];
+    planButton.innerText = "Buy Plan";
+    planButton.addEventListener("click", ()=>{buyNow(planDetails['planId']);});
+
+    // Creating Description Lines for the plan //
+    for(let i=0; i<planDescription.length; i++){
+
+        // Creating Tags //
+        let liTag = document.createElement("li");
+        let iTag = document.createElement("i");
+        
+        // Adding Classes and wrapping up the tags //
+        iTag.classList.add("bx");
+        iTag.classList.add("bx-check");
+        liTag.appendChild(iTag);
+        liTag.innerText = planDescription[i];
+        planPoints.appendChild(liTag);
+    }
+
+
+    // Wrapping up the Tags //
+    planPrice.appendChild(currency);
+    planPrice.appendChild(price);
+    planPrice.appendChild(monthly);
+
+    planSlot1.appendChild(planName);
+    planSlot1.appendChild(planPrice);
+
+    planSlot2.appendChild(planTag);
+    planSlot2.appendChild(planPoints);
+
+    plan.appendChild(planSlot1);
+    plan.appendChild(planSlot2);
+    plan.appendChild(planButton);
+
+    return plan;
+}
+
+
+// Function to show the recharge plans // 
+function showRechargePlans(){
+
+    // Getting recharge plans from the database //
+    getRechargePlans();
+
+    // Getting the planContainer Tag //
+    let plansContainer = document.getElementById("plansContainer");
+    plansContainer.innerHTML = "";
+
+    // Iterating through the Plans //
+    for(let key in rechargePlans){
+
+        // Appending the recharge plans in the plansContainer //
+        plansContainer.appendChild(getRechargePlanCard(rechargePlans[key]));
+        plansContainer.appendChild(getRechargePlanCard(rechargePlans[key]));
+        plansContainer.appendChild(getRechargePlanCard(rechargePlans[key]));
+        plansContainer.appendChild(getRechargePlanCard(rechargePlans[key]));
+        plansContainer.appendChild(getRechargePlanCard(rechargePlans[key]));
+        plansContainer.appendChild(getRechargePlanCard(rechargePlans[key]));
+        plansContainer.appendChild(getRechargePlanCard(rechargePlans[key]));
+        plansContainer.appendChild(getRechargePlanCard(rechargePlans[key]));
+        plansContainer.appendChild(getRechargePlanCard(rechargePlans[key]));
+        plansContainer.appendChild(getRechargePlanCard(rechargePlans[key]));
+        plansContainer.appendChild(getRechargePlanCard(rechargePlans[key]));
+    }
+}
+
+
+// Calling the Function to show the recharge plans //
+showRechargePlans();
