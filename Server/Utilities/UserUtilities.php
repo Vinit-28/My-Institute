@@ -622,6 +622,7 @@
         // Declaring some request response variables //
         $message = "";
         $isRequestMade = false;
+        $OTP = "";
         
         $databaseConnectionObject->select_db("App_Database");
         $query = "SELECT email, emailVerified FROM AppUsers WHERE userId = ?;";

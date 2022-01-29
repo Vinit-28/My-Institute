@@ -4,54 +4,6 @@ let scrollAllow = false;
 let rechargePlans = {};
 
 
-// Function to set the allignment //
-function setAlignment()
-{
-    var number = $('#plansContainer').children().length;
-    var width = $($('#plansContainer').children()[0]).width()
-    var margin = ($('#plansContainer').css("margin-left").split("px"))[0]
-    var totalWidth = width * number + ((number+1)*margin);
-    var parentwidth = $('#plansContainer').width()
-
-
-    if(totalWidth >= parentwidth)
-    {
-        $("#plansContainer").css({"justify-content" : "start"})
-        scrollAllow = true;
-    }
-    
-}
-
-$(window).resize( ()=>{
-    console.log('yes')
-    setAlignment()
-})
-
-var scrolledToLeft = 0
-
-
-let width = $($("#plansContainer").children()[0]).width();
-let margin = $($("#plansContainer").children()[0]).css("margin-right").split("px")[0]
-width = parseInt(width);
-margin = parseInt(margin)*4;
-function moveLeft()
-{
-    scrolledToLeft += (width+margin)
-    $("#plansContainer").scrollLeft(scrolledToLeft);
-}
-function moveRight()
-{
-    scrolledToLeft -= (width+margin)
-    $("#plansContainer").scrollLeft(scrolledToLeft);
-}
-
-
-document.getElementById("leftButton").addEventListener("click" , ()=>{moveLeft();})
-document.getElementById("rightButton").addEventListener("click" , ()=>{moveRight();})
-
-setAlignment();
-
-
 
 
 // --------------------------- Make Payment Section --------------------------- //
@@ -109,8 +61,8 @@ function buyNow(planId){
                         "sessionId" : document.getElementById("sessionId").textContent,
                         "authority" : document.getElementById("authority").textContent,
                         "paymentId" : response.razorpay_payment_id,
-                        "planId" : planId,
-                        "planAmount" : planAmount,
+                        "planId" : rechargePlans[planId]['planId'],
+                        "planAmount" : rechargePlans[planId]['planAmount'],
                     };
                 
                     let onLoadFunction = function(){
