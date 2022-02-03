@@ -6,13 +6,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="reset.css">
     <link rel="stylesheet" href="forget.css">
+    <link rel="stylesheet" href="newPassword.css">
     <title>Forgot Password</title>
 </head>
 <body id="body">
     
     <div id="container">
 
-        <div class="heading">Forgot Password ?</div>
+        <div class="heading">Enter User-ID</div>
 
         <div class="image">
             <img src="./sad.jpg" alt="">
@@ -45,7 +46,7 @@
 
     <div id="container2">
 
-        <div class="heading">Reset Password !</div>
+        <div class="heading">Enter OTP !</div>
 
         <div class="image">
             <img src="./happy.jpg" alt="">
@@ -78,6 +79,42 @@
 
     </div>
 
+    <div id="container3">
+
+        <div class="heading">Reset Password !</div>
+
+        <div class="image">
+            <img src="./happy.jpg" alt="">
+        </div>
+
+        <div class="content">
+
+
+            
+            <div class="subHeading">Set up New Password</div>
+
+            <form action="" >
+
+                <div style="display:flex; row-gap:0.9rem; flex-direction: column; margin-top: 1rem; align-items: center;">
+                    <div class="input">
+                        <input class="resetInput" type="password" placeholder="New Password">
+                    </div>
+                    <div class="input">
+                        <input class="resetInput" type="password" placeholder="Confirm Password">
+                    </div>
+                    
+                </div>
+
+                <button id="newpassbtn">Submit</button>
+
+            </form>
+
+
+
+        </div>
+
+    </div>
+
 </body>
 
 </html>
@@ -90,6 +127,9 @@
         window.location.reload(true)
     })
 
+
+
+    // Code to flip First Card of Enter User ID
     $("#submitButton").click((e)=>{
         e.preventDefault();
         $("#container").addClass('Y')
@@ -100,10 +140,28 @@
                 $("#container2").css({"transform" : "rotateY(0deg)"})
                 
             },50)
-            // $("#container2").animate({},300)
+        } , 350)
+    })
+    
+    
+    
+    // Code to flip Second Card of Enter OTP
+    $("#btn").click((e)=>{
+        e.preventDefault();
+        $("#container2").css({"transform" : "rotateY(90deg)"})
+        setTimeout(()=>{
+            $("#container2").css({"display" : "none"})
+            $("#container3").css({"display" : "flex"})
+            setTimeout(()=>{
+                $("#container3").css({"transform" : "rotateY(0deg)"})
+                
+            },50)
         } , 350)
     })
 
+    
+
+    // OTP Code
     $(".otp").on('input' , (e)=>{
 
         let value = e.target.value[(e.target.value).length-1]
@@ -114,6 +172,8 @@
     })
 
 
+
+    // Here you will get the entered OTP by User !
     document.getElementById('btn').addEventListener('click' , (e)=>{
         e.preventDefault();
         let elements = $(".otpContainer").children();
