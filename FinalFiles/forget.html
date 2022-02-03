@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="reset.css">
+    <link rel="stylesheet" href="forget.css">
+    <title>Forgot Password</title>
+</head>
+<body id="body">
+    
+    <div id="container">
+
+        <div class="heading">Forgot Password ?</div>
+
+        <div class="image">
+            <img src="./sad.jpg" alt="">
+        </div>
+
+        <div class="content">
+
+
+            
+            <div class="subHeading">Enter your Log-In ID</div>
+
+            <form action="">
+
+                <div class="input">
+                    <input type="text" placeholder="Log-In ID here...">
+                </div>
+
+                <button id="submitButton">Submit</button>
+
+            </form>
+
+
+
+        </div>
+
+    </div>
+
+
+
+
+    <div id="container2">
+
+        <div class="heading">Reset Password !</div>
+
+        <div class="image">
+            <img src="./happy.jpg" alt="">
+        </div>
+
+        <div class="content">
+
+
+            
+            <div class="subHeading">Enter OPT from your E-mail</div>
+
+            <form action="" >
+
+                <div class="otpContainer">
+                    <input required type="text" autocomplete="off" class="otp" >
+                    <input required type="text" autocomplete="off" class="otp">
+                    <input required type="text" autocomplete="off" class="otp">
+                    <input required type="text" autocomplete="off" class="otp">
+                    <input required type="text" autocomplete="off" class="otp">
+                    <input required type="text" autocomplete="off" class="otp">
+                </div>
+
+                <button id="btn">Submit</button>
+
+            </form>
+
+
+
+        </div>
+
+    </div>
+
+</body>
+
+</html>
+<script src="./jquery.js"></script>
+
+<script>
+
+    $("#body").height($(window).height())
+    $(window).resize(()=>{
+        window.location.reload(true)
+    })
+
+    $("#submitButton").click((e)=>{
+        e.preventDefault();
+        $("#container").addClass('Y')
+        setTimeout(()=>{
+            $("#container").css({"display" : "none"})
+            $("#container2").css({"display" : "flex"})
+            setTimeout(()=>{
+                $("#container2").css({"transform" : "rotateY(0deg)"})
+                
+            },50)
+            // $("#container2").animate({},300)
+        } , 350)
+    })
+
+    $(".otp").on('input' , (e)=>{
+
+        let value = e.target.value[(e.target.value).length-1]
+        e.target.value = value
+        
+        $(e.target).next().focus();
+        
+    })
+
+
+    document.getElementById('btn').addEventListener('click' , (e)=>{
+        e.preventDefault();
+        let elements = $(".otpContainer").children();
+        let otp = "";
+        for(let index=0 ; index<elements.length ; index++)
+        {
+            otp += elements[index].value;
+        }
+        console.log(otp)
+    })
+
+</script>
