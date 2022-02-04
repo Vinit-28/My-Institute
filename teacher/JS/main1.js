@@ -519,11 +519,6 @@ function openUploadNewAssignmentForm(){
             "assignmentVisibility": selectVisibility.options[selectVisibility.selectedIndex].value,
         };
 
-        // Encoding the Data //
-        for(let key in data){
-            data[key] = encodeURIComponent(data[key]);
-        }
-
         let xhr = new XMLHttpRequest();
         let formData = new FormData();
         
@@ -794,11 +789,6 @@ function updateUploadedAssignment(){
                 "uploadedDateTime": Date(),
                 "assignmentVisibility": selectVisibility.options[selectVisibility.selectedIndex].value,
             };
-
-            // Encoding the Data //
-            for(let key in data){
-                data[key] = encodeURIComponent(data[key]);
-            }
     
             let xhr = new XMLHttpRequest();
             let formData = new FormData();

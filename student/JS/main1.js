@@ -156,12 +156,6 @@ function updatePersonalDetails(e){
         "updatedStudentPinCode" : document.getElementById("personalPinCode").value,
     };
 
-    // Encoding the Data //
-    for(let key in data){
-        data[key] = encodeURIComponent(data[key]);
-    }
-
-    
     let xhr = new XMLHttpRequest();
     let formData = new FormData();
     let profileImg = document.getElementById("studentProfileImg").src;  
@@ -545,9 +539,6 @@ function initializeStudentDetails(){
     updatePercentages('feesProgress', feePercentage.toFixed(1));
     updatePercentages('attendanceProgress', attendancePercentage.toFixed(1));
 }
-
-
-
 
 
 // Calling the initializeStudentDetails to get the Student Data or Getting the Student Data from the Database //

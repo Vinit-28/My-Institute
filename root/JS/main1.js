@@ -960,8 +960,5 @@ function changeDesignation(designationId, classId){
 
 
 
-
-
-
 // Making ready the institute Classes List //
 appendClassDropdownMenu("add-class");

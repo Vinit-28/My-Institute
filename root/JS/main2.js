@@ -74,11 +74,6 @@ function openUploadFileForm(){
             "uploadDateTime" : Date().toString(),
             "uploadedBy" : document.getElementById("userId").textContent
         };
-
-        // Encoding the Data //
-        for(let key in data){
-            data[key] = encodeURIComponent(data[key]);
-        }
         
         let xhr = new XMLHttpRequest();
         let formData = new FormData();
@@ -758,11 +753,6 @@ function updatePersonalDetails(e){
         "updatedInstituteState" : document.getElementById("personalState").value,
         "updatedInstitutePinCode" : document.getElementById("personalPinCode").value,
     };
-
-    // Encoding the Data //
-    for(let key in data){
-        data[key] = encodeURIComponent(data[key]);
-    }
     
     let xhr = new XMLHttpRequest();
     let formData = new FormData();
