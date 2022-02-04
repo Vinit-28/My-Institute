@@ -35,6 +35,7 @@ if( isUserAuthenticated("student") == false ){
     <link rel="stylesheet" href="../CSS/studentProfileImg.css">
     <link rel="stylesheet" href="../CSS/uploadAssignment.css">
     <link rel="stylesheet" href="../CSS/attendanceModal.css">
+    <link rel="stylesheet" href="../CSS/feesdetails.css">
 
     <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
     <title>Student Dashboard</title>
@@ -141,6 +142,10 @@ if( isUserAuthenticated("student") == false ){
                 <i class='mynavigationItemIcon bx bxs-edit-alt'></i>
                 <span class="mynavigationItemName">Student Test</span>
             </div>
+            <div class="mynavigationItem" value="#feesdetails">
+                <i class='mynavigationItemIcon bx bx-wallet'></i>
+                <span class="mynavigationItemName">Fees Details</span>
+            </div>
         </div>
 
 
@@ -149,7 +154,7 @@ if( isUserAuthenticated("student") == false ){
 
 
         <!-- Student Dash Board  -->
-        <div id="dashboard" class="formsDiv">
+        <div id="dashboard" class="formsDiv" >
 
             <div class="boxHeadingDiv">
                 <h3 id="greetings" class="boxHeading"></h3>
@@ -609,6 +614,51 @@ if( isUserAuthenticated("student") == false ){
 
 
 
+        <!-- Fees Div Start -->
+        <div id="feesdetails" style="display: none;">
+            <div class="boxHeadingDiv">
+                <h3 class="boxHeading">Fees Details</h3>
+            </div>
+            <div class="feesDetailsContainer">
+
+                <!-- This is a necessary Card to show -->
+                <div class="feesDetailCard">
+                    <div class="feesHeads">Date of Transaction</div>
+                    <div class="feesHeads">Amount</div>
+                    <div class="feesHeads currentFees">Current</div>
+                    <div class="feesHeads remainingFees">Remaining</div>
+                    <div class="feesHeads totalFees">Total</div>
+                </div>
+                <!-- This is a necessary Card to show -->
+
+
+                <!-- This is a card of Positive Fees -->
+                <div class="feesDetailCard">
+                    <div class="feesDate">30 - January 2020</div>
+                    <div class="fees positive">+ ₹5000</div>
+                    <div class="currentFees">5000</div>
+                    <div class="remainingFees">45000</div>
+                    <div class="totalFees">50000</div>
+                </div>        
+                <!-- This is a card of Positive Fees -->
+
+
+                <!-- This is a card of Negative Fees -->
+                <div class="feesDetailCard">
+                    <div class="feesDate">30 - January 2020</div>
+                    <div class="fees negative">- ₹5000</div>
+                    <div class="currentFees">5000</div>
+                    <div class="remainingFees">45000</div>
+                    <div class="totalFees">50000</div>
+                </div>        
+                <!-- This is a card of Negative Fees -->
+
+
+            </div>
+        <!-- Fees Div End -->
+
+
+
 
     </div>
 
@@ -727,6 +777,8 @@ if( isUserAuthenticated("student") == false ){
 
         $("#uploadAssignment").height($(window).height() * 80 / 100);
 
+        $("#feesdetails").height($(window).height() * 80 / 100);
+
         $("#library").height($(window).height() * 80 / 100);
         $("#libraryContainer").height($('#library').height() * 85 / 100);
         $("#booksContainer").height($('#libraryContainer').height() * 85 / 100);
@@ -742,6 +794,8 @@ if( isUserAuthenticated("student") == false ){
         $("#liveClassContainer").height($(window).height() * 80 / 100);
 
         $("#uploadAssignment").height($(window).height() * 80 / 100);
+
+        $("#feesdetails").height($(window).height() * 80 / 100);
 
         $("#library").height($(window).height() * 80 / 100);
         $("#libraryContainer").height($('#library').height() * 85 / 100);
