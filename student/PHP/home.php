@@ -36,6 +36,7 @@ if( isUserAuthenticated("student") == false ){
     <link rel="stylesheet" href="../CSS/uploadAssignment.css">
     <link rel="stylesheet" href="../CSS/attendanceModal.css">
     <link rel="stylesheet" href="../CSS/feesdetails.css">
+    <link rel="stylesheet" href="../CSS/testMarks.css">
 
     <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
     <title>Student Dashboard</title>
@@ -142,9 +143,13 @@ if( isUserAuthenticated("student") == false ){
                 <i class='mynavigationItemIcon bx bxs-edit-alt'></i>
                 <span class="mynavigationItemName">Student Test</span>
             </div>
-            <div class="mynavigationItem" value="#feesdetails">
+            <div class="mynavigationItem" value="#feesdetails" id="feesdetailsnavigationitem">
                 <i class='mynavigationItemIcon bx bx-wallet'></i>
                 <span class="mynavigationItemName">Fees Details</span>
+            </div>
+            <div class="mynavigationItem" value="#scoresDiv">
+                <i class='mynavigationItemIcon bx bx-medal'></i>
+                <span class="mynavigationItemName">Test Scores</span>
             </div>
         </div>
 
@@ -154,7 +159,7 @@ if( isUserAuthenticated("student") == false ){
 
 
         <!-- Student Dash Board  -->
-        <div id="dashboard" class="formsDiv" >
+        <div id="dashboard" class="formsDiv" style="display: none;">
 
             <div class="boxHeadingDiv">
                 <h3 id="greetings" class="boxHeading"></h3>
@@ -169,7 +174,7 @@ if( isUserAuthenticated("student") == false ){
                         <div class="progressCircle">
                             <div class="circle">
                                 <div class="outerCircle"></div>
-                                <div id="feesProgress" class="inner"></div>
+                                <div style="cursor: pointer;" id="feesProgress" class="inner"></div>
                             </div>
                         </div>
 
@@ -614,6 +619,46 @@ if( isUserAuthenticated("student") == false ){
 
 
 
+
+
+        <!-- Marks Div Start -->
+        <div id="scoresDiv" >
+
+            <div class="boxHeadingDiv">
+                <h3 class="boxHeading">Test Scores</h3>
+            </div>
+
+            <div class="feesDetailsContainer">
+
+                <div class="testScoreCard">
+                    <div class="hoverScores">50%</div>
+
+                    <div class="testScoreDetailContainer">
+                        
+                        <div>
+                            <div>English</div>
+                            <div>20-01-2022</div>
+                        </div>
+
+                        <div>90/100</div>
+                    </div>
+
+                    <div class="testScoreProgress">
+                        <div style="left: -50%;" class="testScoreProgressInner"></div>
+                    </div>
+                    
+                </div>
+
+            </div>
+
+
+        </div>
+        <!-- Marks Div Start -->
+
+
+
+
+
         <!-- Fees Div Start -->
         <div id="feesdetails" style="display: none;">
             <div class="boxHeadingDiv">
@@ -778,6 +823,7 @@ if( isUserAuthenticated("student") == false ){
         $("#uploadAssignment").height($(window).height() * 80 / 100);
 
         $("#feesdetails").height($(window).height() * 80 / 100);
+        $("#scoresDiv").height($(window).height() * 80 / 100);
 
         $("#library").height($(window).height() * 80 / 100);
         $("#libraryContainer").height($('#library').height() * 85 / 100);
@@ -796,6 +842,7 @@ if( isUserAuthenticated("student") == false ){
         $("#uploadAssignment").height($(window).height() * 80 / 100);
 
         $("#feesdetails").height($(window).height() * 80 / 100);
+        $("#scoresDiv").height($(window).height() * 80 / 100);
 
         $("#library").height($(window).height() * 80 / 100);
         $("#libraryContainer").height($('#library').height() * 85 / 100);
@@ -889,6 +936,10 @@ if( isUserAuthenticated("student") == false ){
         lastActiveItem = $(person);
     }
     
+
+    document.getElementById('feesProgress').addEventListener('click' , ()=>{
+        manipulate($("#feesdetailsnavigationitem"))
+    })
 
 
 
