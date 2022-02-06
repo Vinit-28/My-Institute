@@ -32,6 +32,7 @@ if( isUserAuthenticated("teacher") == false ){
     <link rel="stylesheet" href="../CSS/teacherProfileDiv.css">
     <link rel="stylesheet" href="../CSS/setattendance.css">
     <link rel="stylesheet" href="../CSS/uploadAssignments.css">
+    <link rel="stylesheet" href="../CSS/uploadMarks.css">
     <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
     <title>Teacher Dashboard</title>
 </head>
@@ -150,6 +151,10 @@ if( isUserAuthenticated("teacher") == false ){
                 <i class='mynavigationItemIcon bx bx-check-square'></i>
                 <span class="mynavigationItemName">Set Attendance</span>
             </div>
+            <div class="mynavigationItem" value="#uploadMarks">
+                <i class='mynavigationItemIcon bx bx-medal'></i>
+                <span class="mynavigationItemName">Upload Marks</span>
+            </div>
         </div>
 
 
@@ -160,7 +165,7 @@ if( isUserAuthenticated("teacher") == false ){
 
         <!-- Personal Profile Div -->
 
-        <div value="#teacherProfileDiv" id="teacherProfileDiv" class="formsDiv">
+        <div value="#teacherProfileDiv" id="teacherProfileDiv" class="formsDiv" style="display: none;">
             <div class="boxHeadingDiv">
                 <h3 class="boxHeading">Personl Profile</h3>
             </div>
@@ -654,6 +659,44 @@ if( isUserAuthenticated("teacher") == false ){
         </div>
 
         <!-- set attendance Div end -->
+
+
+
+
+
+        <!-- Upload Student Test File Div -->
+
+        <div id="uploadMarks" about="uploadTestFile" class="formsDiv" >
+
+            <div class="boxHeadingDiv">
+                <h3 class="boxHeading">Upload Marks</h3>
+            </div>
+
+            <div class="marksDetailsContainer">
+
+                <form action="" class="forms">
+                    <input required autocomplete="OFF" type="text" placeholder="Subject Name" name="subjectName">
+                    <input required autocomplete="OFF" type="date" name="classDate" style="width: 100%;">
+                    <input required autocomplete="OFF" type="number" name="totalMarks">
+                    <select name="classForClass">
+                        <option value="">BCA 1st Yr.</option>
+                        <option value="">BCA 2nd Yr.</option>
+                        <option value="">BCA 3rd Yr.</option>
+                    </select>
+                    <button  type="button">See file pattern</button>
+                    <button onclick="{document.getElementById('testFile').click(); event.preventDefault();}">Upload .xls
+                        file</button>
+                    <input style="display: none;" id="testFile" accept=".xls" required autocomplete="OFF" type="file"
+                        placeholder="Joining Link" name="classLink">
+                    <button type="submit">Upload</button>
+                </form>
+
+
+            </div>
+
+        </div>
+
+        <!-- Upload Student Test File End -->
     
 
     </div>
@@ -725,7 +768,7 @@ if( isUserAuthenticated("teacher") == false ){
 
     let lastActiveItem = $("#item1");
     $("#item1").addClass("activeItem");
-    fillUpPersonalDetails();
+    // fillUpPersonalDetails();
 
     function manipulate(person) {
 

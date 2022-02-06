@@ -26,24 +26,18 @@
 
 /* Side Anchor */
 
+
 #mynavigationBar {
     display: flex;
     flex-direction: column;
     position: relative;
-    overflow-y: scroll;
+    overflow-y: scroll !important;
     background-color: var(--backgroundDark);
     
 }
 
-/*
-#mynavigationBar {  
-    
-}
-
-*/
-
 #mynavigationBar::-webkit-scrollbar {
-    display: none;
+    display: none !important;
 }
 
 
