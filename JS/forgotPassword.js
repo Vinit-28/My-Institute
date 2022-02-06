@@ -17,26 +17,34 @@ function makeAJAXRequest(requesType, serverUrl, data, onLoadFunction, async=true
 }
 
 
+// Function to switch from Submit-OTP to Reset-Password Form //
+function switchToSubmitResetPassword(){
+    
+    let container2 = document.getElementById("container2");
+    let container3 = document.getElementById("container3");
+
+    // Code to flip Second Card of Enter OTP
+    container2.style.transform = "rotateY(90deg)";
+    setTimeout( ()=>{
+        container2.style.display = "none";
+        container3.style.display = "flex";
+        setTimeout( ()=>{
+            container3.style.transform = "rotateY(0deg)";
+        }, 50);
+    }, 350);
+}
+
+
 // Function to get the New password from the User and Request for password Updation in the Server //
 function getAndSubmitNewPassword(userId, postVerifyingOTPID){
 
-    // Getting and creating tag elements //
-    let passwordReset = document.getElementById("passwordReset");
-    let newPassword = document.createElement("input");
-    let confirmPassword = document.createElement("input");
-    let changePassword = document.createElement("button");
+    // Switching to Password-Reset Form //
+    switchToSubmitResetPassword();
 
-    // Assining values to tags attributes //
-    passwordReset.innerHTML = "";
-    newPassword.placeholder = "Enter New Password";
-    confirmPassword.placeholder = "Confirm New Password";
-    newPassword.type = confirmPassword.type = "password";
-    changePassword.innerText = "Change Password";
-
-    // Wrapping up the tags //
-    passwordReset.appendChild(newPassword);
-    passwordReset.appendChild(confirmPassword);
-    passwordReset.appendChild(changePassword);
+    // Getting required tag elements //
+    let changePassword = document.getElementById("changePassword");
+    let newPassword = document.getElementById("newPassword");
+    let confirmPassword = document.getElementById("confirmPassword");
 
 
     // Binding the button with its handler //
@@ -113,9 +121,6 @@ function verifyOTP(userId, OTP){
                 }
                 // If OTP is verified //
                 else{
-                    console.log(response);
-                    console.log(response.postVerifyingOTPID);
-
                     // Calling the function to get the new password from the user and send it to the Server //
                     getAndSubmitNewPassword(userId, response.postVerifyingOTPID);
                 }
@@ -130,33 +135,51 @@ function verifyOTP(userId, OTP){
 }
 
 
+// Function to flip the Get-UserId-Card to Get-OTP-Card // 
+function switchToSubmitOTPForm(){
+
+    let container = document.getElementById("container");
+    let container2 = document.getElementById("container2");
+    container.classList.add('Y');
+
+    // Code to flip First Card of Enter User ID
+    setTimeout( ()=>{
+        container.style.display = "none";
+        container2.style.display = "flex";
+        setTimeout( ()=>{
+            container2.style.transform = "rotateY(0deg)";
+        }, 50);
+
+    }, 350);
+}
+
+
+// Function to get the value of OTP entered by the user //
+function getValueOfOTP(){
+
+    let elements = document.getElementById("otpContainer").children;
+    let otp = "";
+    for(let index=0 ; index<elements.length ; index++){
+        otp += elements[index].value;
+    }
+
+    return otp;
+}
+
+
 // Function to get the OTP from the User and submit it to the Server //
 function getAndSubmitOTP(userId){
 
-    // Getting and creating tags //
-    let passwordReset = document.getElementById("passwordReset");
-    let h3 = document.createElement("h3");
-    let OTP = document.createElement("input");
-    let next = document.createElement("button");
-
-    // Assining values to tags attributes //
-    passwordReset.innerHTML = "";
-    h3.innerText = "An OTP has sent to the E-Mail linked to the account " + userId
-    OTP.type = "text";
-    OTP.placeholder = "Enter OTP";
-    next.innerText = "Verify OTP";
-
-    // Wrapping up the tags //
-    passwordReset.appendChild(h3);
-    passwordReset.appendChild(OTP);
-    passwordReset.appendChild(next);
+    // Switching to the OTP Form //
+    switchToSubmitOTPForm();
+    let submitOTP = document.getElementById("submitOTP");
 
     // Binfing the button with its handler //
-    next.addEventListener("click", (e)=>{
+    submitOTP.addEventListener("click", (e)=>{
         e.preventDefault();
 
-        // Calling teh function to verify the OTP from the Server //
-        verifyOTP(userId, OTP.value);
+        // Calling the function to verify the OTP from the Server //
+        verifyOTP(userId, getValueOfOTP());
     });
 }
 
@@ -198,7 +221,7 @@ function submitUserId(e){
                 }
                 // If the password reset request is successfully created //
                 else{
-                    console.log(response);
+                    console.log("OTP => " + response.OTP);
                     getAndSubmitOTP(userId);
                 }
             }
@@ -214,4 +237,4 @@ function submitUserId(e){
 
 
 // Binding the Button to its respective handler //
-document.getElementById("next").addEventListener("click", submitUserId)
+document.getElementById("submitUserId").addEventListener("click", submitUserId)
