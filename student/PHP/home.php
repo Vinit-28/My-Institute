@@ -139,7 +139,7 @@ if( isUserAuthenticated("student") == false ){
                 <i class='mynavigationItemIcon bx bx-book-open'></i>
                 <span class="mynavigationItemName">Library</span>
             </div>
-            <div class="mynavigationItem" value="#studentExam">
+            <!-- <div class="mynavigationItem" value="#studentExam">
                 <i class='mynavigationItemIcon bx bxs-edit-alt'></i>
                 <span class="mynavigationItemName">Student Test</span>
             </div>
@@ -150,7 +150,7 @@ if( isUserAuthenticated("student") == false ){
             <div class="mynavigationItem" value="#scoresDiv">
                 <i class='mynavigationItemIcon bx bx-medal'></i>
                 <span class="mynavigationItemName">Test Scores</span>
-            </div>
+            </div> -->
         </div>
 
 
@@ -159,7 +159,7 @@ if( isUserAuthenticated("student") == false ){
 
 
         <!-- Student Dash Board  -->
-        <div id="dashboard" class="formsDiv" style="display: none;">
+        <div id="dashboard" class="formsDiv">
 
             <div class="boxHeadingDiv">
                 <h3 id="greetings" class="boxHeading"></h3>
@@ -219,10 +219,6 @@ if( isUserAuthenticated("student") == false ){
 
 
         </div>
-
-        <script src="../JS/percentage.js"></script>
-        <script src="../JS/attendance.js"></script>
-
 
 
         <!-- Personal Profile Div -->
@@ -622,7 +618,7 @@ if( isUserAuthenticated("student") == false ){
 
 
         <!-- Marks Div Start -->
-        <div id="scoresDiv" >
+        <div id="scoresDiv" style="display: none;">
 
             <div class="boxHeadingDiv">
                 <h3 class="boxHeading">Test Scores</h3>
@@ -718,10 +714,14 @@ if( isUserAuthenticated("student") == false ){
 
 
 <script src="../JS/jquery.js"></script>
+<script src="../JS/makeAjaxRequest.js"></script>
 <script src="../JS/main1.js"></script>
 <script src="../JS/main2.js"></script>
 <script src="../JS/resume.js"></script>
 <script src="../JS/studentTest.js"></script>
+<script src="../JS/percentage.js"></script>
+<script src="../JS/attendance.js"></script>
+
 
 
 <!-- FOR input tags -->

@@ -5,28 +5,6 @@ let relatedPersons = {};
 let instituteClasses = {};
 
 
-// Function to make a AJAX request to the Server ( Utility Function ) //
-function makeAJAXRequest(requesType, serverUrl, data, onLoadFunction, async=true){
-
-    // Encoding the Data //
-    for(let key in data){
-        if( typeof(data[key]) == 'string' )
-            data[key] = encodeURIComponent(data[key]);
-    }
-
-    // Creating the XHR Object //
-    let xhrObject = new XMLHttpRequest();
-    xhrObject.open(requesType, serverUrl, async);
-    xhrObject.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    
-    // After getting the Response from the Server this Function will be executed //
-    xhrObject.onload = onLoadFunction;
-
-    // Making the Request //
-    xhrObject.send("request="+JSON.stringify(data));
-}
-
-
 
 // Function to Convert string to integer if possible //
 function isStringConvertableToNumber(stringValue){
@@ -133,23 +111,13 @@ function uploadAddPersonFile(e){
         "sessionId" : document.getElementById("sessionId").textContent,
     };
 
-    // Encoding the Data //
-    for(let key in data){
-        data[key] = encodeURIComponent(data[key]);
-    }
 
-    let xhr = new XMLHttpRequest();
     let formData = new FormData();
     let addPersonsFile = document.getElementById("addPersonsFile").files[0];      
-    
-    formData.append("request", JSON.stringify(data));   
     formData.append("addPersonsFile", addPersonsFile);
-    
-    xhr.timeout = 10000;
-    xhr.open("POST", '../../Server/Utilities/InstituteSpecificUtilities.php'); 
-    
-    // Function to be executed When the request has made and got the response from the server //
-    xhr.onload = function(){
+    let serverUrl = "../../Server/Utilities/InstituteSpecificUtilities.php";
+    let requesType = "POST";
+    let onLoadFunction = function(){
 
         // if( this.status != 200 ){
         //     alert("Something Went Wrong!");
@@ -166,8 +134,10 @@ function uploadAddPersonFile(e){
         //     }
         // }
         alert(this.responseText);
-    }
-    xhr.send(formData);
+    };
+
+    // Making the Request //
+    makeAJAXRequest_FileUpload(requesType, serverUrl, data, formData, onLoadFunction);
 }
 
 

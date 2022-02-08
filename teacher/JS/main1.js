@@ -6,28 +6,6 @@ let instituteClasses = {};
 let uploadedAssignments = {};
 
 
-// Function to make a AJAX request to the Server //
-function makeAJAXRequest(requesType, serverUrl, data, onLoadFunction, async=true){
-
-    // Encoding the Data //
-    for(let key in data){
-        if( typeof(data[key]) == 'string' )
-            data[key] = encodeURIComponent(data[key]);
-    }
-
-    // Creating the XHR Object //
-    let xhrObject = new XMLHttpRequest();
-    xhrObject.open(requesType, serverUrl, async);
-    xhrObject.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    
-    // After getting the Response from the Server this Function will be executed //
-    xhrObject.onload = onLoadFunction;
-
-    // Making the Request //
-    xhrObject.send("request="+JSON.stringify(data));
-}
-
-
 // Function to get the Classes from the Institute's Database //
 function getClassesOfTheInstitute(){
 
@@ -292,6 +270,8 @@ function openModalForSelectedPerson(selectedPerson){
         depositedFees.style.display = "none";
         remainingFees.style.display = "none";
         updateClass.disabled = true;
+        updateDetailsButton.style.backgroundColor = "#689bdfd7";
+        updateDetailsButton.disabled = true;
     }
 
     // Function to update details of the selected person //
@@ -503,7 +483,7 @@ function openUploadNewAssignmentForm(){
             return;
         }
 
-        // Creating Some Variables //
+        // Creating Some Request Variables //
         let data = {
             "task" : "Upload New Assignment", 
             "loggedInUser" : document.getElementById("userId").textContent, 
@@ -518,18 +498,11 @@ function openUploadNewAssignmentForm(){
             "uploadedDateTime": Date(),
             "assignmentVisibility": selectVisibility.options[selectVisibility.selectedIndex].value,
         };
-
-        let xhr = new XMLHttpRequest();
         let formData = new FormData();
-        
-        formData.append("request", JSON.stringify(data));   
         formData.append("assignmentFile", fileInput.files[0]);
-
-        xhr.timeout = 10000;
-        xhr.open("POST", '../../Server/Utilities/InstituteSpecificUtilities.php'); 
-        
-        // Function to be executed When the request has made and got the response from the server //
-        xhr.onload = function(){
+        let serverUrl = "../../Server/Utilities/InstituteSpecificUtilities.php";
+        let requesType = "POST";
+        let onLoadFunction = function(){
 
             if( this.status != 200 ){
                 alert("Something Went Wrong!");
@@ -546,8 +519,9 @@ function openUploadNewAssignmentForm(){
                 }
             }
         }
-        xhr.send(formData);
 
+        // Making the Request //
+        makeAJAXRequest_FileUpload(requesType, serverUrl, data, formData, onLoadFunction);
     }
     uploadAssignmentButton.addEventListener("click", uploadNewAssignment);
 }
@@ -773,7 +747,7 @@ function updateUploadedAssignment(){
 
             e.preventDefault();
     
-            // Creating Some Variables //
+            // Creating Some Request Variables //
             let data = {
                 "task" : "Update Uploaded Assignment", 
                 "loggedInUser" : document.getElementById("userId").textContent, 
@@ -789,18 +763,12 @@ function updateUploadedAssignment(){
                 "uploadedDateTime": Date(),
                 "assignmentVisibility": selectVisibility.options[selectVisibility.selectedIndex].value,
             };
-    
-            let xhr = new XMLHttpRequest();
+
             let formData = new FormData();
-            
-            formData.append("request", JSON.stringify(data));   
             formData.append("updatedAssignmentFile", fileInput.files[0]);
-    
-            xhr.timeout = 10000;
-            xhr.open("POST", '../../Server/Utilities/InstituteSpecificUtilities.php'); 
-            
-            // Function to be executed When the request has made and got the response from the server //
-            xhr.onload = function(){
+            let serverUrl = "../../Server/Utilities/InstituteSpecificUtilities.php";
+            let requesType = "POST";
+            let onLoadFunction = function(){
                 if( this.status != 200 ){
                     alert("Something Went Wrong!");
                 }
@@ -815,9 +783,10 @@ function updateUploadedAssignment(){
                         alert(responseText);
                     }
                 }
-            }
+            };
 
-            xhr.send(formData);
+            // Making the Request //
+            makeAJAXRequest_FileUpload(requesType, serverUrl, data, formData, onLoadFunction);
         }
 
         uploadAssignmentButton.addEventListener("click", makeRequestAndUpdateAssignment);
@@ -924,7 +893,7 @@ function getSubmissionCard(submissionDetails){
     submittedAssignmentCard.appendChild(submittedAssignmentCard2);
     submittedAssignmentCard.appendChild(submittedButtonContainer);
 
-    console.log(submissionDetails);
+    // console.log(submissionDetails);
     return submittedAssignmentCard;
 }
 
@@ -992,7 +961,6 @@ function viewAssignmentSubmission(assignmentId){
 
     // Making the AJAX Request //
     makeAJAXRequest("POST", "../../Server/Utilities/InstituteSpecificUtilities.php", data, onLoadFunction);
-
 }
 
 

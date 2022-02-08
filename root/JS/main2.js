@@ -74,19 +74,14 @@ function openUploadFileForm(){
             "uploadDateTime" : Date().toString(),
             "uploadedBy" : document.getElementById("userId").textContent
         };
-        
-        let xhr = new XMLHttpRequest();
+
         let formData = new FormData();
         let fileToBeUploaded = document.getElementById("uploadedFile").files[0];      
-        
-        formData.append("request", JSON.stringify(data));   
         formData.append("fileToBeUploaded", fileToBeUploaded);
-        
-        xhr.timeout = 10000;
-        xhr.open("POST", '../../Server/Utilities/InstituteSpecificUtilities.php'); 
-        
-        // Function to be executed When the request has made and got the response from the server //
-        xhr.onload = function(){
+                
+        let serverUrl = "../../Server/Utilities/InstituteSpecificUtilities.php";
+        let requesType = "POST";
+        let onLoadFunction = function(){
 
             if( this.status != 200 ){
                 alert("Something Went Wrong!");
@@ -104,10 +99,12 @@ function openUploadFileForm(){
                     alert(responseText);
                 }
             }
-        }
-        xhr.send(formData);
-    }
+        };
 
+        // Making the Request //
+        makeAJAXRequest_FileUpload(requesType, serverUrl, data, formData, onLoadFunction);
+
+    }
     // Binding the Upload File Button With uploadFileToTheDatabase Handler //
     uploadButton.addEventListener("click", uploadFileToTheDatabase);
 }
@@ -589,7 +586,6 @@ function showHostedClasses(classFilter){
 
     // Making AJAX Request //
     makeAJAXRequest("POST", "../../Server/Utilities/InstituteSpecificUtilities.php", data, onLoadFunction);
-
 }
 
 
@@ -646,15 +642,6 @@ document.getElementById("launchClass").addEventListener("click", openLaunchClass
 document.getElementById("showHostedClasses").addEventListener("click", ()=>{showHostedClasses("hosted");});
 document.getElementById("deleteHostedClasses").addEventListener("click", deleteHostedClasses);
 document.getElementById("allLiveClasses").addEventListener("click", ()=>{showHostedClasses("all");});
-
-
-
-
-
-
-
-
-
 
 
 
@@ -753,26 +740,19 @@ function updatePersonalDetails(e){
         "updatedInstituteState" : document.getElementById("personalState").value,
         "updatedInstitutePinCode" : document.getElementById("personalPinCode").value,
     };
-    
-    let xhr = new XMLHttpRequest();
+
     let formData = new FormData();
-    let profileImg = document.getElementById("rootProfileImg").src;  
     let Image = document.getElementById("newProfile");
-    
-    formData.append("request", JSON.stringify(data));   
     
     // If image is Selected || Profile Picture is updated //
     if( Image.files.length > 0 ){
         let profileImg = Image.files[0];      
         formData.append("profileImg", profileImg);
-    }    
-    
+    }   
 
-    xhr.timeout = 10000;
-    xhr.open("POST", '../../Server/Utilities/InstituteSpecificUtilities.php'); 
-    
-    // Function to be executed When the request has made and got the response from the server //
-    xhr.onload = function(){
+    let serverUrl = "../../Server/Utilities/InstituteSpecificUtilities.php";
+    let requesType = "POST";
+    let onLoadFunction = function(){
 
         if( this.status != 200 ){
             alert("Something Went Wrong!");
@@ -789,16 +769,16 @@ function updatePersonalDetails(e){
                 alert(responseText);
             }
         }
-    }
-    xhr.send(formData);
+    };
+
+    // Making the Request //
+    makeAJAXRequest_FileUpload(requesType, serverUrl, data, formData, onLoadFunction); 
+
 }
 
 
 // Binding the updatePersonalDetails button with its handler //
 document.getElementById("updatePersonalDetails").addEventListener("click", updatePersonalDetails);
-
-
-
 
 
 

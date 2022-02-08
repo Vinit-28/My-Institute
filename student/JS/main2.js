@@ -61,18 +61,13 @@ function submitAssignment(assignmentId){
                 "assignmentId":assignmentId,
             };
 
-            let xhr = new XMLHttpRequest();
             let formData = new FormData();
             let submissionFile = e.target.files[0];      
-            
-            formData.append("request", JSON.stringify(data));   
             formData.append("submissionFile", submissionFile);
             
-            xhr.timeout = 8000;
-            xhr.open("POST", '../../Server/Utilities/InstituteSpecificUtilities.php'); 
-            
-            // Function to be executed When the request has made and got the response from the server //
-            xhr.onload = function(){
+            let serverUrl = "../../Server/Utilities/InstituteSpecificUtilities.php";
+            let requesType = "POST";
+            let onLoadFunction = function(){
 
                 if( this.status != 200 ){
                     alert("Something Went Wrong!");
@@ -88,8 +83,10 @@ function submitAssignment(assignmentId){
                         alert(responseText);
                     }
                 }
-            }
-            xhr.send(formData);
+            };
+
+            // Making the Request //
+            makeAJAXRequest_FileUpload(requesType, serverUrl, data, formData, onLoadFunction);
         }
     }
 

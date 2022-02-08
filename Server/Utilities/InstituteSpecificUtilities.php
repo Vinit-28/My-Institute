@@ -15,7 +15,7 @@
     // If the ROOT User has made a request //
     if( isset($_POST['request']) ){
         
-        $request = json_decode($_POST['request'], true);
+        $request = json_decode(urldecode($_POST['request']), true);
         
 
         // If the user is a Valid Person //

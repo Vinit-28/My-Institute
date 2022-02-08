@@ -579,6 +579,7 @@ if( isUserAuthenticated("root") == false ){
 </html>
 
 <script src="../JS/jquery.js"></script>
+<script src="../JS/makeAjaxRequest.js"></script>
 <script src="../JS/main1.js"></script>
 <script src="../JS/main2.js"></script>
 

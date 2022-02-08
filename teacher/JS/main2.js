@@ -76,18 +76,12 @@ function openUploadFileForm(){
             "uploadedBy" : document.getElementById("userId").textContent
         };
 
-        let xhr = new XMLHttpRequest();
         let formData = new FormData();
         let fileToBeUploaded = document.getElementById("uploadedFile").files[0];      
-        
-        formData.append("request", JSON.stringify(data));   
         formData.append("fileToBeUploaded", fileToBeUploaded);
-        
-        xhr.timeout = 8000;
-        xhr.open("POST", '../../Server/Utilities/InstituteSpecificUtilities.php'); 
-        
-        // Function to be executed When the request has made and got the response from the server //
-        xhr.onload = function(){
+        let serverUrl = "../../Server/Utilities/InstituteSpecificUtilities.php";
+        let requesType = "POST";
+        let onLoadFunction = function(){
 
             if( this.status != 200 ){
                 alert("Something Went Wrong!");
@@ -105,8 +99,10 @@ function openUploadFileForm(){
                     alert(responseText);
                 }
             }
-        }
-        xhr.send(formData);
+        };
+
+        // Making the Request //
+        makeAJAXRequest_FileUpload(requesType, serverUrl, data, formData, onLoadFunction);
     }
 
     // Binding the Upload File Button With uploadFileToTheDatabase Handler //
@@ -780,26 +776,19 @@ function updatePersonalDetails(e){
         "updatedTeacherState" : document.getElementById("personalState").value,
         "updatedTeacherPinCode" : document.getElementById("personalPinCode").value,
     };
-    
-    let xhr = new XMLHttpRequest();
+
     let formData = new FormData();
-    let profileImg = document.getElementById("teacherProfileImg").src;  
     let Image = document.getElementById("newProfile");
-    
-    formData.append("request", JSON.stringify(data));   
     
     // If image is Selected || Profile Picture is updated //
     if( Image.files.length > 0 ){
         let profileImg = Image.files[0];      
         formData.append("profileImg", profileImg);
     }    
-    
 
-    xhr.timeout = 10000;
-    xhr.open("POST", '../../Server/Utilities/InstituteSpecificUtilities.php'); 
-    
-    // Function to be executed When the request has made and got the response from the server //
-    xhr.onload = function(){
+    let serverUrl = "../../Server/Utilities/InstituteSpecificUtilities.php";
+    let requesType = "POST";
+    let onLoadFunction = function(){
 
         if( this.status != 200 ){
             alert("Something Went Wrong!");
@@ -816,8 +805,10 @@ function updatePersonalDetails(e){
                 alert(responseText);
             }
         }
-    }
-    xhr.send(formData);
+    };
+
+    // Making the Request //
+    makeAJAXRequest_FileUpload(requesType, serverUrl, data, formData, onLoadFunction);
 }
 
 

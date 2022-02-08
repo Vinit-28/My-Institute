@@ -151,10 +151,10 @@ if( isUserAuthenticated("teacher") == false ){
                 <i class='mynavigationItemIcon bx bx-check-square'></i>
                 <span class="mynavigationItemName">Set Attendance</span>
             </div>
-            <div class="mynavigationItem" value="#uploadMarks">
+            <!-- <div class="mynavigationItem" value="#uploadMarks">
                 <i class='mynavigationItemIcon bx bx-medal'></i>
                 <span class="mynavigationItemName">Upload Marks</span>
-            </div>
+            </div> -->
         </div>
 
 
@@ -165,7 +165,7 @@ if( isUserAuthenticated("teacher") == false ){
 
         <!-- Personal Profile Div -->
 
-        <div value="#teacherProfileDiv" id="teacherProfileDiv" class="formsDiv" style="display: none;">
+        <div value="#teacherProfileDiv" id="teacherProfileDiv" class="formsDiv">
             <div class="boxHeadingDiv">
                 <h3 class="boxHeading">Personl Profile</h3>
             </div>
@@ -666,7 +666,7 @@ if( isUserAuthenticated("teacher") == false ){
 
         <!-- Upload Student Test File Div -->
 
-        <div id="uploadMarks" about="uploadTestFile" class="formsDiv" >
+        <div id="uploadMarks" about="uploadTestFile" class="formsDiv" style="display: none;" >
 
             <div class="boxHeadingDiv">
                 <h3 class="boxHeading">Upload Marks</h3>
@@ -712,10 +712,11 @@ if( isUserAuthenticated("teacher") == false ){
 </html>
 
 <script src="../JS/jquery.js"></script>
+<script src="../JS/makeAjaxRequest.js"></script>
 <script src="../JS/main1.js"></script>
 <script src="../JS/main2.js"></script>
 
-<script>console.log(Date())
+<script>
     let windowWidth = $(window).width();
 
 
@@ -768,7 +769,7 @@ if( isUserAuthenticated("teacher") == false ){
 
     let lastActiveItem = $("#item1");
     $("#item1").addClass("activeItem");
-    // fillUpPersonalDetails();
+    fillUpPersonalDetails();
 
     function manipulate(person) {
 
