@@ -413,12 +413,14 @@ if( isUserAuthenticated("teacher") == false ){
                         <option value="">BCA 2nd Yr.</option>
                         <option value="">BCA 3rd Yr.</option>
                     </select>
-                    <button onclick="{document.getElementById('testFile').click(); event.preventDefault();}">Upload .xls
-                        file</button>
-                    <input style="display: none;" id="testFile" accept=".xls" required autocomplete="OFF" type="file"
+                    <!-- <button onclick="{document.getElementById('testFile').click(); event.preventDefault();}">Upload .xls
+                        file</button> -->
+
+                    <input id="studentTestFile" accept=".xls" required autocomplete="OFF" type="file"
                         placeholder="Joining Link" name="classLink">
+
                     <button onclick="window.open('http://localhost/Server/UersRelatedDocs/testFilePattern.xls', '_blank');" type="button">See file pattern</button>
-                    <button type="submit">Upload</button>
+                    <button type="submit" id="uploadTestFile">Upload</button>
                 </form>
 
             </div>
@@ -691,7 +693,6 @@ if( isUserAuthenticated("teacher") == false ){
                     <button type="submit">Upload</button>
                 </form>
 
-
             </div>
 
         </div>
@@ -715,6 +716,7 @@ if( isUserAuthenticated("teacher") == false ){
 <script src="../JS/makeAjaxRequest.js"></script>
 <script src="../JS/main1.js"></script>
 <script src="../JS/main2.js"></script>
+<script src="../JS/main3.js"></script>
 
 <script>
     let windowWidth = $(window).width();

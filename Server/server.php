@@ -9,6 +9,7 @@
     // Importing the required files //
     require "./Utilities/DatabaseConfigurations.php";
     require "./Utilities/UserUtilities.php";
+    require "./Utilities/DatabaseInfo.php";
 
     // Getting the database connection object //
     $databaseConnectionObject = get_DatabaseConnectionObject("App_Database");

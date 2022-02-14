@@ -5,7 +5,8 @@
     require "./DatabaseConfigurations.php";
     require "./UserUtilities.php";
     require "./InstituteConfigurations.php";
-
+    require "./DatabaseInfo.php";
+    
 
     // Getting the database connection object //
     $databaseConnectionObject = get_DatabaseConnectionObject("App_Database");
@@ -22,6 +23,7 @@
         if( isUserOnline($databaseConnectionObject, $request['loggedInUser'], $request['sessionId']) ){
 
             $authority = getColumnValue($databaseConnectionObject, "SELECT * FROM AppUsers WHERE userId = ?", [$request['loggedInUser']], "s", "authority");
+            $request['instituteId'] = getColumnValue($databaseConnectionObject, "SELECT instituteId FROM AppUsers WHERE userId = ?", [$request['loggedInUser']], "s", "instituteId");
 
             
             // If the request is to Update Institute's Recahrge Plan Details //
@@ -407,10 +409,74 @@
             }
 
 
+            // If request is to Upload the Test //
+            else if($request['task'] == "Upload Test" && $authority == "teacher" ){
+
+                $response = uploadTest($databaseConnectionObject, $request, $_FILES['studentTestFile']['name'], $_FILES['studentTestFile']['tmp_name']);
+                echo json_encode($response);
+            }
+            
+            
+            // If request is to Upload the Test //
+            else if($request['task'] == "Delete Tests" && $authority == "teacher" ){
+
+                deleteUploadedTests($databaseConnectionObject, $request);
+                $response = array(
+                    "result"=>"Success",
+                    "message"=>"Test/Tests Deleted Successfully !!!"
+                );
+                echo json_encode($response);
+            }
+            
+            
+            // If request is to get the uploaded tests //
+            else if($request['task'] == "Get Uploaded Tests" && $authority == "teacher" ){
+
+                $response = array(
+                    "result"=>"Success",
+                    "uploadedTest"=>getUploadedTests_Teachers($databaseConnectionObject, $request)
+                );
+                echo json_encode($response);
+            }
+
+
+            // If request is to get the uploaded tests //
+            else if($request['task'] == "Get Uploaded Tests" && $authority == "student" ){
+
+                $response = array(
+                    "result"=>"Success",
+                    "uploadedTest"=>getUploadedTests_Students($databaseConnectionObject, $request)
+                );
+                echo json_encode($response);
+            }
+
+
+            // If request is to get the result of a test (For Teachers) //
+            else if($request['task'] == "Get Test's Marks" && $authority == "teacher" ){
+
+                $response = array(
+                    "result" => "Success",
+                    "testResult" => getTestsMarks_Teachers($databaseConnectionObject, $request)
+                );
+                echo json_encode($response);
+            }
+
+
+            // If request is to get the result of a test (For Students) //
+            else if($request['task'] == "Get Test's Marks" && $authority == "student" ){
+
+                $response = array(
+                    "result" => "Success",
+                    "testResult" => getTestsMarks_Students($databaseConnectionObject, $request)
+                );
+                echo json_encode($response);
+            }
+
+
+
+
 
             
-
-
             // If request is not valid //
             else{
                 $response = array(

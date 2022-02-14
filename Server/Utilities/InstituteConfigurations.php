@@ -137,7 +137,7 @@
 
         $databaseConnectionObject->select_db($request['instituteId']);
 
-        $filePath = ("InstituteFolders/". $request['instituteId'] . "/" . "uploadedAssignments/" . $request['loggedInUser'] . $request['uploadedDateTime'] . $fileName);
+        $filePath = ("InstituteFolders/". $request['instituteId'] . "/" . "uploadedAssignments/" . $request['loggedInUser'] . "__" . time() . "__" . $fileName);
 
         $machinePath = getcwd();
         $machinePath = str_replace("Server/Utilities", $filePath, $machinePath);
@@ -145,7 +145,7 @@
 
         $query = "INSERT INTO UploadedAssignments(uploadedBy, subjectName, assignmentTitle, assignmentDescription, 	assignmentDeadline, uploadedDateTime, assignmentVisibility, assignmentFileLinkHref, assignmentFileLinkMachine) Values(?,?,?,?,?,?,?,?,?);";
         
-        runQuery($databaseConnectionObject, $query, [$request['uploadedBy'], $request['subjectName'], $request['assignmentTitle'], $request['assignmentDescription'], $request['assignmentDeadline'], $request['uploadedDateTime'], $request['assignmentVisibility'], "http://localhost/" . $filePath, $machinePath ], "sssssssss", true);
+        runQuery($databaseConnectionObject, $query, [$request['uploadedBy'], $request['subjectName'], $request['assignmentTitle'], $request['assignmentDescription'], $request['assignmentDeadline'], $request['uploadedDateTime'], $request['assignmentVisibility'], constant("fileHrefPrefix") . $filePath, $machinePath ], "sssssssss", true);
     }
 
 
@@ -167,14 +167,14 @@
             unlink($oldFilePath);
 
             // Creating and storing New File //
-            $newFilePath = ("InstituteFolders/". $request['instituteId'] . "/" . "uploadedAssignments/" . $request['loggedInUser'] . $request['uploadedDateTime'] . $fileName);
+            $newFilePath = ("InstituteFolders/". $request['instituteId'] . "/" . "uploadedAssignments/" . $request['loggedInUser'] . "__" . time() . "__" . $fileName);
 
             $machinePath = getcwd();
             $machinePath = str_replace("Server/Utilities", $newFilePath, $machinePath);
             move_uploaded_file($tmpName, $machinePath);
             
             $query =  "UPDATE UploadedAssignments SET assignmentFileLinkMachine = ?, assignmentFileLinkHref = ? WHERE assignmentId = ? ;";
-            runQuery($databaseConnectionObject, $query, [$machinePath, ("http://localhost/" . $newFilePath), $request['assignmentId']], "ssi", true);
+            runQuery($databaseConnectionObject, $query, [$machinePath, (constant("fileHrefPrefix") . $newFilePath), $request['assignmentId']], "ssi", true);
         }
     }
 
@@ -304,7 +304,7 @@
 
         $databaseConnectionObject->select_db($request['instituteId']);
 
-        $filePath = ("InstituteFolders/". $request['instituteId'] . "/" . "AssignmentsSubmissions/" . $request['loggedInUser'] . $request['submittedDateTime'] . $fileName);
+        $filePath = ("InstituteFolders/". $request['instituteId'] . "/" . "assignmentsSubmissions/" . $request['loggedInUser'] . "__" . time() . "__" . $fileName);
 
         $machinePath = getcwd();
         $machinePath = str_replace("Server/Utilities", $filePath, $machinePath);
@@ -313,7 +313,7 @@
 
         $query = "INSERT INTO AssignmentSubmissions(submittedBy, submittedDateTime, assignmentId, submittedFileLinkHref, submittedFileLinkMachine) VALUES(?,?,?,?,?);";
 
-        runQuery($databaseConnectionObject, $query, [$request['loggedInUser'], $request['submittedDateTime'], $request['assignmentId'], "http://localhost/" . $filePath, $machinePath ], "ssiss", true);
+        runQuery($databaseConnectionObject, $query, [$request['loggedInUser'], $request['submittedDateTime'], $request['assignmentId'], constant("fileHrefPrefix") . $filePath, $machinePath ], "ssiss", true);
     }
     
 
@@ -535,18 +535,200 @@
 
         $databaseConnectionObject->select_db($request['instituteId']);
 
-        $filePath = ("InstituteFolders/". $request['instituteId'] . "/" . "TemporaryDocuments/" . $fileName);
+        // $filePath = ("InstituteFolders/". $request['instituteId'] . "/" . "temporaryDocuments/" . $fileName);
 
-        $machinePath = getcwd();
-        $machinePath = str_replace("Server/Utilities", $filePath, $machinePath);
-        move_uploaded_file($tmpName, $machinePath);
+        // $machinePath = getcwd();
+        // $machinePath = str_replace("Server/Utilities", $filePath, $machinePath);
+        // move_uploaded_file($tmpName, $machinePath);
         
         // Reading the Excel File Data and Adding Persons in the Institute's Database //
-        $response = readData($databaseConnectionObject, $machinePath, $request['instituteId']);
+        // $response = readData($databaseConnectionObject, $machinePath, $request['instituteId']);
+        $response = readData($databaseConnectionObject, $tmpName, $request['instituteId']);
 
         // Removing the Excel File from the Server // 
-        unlink($machinePath);
+        // unlink($machinePath);
 
         return $response;
     }
+
+
+
+    function replaceThisFunctionWithAmansFileCheckFunction($filePath){
+
+        // return true/false;
+        return true;
+    }
+
+
+    // Function to make entry for the test to be scheduled //
+    function makeEntryForOnlineTest($databaseConnectionObject, $request, $filePathHref, $filePathMachine){
+
+        $databaseConnectionObject->select_db($request['instituteId']);
+        $query = "INSERT INTO UploadedTest(uploadedBy, uploadedDateTime, subjectName, topicName, testDate, forClass, fromTime, toTime, questionGapSec, testFileLinkHref, testFileLinkMachine) VALUES(?,?,?,?,?,?,?,?,?,?,?);";
+
+        runQuery($databaseConnectionObject, $query, [$request['loggedInUser'], $request['uploadedDateTime'], $request['subjectName'], $request['topicName'], $request['testDate'], $request['forClass'], $request['fromTime'], $request['toTime'], $request['questionGapSec'], $filePathHref, $filePathMachine], "sssssssssss", true);
+    }
+
+
+    // Function to upload a test for students //
+    function uploadTest($databaseConnectionObject, $request, $fileName, $tmpName){
+
+        $databaseConnectionObject->select_db($request['instituteId']);
+        $result = $message = "";
+
+        // If file uploaded by the teacher is readed successfully //
+        if( replaceThisFunctionWithAmansFileCheckFunction($tmpName) ){
+            
+            // Moving the file in the institute's folder/data-warehouse //
+            $fileSuffixPath = ("InstituteFolders/". $request['instituteId'] . "/" . "uploadedTests/" . $request['loggedInUser'] . "__" . time() . "__" . $fileName);
+
+            $filePathMachine = str_replace("Server/Utilities", $fileSuffixPath, getcwd());
+
+            move_uploaded_file($tmpName, $filePathMachine);
+            $filePathHref = constant("fileHrefPrefix") . $fileSuffixPath;
+
+            // Making entry in the database //
+            makeEntryForOnlineTest($databaseConnectionObject, $request, $filePathHref, $filePathMachine);
+            
+            $result = "Success";
+            $message = "Test Created Successfully !!!";
+        }
+        // If any error occured or file is not up to the standards //
+        else{
+            $result = "Failed";
+            $message = "Error While Reading The File !!!";
+        }
+
+        return array(
+            "result"=>$result,
+            "message"=>$message
+        );
+    }
+
+
+    // Function to Delete the uploaded tests //
+    function deleteUploadedTests($databaseConnectionObject, $request){
+
+        $databaseConnectionObject->select_db($request['instituteId']);
+        $testsToBeDeleted = $request['testsToBeDeleted'];
+
+        foreach($testsToBeDeleted as $testId){
+
+            // Getting the Test File Link //
+            $testFileLink = getColumnValue($databaseConnectionObject, "SELECT testFileLinkMachine FROM UploadedTest WHERE testId = ?;", [$testId], "i", "testFileLinkMachine");
+
+            // Deleting the test file and the entry of test from the database //
+            unlink($testFileLink);
+            $query = "DELETE FROM UploadedTest WHERE testId = ?;";
+            runQuery($databaseConnectionObject, $query, [$testId], "i", true);
+            
+            // Deleting students result of this test //
+            $query = "DELETE FROM testSubmission WHERE testId = ?;";
+            runQuery($databaseConnectionObject, $query, [$testId], "i");
+        }
+    }
+
+
+    // Function to get all the uploaded tests by a teacher (For Teachers) //
+    function getUploadedTests_Teachers($databaseConnectionObject, $request){
+
+        $databaseConnectionObject->select_db($request['instituteId']);
+
+        $query = "SELECT * FROM UploadedTest WHERE uploadedBy = ?;";
+        $result = runQuery($databaseConnectionObject, $query, [$request['loggedInUser']], "s");
+        $uploadedTest = array();
+
+        while($row = $result->fetch_assoc()){
+            $uploadedTest += [$row['testId']=>$row];
+        }
+
+        return $uploadedTest;
+    }
+
+
+    // Function to check whether the student has attempted the test or not //
+    function isTestAttempted($databaseConnectionObject, $testId, $userId){
+
+        $testResult = array();
+        $isStudentAttemptedTest = false;
+        $query = "SELECT * FROM testSubmission WHERE testId = ? AND submittedBy = ?;";
+        $result = runQuery($databaseConnectionObject, $query, [$testId, $userId], "is");
+
+        // If student has attempted the test //
+        if( ($result && $result->num_rows) ){
+            $isStudentAttemptedTest = true;
+            $testResult = $result->fetch_assoc();
+        }
+
+        return ["isStudentAttemptedTest" => $isStudentAttemptedTest, "testResult" => $testResult];
+    }   
+
+
+    // Function to get all the uploaded tests by a teacher (For Students) //
+    function getUploadedTests_Students($databaseConnectionObject, $request){
+
+        $databaseConnectionObject->select_db($request['instituteId']);
+
+        $todayDate = date("Y-m-d");
+        $query = "SELECT * FROM UploadedTest WHERE forClass = ? AND testDate >= ?;";
+        $result = runQuery($databaseConnectionObject, $query, [$request['studentClass'], $todayDate], "ss");
+        $uploadedTest = array();
+
+        while($row = $result->fetch_assoc()){
+
+            $testAttemptedDetails = isTestAttempted($databaseConnectionObject, $row['testId'], $request['loggedInUser']);
+
+            $row += ['isTestAttempted' => ($testAttemptedDetails['isStudentAttemptedTest'])? "true" : "false" ];
+            $uploadedTest += [$row['testId']=>$row];
+        }
+
+        return $uploadedTest;
+    }
+
+
+    // Function to get the result of a test (For Teachers) //
+    function getTestsMarks_Teachers($databaseConnectionObject, $request){
+
+        $databaseConnectionObject->select_db($request['instituteId']);
+        $query = "SELECT * FROM testSubmission WHERE testId = ?;";
+        $result = runQuery($databaseConnectionObject, $query, [$request['testId']], "i");
+
+        $testResult = array();
+
+        while($row = $result->fetch_assoc()){
+            $row += ['profilePath' => getUserProfilePath($databaseConnectionObject, $request['instituteId'], $row['submittedBy'])];
+            $testResult += [$row['submittedBy']=>$row];
+        }
+
+        return $testResult;
+    }
+
+
+    // Function to get the result of the uploaded tests (For Students) //
+    function getTestsMarks_Students($databaseConnectionObject, $request){
+
+        $databaseConnectionObject->select_db($request['instituteId']);
+        $todayDate = date("Y-m-d");
+        $query = "SELECT * FROM UploadedTest WHERE forClass = ? AND testDate <= ?;";
+        $result = runQuery($databaseConnectionObject, $query, [$request['studentClass'], $todayDate], "ss");
+
+        $testResult = array();
+
+        while($test = $result->fetch_assoc()){
+
+            // Checking whether the student has attempted the test or not //
+            $testAttemptedDetails = isTestAttempted($databaseConnectionObject, $test['testId'], $request['loggedInUser']);
+
+            // If student has attempted the test //
+            if( $testAttemptedDetails['isTestAttempted'] ){
+                $testResult += [$test['testId']=>$testAttemptedDetails['testResult']];
+            }
+        }
+        return $testResult;
+    }
+
+
+
+
+
 ?>

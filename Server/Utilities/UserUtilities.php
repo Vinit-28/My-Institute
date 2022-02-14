@@ -14,13 +14,13 @@
         
         // Registering the Institute in the App Database //
         $query = "INSERT INTO AppUsers(userId, password, email, instituteName, authority, emailVerified, profilePath, instituteId) VALUES(?,?,?,?,?,?,?,?);";
-        $result = runQuery($databaseConnectionObject, $query, [$instituteId, $password, $instituteEmail, $instituteName, "root", "false", "http://localhost/Server/Profiles/noProfile.png", $instituteId], "ssssssss", true);
+        $result = runQuery($databaseConnectionObject, $query, [$instituteId, $password, $instituteEmail, $instituteName, "root", "false", constant("fileHrefPrefix") . "Server/Profiles/noProfile.png", $instituteId], "ssssssss", true);
         
         $query = "INSERT INTO LoggedInUsers(userId, sessionId) VALUES(?,?);";
         $result = runQuery($databaseConnectionObject, $query, [$instituteId, "offline"], "ss", true);
         
         $query = "INSERT INTO Institutes(instituteId, instituteName, instituteEmail, institutePhoneNumber, address, city, state, pinCode, profilePath, planId, planDate, planValidity) VALUES(?,?,?,?,?,?,?,?,?,?,?,?);";
-        $result = runQuery($databaseConnectionObject, $query, [$instituteId, $instituteName, $instituteEmail, "", "", "", "", "", "http://localhost/Server/Profiles/noProfile.png", 1, date("Y-m-d"), 7], "sssssssssisi", true);
+        $result = runQuery($databaseConnectionObject, $query, [$instituteId, $instituteName, $instituteEmail, "", "", "", "", "", constant("fileHrefPrefix") . "Server/Profiles/noProfile.png", 1, date("Y-m-d"), 7], "sssssssssisi", true);
         
     
         // -------------------- Creating Tables for a Institute in its Database -------------------- //
@@ -117,7 +117,7 @@
 
         // Making a AssignmentSubmissions Table which will store all Submitted Assignments information // 
         $query = "CREATE TABLE AssignmentSubmissions(
-            submittedBy VARCHAR(100) PRIMARY kEY, 
+            submittedBy VARCHAR(100), 
             submittedDateTime VARCHAR(100),
             assignmentId BIGINT(8), 
             submittedFileLinkHref VARCHAR(1000),
@@ -126,16 +126,45 @@
         runQuery($instituteDatabase, $query, [], "");
 
 
+        // Making a UploadedTest Table which will store all the information about the test uploaded by the teachers // 
+        $query = "CREATE TABLE UploadedTest(
+            testId BIGINT(8) AUTO_INCREMENT PRIMARY kEY, 
+            uploadedBy VARCHAR(100),
+            uploadedDateTime VARCHAR(100),
+            subjectName VARCHAR(100),
+            topicName VARCHAR(100),
+            testDate DATE,
+            forClass VARCHAR(100),
+            fromTime VARCHAR(100),
+            toTime VARCHAR(100),
+            questionGapSec INT, 
+            testFileLinkHref VARCHAR(1000),
+            testFileLinkMachine VARCHAR(1000)
+            );";
+        runQuery($instituteDatabase, $query, [], "");
+
+
+        // Making a testSubmission Table which will store all the information about the marks obtained by the students in the test // 
+        $query = "CREATE TABLE testSubmission(
+            testId BIGINT(8), 
+            submittedBy VARCHAR(100),
+            submittedDateTime VARCHAR(200),
+            totalMarks INT,
+            marksAchieved INT
+            );";
+        runQuery($instituteDatabase, $query, [], "");
+
 
         // Making the Institute Folder in the Server //
         $path = getcwd();
         $path = str_replace("Server", "InstituteFolders/" . $instituteId, $path);
         mkdir($path);
-        mkdir($path . "/uploadedFiles"); //Download-Upload Files
-        mkdir($path . "/profilePhotos"); //Profile Photos of Institute's Persons
-        mkdir($path . "/uploadedAssignments"); //Uploaded Assignment File
-        mkdir($path . "/AssignmentsSubmissions"); //Submitted Answer/File to the Assignment
-        mkdir($path . "/TemporaryDocuments"); //A Temporary Folder that will store some temporary files
+        mkdir($path . "/uploadedFiles"); // Download-Upload Files
+        mkdir($path . "/profilePhotos"); // Profile Photos of Institute's Persons
+        mkdir($path . "/uploadedAssignments"); // Uploaded Assignment File
+        mkdir($path . "/assignmentsSubmissions"); // Submitted Answer/File to the Assignment
+        mkdir($path . "/uploadedTests"); // Test's Question Files of the student tests
+        mkdir($path . "/temporaryDocuments"); // A Temporary Folder that will store some temporary files
         
     }
 
@@ -148,7 +177,7 @@
         
         // Registering the User in the App Database //
         $query = "INSERT INTO AppUsers(userId, password, email, instituteName, authority, emailVerified, profilePath, instituteId) VALUES(?,?,?,?,?,?,?,?);";
-        runQuery($databaseConnectionObject, $query, [$userDetails['userId'], $userDetails['password'], $userDetails['email'], $userDetails['instituteName'], $userDetails['designation'], "false", "http://localhost/Server/Profiles/noProfile.png", $userDetails['instituteId']], "ssssssss", true);
+        runQuery($databaseConnectionObject, $query, [$userDetails['userId'], $userDetails['password'], $userDetails['email'], $userDetails['instituteName'], $userDetails['designation'], "false", constant("fileHrefPrefix") . "Server/Profiles/noProfile.png", $userDetails['instituteId']], "ssssssss", true);
          
 
         $query = "INSERT INTO LoggedInUsers(userId, sessionId) VALUES(?,?);";
@@ -316,7 +345,8 @@
     // Function to upload files into the institute's database //
     function uploadFileInTheDatabase($databaseConnectionObject, $request, $fileName, $fileTempName){
 
-        $filePath =  ("InstituteFolders/" . $request['instituteId'] . "/uploadedFiles" . "/" . $request['uploadedBy'] . $request['uploadDateTime'] . $fileName);
+        $filePath =  ("InstituteFolders/" . $request['instituteId'] . "/uploadedFiles" . "/" . $request['uploadedBy'] . "__" . time() . "__" . $fileName);
+
         $newPath = getcwd();
         $newPath = str_replace("Server/Utilities", $filePath, $newPath);
         
@@ -325,7 +355,7 @@
         
         $query = "INSERT INTO UploadedFiles(fileTitle, filePathHref, filePathMachine, fileVisibility, uploadDateTime, uploadedBy) VALUES(?,?,?,?,?,?);";
         
-        runQuery($databaseConnectionObject, $query, [$request['fileTitle'], "http://localhost/" . $filePath, $newPath, $request['fileVisibility'], $request['uploadDateTime'], $request['uploadedBy']], "ssssss", true);
+        runQuery($databaseConnectionObject, $query, [$request['fileTitle'], constant("fileHrefPrefix") . $filePath, $newPath, $request['fileVisibility'], $request['uploadDateTime'], $request['uploadedBy']], "ssssss", true);
     }
 
 
@@ -454,11 +484,30 @@
     }
 
 
+    // Function to delete previous profile image of a user //
+    function deletePreviousProfile($databaseConnectionObject, $userId){
+        
+        $appDirectory = str_replace("Server/Utilities", "", getcwd());
+        $oldProfilePath = getColumnValue($databaseConnectionObject, "SELECT profilePath FROM AppUsers WHERE userId = ?;", [$userId], "s", "profilePath");
+        $oldProfilePath = str_replace(constant("fileHrefPrefix"), $appDirectory, $oldProfilePath);
+        $noProfile = "noProfile.png";
+
+        // If user does not have the default image as its profile //
+        if( strpos($oldProfilePath, $noProfile) == false ){
+            unlink($oldProfilePath);
+        }
+    }
+
+
     // Function to update the Profile Image of the User //
     function updateProfileImage($databaseConnectionObject, $fileName, $tmpName, $authority, $userId, $instituteId){
 
         $databaseConnectionObject->select_db("App_Database");
-        $profilePathHref = "http://localhost/InstituteFolders/". $instituteId . "/" . "profilePhotos/" . $userId . getFileExtension($fileName);
+
+        // Deleting previous profile image //
+        deletePreviousProfile($databaseConnectionObject, $userId);
+
+        $profilePathHref = constant("fileHrefPrefix") . "InstituteFolders/". $instituteId . "/" . "profilePhotos/" . $userId . getFileExtension($fileName);
 
         $query = "UPDATE AppUsers SET profilePath = ? WHERE userId = ?;";
         runQuery($databaseConnectionObject, $query, [$profilePathHref, $userId], "ss");
