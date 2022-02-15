@@ -1,0 +1,156 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200&display=swap');
+
+
+*, *:before, *:after {
+    box-sizing: border-box;
+    --fontFamily : Poppins, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    --backgroundColor : #edf2f9;
+    --navigationBarColor : rgb(209, 225, 248);
+    --textColor : #5e6e82;
+    --textHoverColor : #cad0d6;
+    --activeTextColor : #2864c5;
+    --hoverDarkColor : rgb(35, 43, 53);
+    --buttonColor : rgba(44, 124, 229, 0.844);
+    --buttonHover : rgb(44, 123, 229);
+    --formBorder : #d8e2ef;
+    --littleHeadings : #344050;
+    --backgroundDark : #0b1727;
+    --boxShadow : 0 .5rem 1rem rgba(0,0,0,.15) ;
+}
+
+*:focus{
+    outline: none;
+}
+.uploadTestButtonContainer{
+    padding: 0.2rem;
+    display: flex;
+    column-gap: 0.5rem;
+}
+.uploadTestButtonContainer button{
+    font-weight: bolder !important;
+}
+
+
+#uploadedTestContainer .classItem{
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    row-gap: 0.8rem;
+    width: 20rem;
+    padding: 0.8rem;
+    border-radius: 0.4rem;
+    background-color: var(--backgroundColor);
+    transition: box-shadow 200ms ease;
+    cursor: pointer;
+}
+
+#uploadedTestContainer .classItem button{
+    width: 100%;
+    padding: 0.3rem 0.2rem;
+    border: none;
+    background-color: var(--buttonColor);
+    cursor: pointer;
+    color: white;
+    border-radius: 0.2rem;
+    transition: background-color 250ms ease;
+    text-decoration: none; 
+    font-weight: bolder;
+    margin-bottom: 0.2rem !important;
+}
+
+*:focus , *:active{
+    outline: none;
+}
+#uploadedTestContainer .classItem button:hover{
+    background-color: var(--buttonHover);
+}
+
+#uploadedTestContainer .classItem:hover{
+    box-shadow: var(--boxShadow);
+}
+
+#uploadedTestContainer{
+    margin: 0.8rem 0.4rem;
+    display: flex;
+    column-gap: 0.5rem;
+    flex-wrap: wrap;
+    row-gap: 1rem;
+}
+
+
+
+
+
+
+#submittedTestByStudentsModal{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #5e6e829e;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow:-moz-hidden-unscrollable;
+    z-index: 205;
+
+}
+
+#submittedTestByStudentsDetailsContainer{
+    position: relative;
+    height: 80%;
+    display: flex;
+    flex-direction: column;
+}
+#studentTestCardsContainer{
+    position: relative;
+    height: 80%;
+    display: flex;
+    flex-direction: column;
+    row-gap: 0.5rem;
+}
+
+
+.studentTestCard{
+    cursor: pointer;
+    display: flex;
+    justify-content: space-evenly;
+    background-color: #fff;
+    box-shadow: var(--boxShadow);
+    padding: 0.4rem;
+    border-radius: 0.2rem;
+}
+
+#submittedTestByStudentsDetailsContainer button{
+    width: 100%;
+    padding: 0.4rem;
+    border: none;
+    background-color: var(--buttonColor);
+    cursor: pointer;
+    color: white;
+    border-radius: 0.2rem;
+    transition: background-color 250ms ease;
+    text-decoration: none; 
+    font-weight: bolder;
+    margin-bottom: 0.2rem !important;
+}
+
+#submittedTestByStudentsDetailsContainer button:hover{
+    background-color: var(--buttonHover);
+}
+
+@media screen and (max-width : 700px) and (min-width : 50px) {
+    #studentTestCardsContainer{
+        height: 80%;
+    }
+    .testStudentScore{
+        display: none;
+    }
+
+    .studentTestCard{
+        padding: 0.4rem 0.2rem;
+        border-radius: 0.2rem;
+    }
+    
+}

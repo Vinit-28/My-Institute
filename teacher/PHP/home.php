@@ -33,6 +33,7 @@ if( isUserAuthenticated("teacher") == false ){
     <link rel="stylesheet" href="../CSS/setattendance.css">
     <link rel="stylesheet" href="../CSS/uploadAssignments.css">
     <link rel="stylesheet" href="../CSS/uploadMarks.css">
+    <link rel="stylesheet" href="../CSS/uploadTest.css">
     <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
     <title>Teacher Dashboard</title>
 </head>
@@ -91,6 +92,16 @@ if( isUserAuthenticated("teacher") == false ){
 
 
     <!-- (END) THIS IS VERY IMPORTANT BOX, IT CONTAINS THE INFORMATION OF THE SELECTED PERSON FORM SEARCH BAR (Modal) -->
+
+
+
+
+
+
+
+
+
+
 
 
     <nav id="mynavbar">
@@ -165,7 +176,7 @@ if( isUserAuthenticated("teacher") == false ){
 
         <!-- Personal Profile Div -->
 
-        <div value="#teacherProfileDiv" id="teacherProfileDiv" class="formsDiv">
+        <div value="#teacherProfileDiv" id="teacherProfileDiv" class="formsDiv" style="display: none;">
             <div class="boxHeadingDiv">
                 <h3 class="boxHeading">Personl Profile</h3>
             </div>
@@ -273,7 +284,7 @@ if( isUserAuthenticated("teacher") == false ){
 
         <!-- Upload Assignments Div -->
         <div id="div4" about="uploadAssignments" class="formsDiv" style="display: none;">
-            
+
             <div class="boxHeadingDiv">
                 <h3 class="boxHeading">Upload Assignment</h3>
             </div>
@@ -293,17 +304,17 @@ if( isUserAuthenticated("teacher") == false ){
 
             <!-- Submission Modal for a Particular Assignment -->
             <div id="assignmentModal" style="display: none;">
-                
-            <div id="submissionContainer">
-                <!--        
+
+                <div id="submissionContainer">
+                    <!--        
                 <div class="boxHeadingDiv">
                     <h3 class="boxHeading">Uploaded Assignments</h3>
                 </div> -->
 
 
-                <!-- One card starts here -->
+                    <!-- One card starts here -->
 
-                <!-- <div class="submittedAssignmentCard">
+                    <!-- <div class="submittedAssignmentCard">
                     <div class="submittedStudentProfile">
                         <img src="../IMAGES/profile.jpg" alt="">
                         <div class="submittedStudentName">Aman Khushalani</div>
@@ -318,19 +329,19 @@ if( isUserAuthenticated("teacher") == false ){
                     </div>
                 </div> -->
 
-                <!-- One card ends here -->
+                    <!-- One card ends here -->
 
-                <!-- <button style="margin:0.6rem 0" id="closeSubmissionModal">Close List</button> -->
+                    <!-- <button style="margin:0.6rem 0" id="closeSubmissionModal">Close List</button> -->
 
-            </div>
+                </div>
 
-                
+
 
             </div>
 
 
             <div id="uploadAssignmentContainer">
-                
+
                 <!-- <form class="assignmentItem">
                     <div class="classSelector"><input type="checkbox" name="uploadedAssignmentCard" value="2">
                         <div class="classHeading">Python</div>
@@ -386,12 +397,50 @@ if( isUserAuthenticated("teacher") == false ){
 
 
         <!-- Upload Student Test File Div -->
+        
+        <!-- THIS IS VERY IMPORTANT BOX, IT CONTAINS THE INFORMATION OF THE TESTS SUBMITTED BY STUDENTS (Modal) -->
+        <div id="submittedTestByStudentsModal" style="display: none;">
 
+            
+            
+            <div id="submittedTestByStudentsDetailsContainer" class="formsDiv">
+                <div class="boxHeadingDiv">
+                    <h3 id="studentTestHeading" class="boxHeading">Python &nbsp;|&nbsp; 20-12-2020</h3>
+                </div>
+
+                <div id="studentTestCardsContainer" class="internalContainer">
+                    
+                    <div class="studentTestCard">
+                        <div class="testStudentName">Aman Khushalani</div>
+                        <div class="testStudentTime">12:00 PM</div>
+                        <div class="testStudentScore">90/100</div>
+                    </div>
+
+                </div>
+                
+                <button id="closeTestDetailsButton">Go Back</button>
+                
+                
+            </div>
+
+        </div>
+        <!-- (END) THIS IS VERY IMPORTANT BOX, IT CONTAINS THE INFORMATION OF THE TEST SUBMITTED BY STUDENTS (Modal) -->
+        
+        
+        
+        
         <div id="uploadTest" about="uploadTestFile" class="formsDiv" style="display: none;">
 
             <div class="boxHeadingDiv">
                 <h3 class="boxHeading">Upload Test</h3>
             </div>
+
+            <div class="uploadTestButtonContainer">
+                <button id="uploadTestButton" class="downloadOptions">New Test</button>
+                <button id="uploadedTestButton" class="downloadOptions">Uploaded Test</button>
+            </div>
+
+
 
             <div id="uploadTestContainer">
 
@@ -413,15 +462,68 @@ if( isUserAuthenticated("teacher") == false ){
                         <option value="">BCA 2nd Yr.</option>
                         <option value="">BCA 3rd Yr.</option>
                     </select>
+                    <select name="classForTime">
+                        <option value="15">Default Time :- 15</option>
+                        <option value="20">20</option>
+                        <option value="25">25</option>
+                    </select>
                     <button onclick="{document.getElementById('testFile').click(); event.preventDefault();}">Upload .xls
                         file</button>
                     <input style="display: none;" id="testFile" accept=".xls" required autocomplete="OFF" type="file"
                         placeholder="Joining Link" name="classLink">
-                    <button onclick="window.open('http://localhost/Server/UersRelatedDocs/testFilePattern.xls', '_blank');" type="button">See file pattern</button>
+                    <button
+                        onclick="window.open('http://localhost/Server/UersRelatedDocs/testFilePattern.xls', '_blank');"
+                        type="button">See file pattern</button>
                     <button type="submit">Upload</button>
                 </form>
+            </div>
+
+
+            <div id="uploadedTestContainer" style="display: none;">
+
+                <div class="classItem" style="width: fit-content;">
+
+                    <div class="classSelector">
+                        <div class="classHeading">Subject Name</div>
+                        &nbsp;&nbsp;&nbsp;
+                        <div class="hostName">(Teacher Name)</div>
+                    </div>
+
+                    <div class="classDescription">
+                        <div class="classTitle">Any Topic of Test</div>
+                        <ul class="classSubtopics" style="margin-top: 0.5rem; row-gap: 0.3rem;">
+                            <div>Class :- BCA 1st Year </div>
+                            <div class="classDate">Date :- 25-Nov-2021</div>
+                            <div class="classTime">Timing :- 10:00 AM to 11:00 AM</div>
+                        </ul>
+                    </div>
+
+                    <div>
+                        <button id="viewTestSubmissionButton">View Submissions</button>
+                        <button>Delete Test</button>
+                    </div>
+
+                </div>
+
 
             </div>
+
+            <script>
+                document.getElementById('uploadTestButton').addEventListener('click', () => {
+                    document.getElementById('uploadedTestContainer').style.display = "none";
+                    document.getElementById('uploadTestContainer').style.display = "block";
+                })
+                document.getElementById('uploadedTestButton').addEventListener('click', () => {
+                    document.getElementById('uploadTestContainer').style.display = "none";
+                    document.getElementById('uploadedTestContainer').style.display = "flex";
+                })
+                document.getElementById('closeTestDetailsButton').addEventListener('click', () => {
+                    document.getElementById('submittedTestByStudentsModal').style.display = "none";
+                })
+                document.getElementById('viewTestSubmissionButton').addEventListener('click', () => {
+                    document.getElementById('submittedTestByStudentsModal').style.display = "flex";
+                })
+            </script>
 
         </div>
 
@@ -621,10 +723,10 @@ if( isUserAuthenticated("teacher") == false ){
 
         </div>
         <!-- add class Section Div end -->
-        
-        
-        
-        
+
+
+
+
         <!-- set attendance Div  -->
         <div id="setAttendance" class="formsDiv" style="display: none;">
             <div class="boxHeadingDiv">
@@ -632,29 +734,29 @@ if( isUserAuthenticated("teacher") == false ){
             </div>
 
             <div class="forms">
-                <input type="date" name="" id="selectedDate" max="<?php echo date("Y-m-d");?>">
+                <input type="date" name="" id="selectedDate" max="<?php echo date(" Y-m-d");?>">
                 <select name="" id="selectClassForAttendance">
                     <option value="">Select a class</option>
                 </select>
             </div>
 
-                <form id="studentContainer" class="internalContainer">
+            <form id="studentContainer" class="internalContainer">
 
-                    <div id="studentAttendanceCards">
-                        <!-- Attendance Card -->
-                        <!-- <div class="attStudent">
+                <div id="studentAttendanceCards">
+                    <!-- Attendance Card -->
+                    <!-- <div class="attStudent">
                             <input type="checkbox">
                             <img class="attStudentImg" src="../IMAGES/profile.jpg" alt="">
                             <div class="attStudentName">Aman Khushalani</div>
                             <div class="attStudentClass">BCA III Yr.</div>
                         </div> -->
-                    </div>
-                    
-                    <div id="submitAttendanceContainer" class="forms">
-                        <button style="background-color: #76a3ddd7;" disabled id="markAttendance" class="">Submit</button>
-                    </div>
-    
-                </form>
+                </div>
+
+                <div id="submitAttendanceContainer" class="forms">
+                    <button style="background-color: #76a3ddd7;" disabled id="markAttendance" class="">Submit</button>
+                </div>
+
+            </form>
 
         </div>
 
@@ -666,7 +768,7 @@ if( isUserAuthenticated("teacher") == false ){
 
         <!-- Upload Student Test File Div -->
 
-        <div id="uploadMarks" about="uploadTestFile" class="formsDiv" style="display: none;" >
+        <div id="uploadMarks" about="uploadTestFile" class="formsDiv" style="display: none;">
 
             <div class="boxHeadingDiv">
                 <h3 class="boxHeading">Upload Marks</h3>
@@ -683,7 +785,7 @@ if( isUserAuthenticated("teacher") == false ){
                         <option value="">BCA 2nd Yr.</option>
                         <option value="">BCA 3rd Yr.</option>
                     </select>
-                    <button  type="button">See file pattern</button>
+                    <button type="button">See file pattern</button>
                     <button onclick="{document.getElementById('testFile').click(); event.preventDefault();}">Upload .xls
                         file</button>
                     <input style="display: none;" id="testFile" accept=".xls" required autocomplete="OFF" type="file"
@@ -697,15 +799,23 @@ if( isUserAuthenticated("teacher") == false ){
         </div>
 
         <!-- Upload Student Test File End -->
-    
+
 
     </div>
 
 
-    <p id="userId" style="display: none;"><?php echo $_SESSION['userId']; ?></p>
-    <p id="sessionId" style="display: none;"><?php echo $_SESSION['sessionId']; ?></p>
-    <p id="instituteId" style="display: none;"><?php echo $_SESSION['instituteId']; ?></p>
-    <p id="authority" style="display: none;"><?php echo $_SESSION['authority']; ?></p>
+    <p id="userId" style="display: none;">
+        <?php echo $_SESSION['userId']; ?>
+    </p>
+    <p id="sessionId" style="display: none;">
+        <?php echo $_SESSION['sessionId']; ?>
+    </p>
+    <p id="instituteId" style="display: none;">
+        <?php echo $_SESSION['instituteId']; ?>
+    </p>
+    <p id="authority" style="display: none;">
+        <?php echo $_SESSION['authority']; ?>
+    </p>
 
 </body>
 
@@ -731,10 +841,10 @@ if( isUserAuthenticated("teacher") == false ){
         $("#downloadContainer").height($("#downloads").height() * 95 / 100);
         $("#liveClassSection").height($("#downloads").height() * 95 / 100);
         $("#searchResults").height($(window).height() * 65 / 100);
-        
+
         $("#setAttendance").height($(window).height() * 80 / 100);
         $("#div4").height($(window).height() * 80 / 100);
-        
+
     } else {
         $($("#mynavigationBar").children()[0]).css("margin-top", $("#mynavbar").height() * 23 / 100);
         $("#downloadContainer").height($(window).height() * 60 / 100);
@@ -769,7 +879,7 @@ if( isUserAuthenticated("teacher") == false ){
 
     let lastActiveItem = $("#item1");
     $("#item1").addClass("activeItem");
-    fillUpPersonalDetails();
+    // fillUpPersonalDetails();
 
     function manipulate(person) {
 
@@ -793,11 +903,11 @@ if( isUserAuthenticated("teacher") == false ){
         else if ($(person).attr("value") == "#div6") {
             showUploadedFiles();
         }
-        else if($(person).attr("value") == "#setAttendance"){
+        else if ($(person).attr("value") == "#setAttendance") {
             showAttendanceTab();
         }
     }
-    
+
 
 
 
@@ -897,9 +1007,8 @@ if( isUserAuthenticated("teacher") == false ){
 
     $(".mynavigationItem").click(function () {
         manipulate($(this));
-        if ($(window).width() <= 700) 
-        { 
-            moveUp(); 
+        if ($(window).width() <= 700) {
+            moveUp();
             if (btn.classList.contains('cross')) {
                 btn.classList.remove('cross');
                 setTimeout(function () {
