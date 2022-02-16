@@ -33,6 +33,7 @@ if( isUserAuthenticated("teacher") == false ){
     <link rel="stylesheet" href="../CSS/setattendance.css">
     <link rel="stylesheet" href="../CSS/uploadAssignments.css">
     <link rel="stylesheet" href="../CSS/uploadMarks.css">
+    <link rel="stylesheet" href="../CSS/uploadTest.css">
     <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
     <title>Teacher Dashboard</title>
 </head>
@@ -387,11 +388,51 @@ if( isUserAuthenticated("teacher") == false ){
 
         <!-- Upload Student Test File Div -->
 
+        <!-- THIS IS VERY IMPORTANT BOX, IT CONTAINS THE INFORMATION OF THE TESTS SUBMITTED BY STUDENTS (Modal) -->
+        <div id="submittedTestByStudentsModal" style="display: none;">
+
+            
+            
+            <div id="submittedTestByStudentsDetailsContainer" class="formsDiv">
+                <div class="boxHeadingDiv">
+                    <h3 id="studentTestHeading" class="boxHeading">Python &nbsp;|&nbsp; 20-12-2020</h3>
+                </div>
+
+                <div id="studentTestCardsContainer" class="internalContainer">
+                    
+                    <!-- This is a card of student who submitted the test Start-->
+                    <div class="studentTestCard">
+                        <div class="testStudentName">Aman Khushalani</div>
+                        <div class="testStudentTime">12:00 PM</div>
+                        <div class="testStudentScore">90/100</div>
+                    </div>
+                    <!-- This is a card of student who submitted the test End -->
+
+                </div>
+                
+                <button id="closeTestDetailsButton">Go Back</button>
+                
+                
+            </div>
+
+        </div>
+        <!-- (END) THIS IS VERY IMPORTANT BOX, IT CONTAINS THE INFORMATION OF THE TEST SUBMITTED BY STUDENTS (Modal) -->
+        
+        
+        
+        
         <div id="uploadTest" about="uploadTestFile" class="formsDiv" style="display: none;">
 
             <div class="boxHeadingDiv">
                 <h3 class="boxHeading">Upload Test</h3>
             </div>
+
+            <div class="uploadTestButtonContainer">
+                <button id="uploadTestButton" class="downloadOptions">New Test</button>
+                <button id="uploadedTestButton" class="downloadOptions">Uploaded Test</button>
+            </div>
+
+
 
             <div id="uploadTestContainer">
 
@@ -413,19 +454,74 @@ if( isUserAuthenticated("teacher") == false ){
                         <option value="">BCA 2nd Yr.</option>
                         <option value="">BCA 3rd Yr.</option>
                     </select>
-                    <!-- <button onclick="{document.getElementById('testFile').click(); event.preventDefault();}">Upload .xls
-                        file</button> -->
-
-                    <input id="studentTestFile" accept=".xls" required autocomplete="OFF" type="file"
+                    <select name="classForTime">
+                        <option value="15">Default Time :- 15</option>
+                        <option value="20">20</option>
+                        <option value="25">25</option>
+                    </select>
+                    <button onclick="{document.getElementById('testFile').click(); event.preventDefault();}">Upload .xls
+                        file</button>
+                    <input style="display: none;" id="testFile" accept=".xls" required autocomplete="OFF" type="file"
                         placeholder="Joining Link" name="classLink">
-
-                    <button onclick="window.open('http://localhost/Server/UersRelatedDocs/testFilePattern.xls', '_blank');" type="button">See file pattern</button>
-                    <button type="submit" id="uploadTestFile">Upload</button>
+                    <button
+                        onclick="window.open('http://localhost/Server/UersRelatedDocs/testFilePattern.xls', '_blank');"
+                        type="button">See file pattern</button>
+                    <button type="submit">Upload</button>
                 </form>
-
             </div>
 
+
+            <div id="uploadedTestContainer" style="display: none;">
+
+
+                <!-- This is a test Card Start -->
+                <div class="classItem" style="width: fit-content;">
+                    
+                    <div class="classSelector">
+                        <div class="classHeading">Subject Name</div>
+                        &nbsp;&nbsp;&nbsp;
+                        <div class="hostName">(Teacher Name)</div>
+                    </div>
+                    
+                    <div class="classDescription">
+                        <div class="classTitle">Any Topic of Test</div>
+                        <ul class="classSubtopics" style="margin-top: 0.5rem; row-gap: 0.3rem;">
+                            <div>Class :- BCA 1st Year </div>
+                            <div class="classDate">Date :- 25-Nov-2021</div>
+                            <div class="classTime">Timing :- 10:00 AM to 11:00 AM</div>
+                        </ul>
+                    </div>
+                    
+                    <div>
+                        <button id="viewTestSubmissionButton">View Submissions</button>
+                        <button>Delete Test</button>
+                    </div>
+                    
+                </div>
+                <!-- This is a test Card End -->
+                
+                
+            </div>
+            
+            <script>
+                document.getElementById('uploadTestButton').addEventListener('click', () => {
+                    document.getElementById('uploadedTestContainer').style.display = "none";
+                    document.getElementById('uploadTestContainer').style.display = "block";
+                })
+                document.getElementById('uploadedTestButton').addEventListener('click', () => {
+                    document.getElementById('uploadTestContainer').style.display = "none";
+                    document.getElementById('uploadedTestContainer').style.display = "flex";
+                })
+                document.getElementById('closeTestDetailsButton').addEventListener('click', () => {
+                    document.getElementById('submittedTestByStudentsModal').style.display = "none";
+                })
+                document.getElementById('viewTestSubmissionButton').addEventListener('click', () => {
+                    document.getElementById('submittedTestByStudentsModal').style.display = "flex";
+                })
+            </script>
+
         </div>
+
 
         <!-- Upload Student Test File End -->
 
