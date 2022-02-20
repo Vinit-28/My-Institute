@@ -611,7 +611,6 @@ function showLiveClasses(classFilter){
                     liveClassContainer.style.display = "flex"
                     liveClassContainer.style.justifyContent = "center"
                     liveClassContainer.innerHTML = mynullmessage
-                    // alert("No Live Classes Scheduled !!!");
                 }
             }
             else{

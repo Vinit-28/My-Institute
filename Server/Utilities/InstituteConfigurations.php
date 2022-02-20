@@ -566,7 +566,7 @@
         $databaseConnectionObject->select_db($request['instituteId']);
         $query = "INSERT INTO UploadedTest(uploadedBy, uploadedDateTime, subjectName, topicName, testDate, forClass, fromTime, toTime, questionGapSec, testFileLinkHref, testFileLinkMachine) VALUES(?,?,?,?,?,?,?,?,?,?,?);";
 
-        runQuery($databaseConnectionObject, $query, [$request['loggedInUser'], $request['uploadedDateTime'], $request['subjectName'], $request['topicName'], $request['testDate'], $request['forClass'], $request['fromTime'], $request['toTime'], $request['questionGapSec'], $filePathHref, $filePathMachine], "sssssssssss", true);
+        runQuery($databaseConnectionObject, $query, [$request['loggedInUser'], date("Y-m-d"), $request['subjectName'], $request['topicName'], $request['testDate'], $request['forClass'], $request['fromTime'], $request['toTime'], $request['questionGapSec'], $filePathHref, $filePathMachine], "sssssssssss", true);
     }
 
 
@@ -610,22 +610,19 @@
     function deleteUploadedTests($databaseConnectionObject, $request){
 
         $databaseConnectionObject->select_db($request['instituteId']);
-        $testsToBeDeleted = $request['testsToBeDeleted'];
+        $testId = $request['testId'];
 
-        foreach($testsToBeDeleted as $testId){
+        // Getting the Test File Link //
+        $testFileLink = getColumnValue($databaseConnectionObject, "SELECT testFileLinkMachine FROM UploadedTest WHERE testId = ?;", [$testId], "i", "testFileLinkMachine");
 
-            // Getting the Test File Link //
-            $testFileLink = getColumnValue($databaseConnectionObject, "SELECT testFileLinkMachine FROM UploadedTest WHERE testId = ?;", [$testId], "i", "testFileLinkMachine");
-
-            // Deleting the test file and the entry of test from the database //
-            unlink($testFileLink);
-            $query = "DELETE FROM UploadedTest WHERE testId = ?;";
-            runQuery($databaseConnectionObject, $query, [$testId], "i", true);
-            
-            // Deleting students result of this test //
-            $query = "DELETE FROM testSubmission WHERE testId = ?;";
-            runQuery($databaseConnectionObject, $query, [$testId], "i");
-        }
+        // Deleting the test file and the entry of test from the database //
+        unlink($testFileLink);
+        $query = "DELETE FROM UploadedTest WHERE testId = ?;";
+        runQuery($databaseConnectionObject, $query, [$testId], "i", true);
+        
+        // Deleting students result of this test //
+        $query = "DELETE FROM testSubmission WHERE testId = ?;";
+        runQuery($databaseConnectionObject, $query, [$testId], "i");
     }
 
 
@@ -636,13 +633,13 @@
 
         $query = "SELECT * FROM UploadedTest WHERE uploadedBy = ?;";
         $result = runQuery($databaseConnectionObject, $query, [$request['loggedInUser']], "s");
-        $uploadedTest = array();
+        $uploadedTests = array();
 
         while($row = $result->fetch_assoc()){
-            $uploadedTest += [$row['testId']=>$row];
+            $uploadedTests += [$row['testId']=>$row];
         }
 
-        return $uploadedTest;
+        return $uploadedTests;
     }
 
 

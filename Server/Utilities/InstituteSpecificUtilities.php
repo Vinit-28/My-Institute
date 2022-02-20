@@ -434,7 +434,7 @@
 
                 $response = array(
                     "result"=>"Success",
-                    "uploadedTest"=>getUploadedTests_Teachers($databaseConnectionObject, $request)
+                    "uploadedTests"=>getUploadedTests_Teachers($databaseConnectionObject, $request)
                 );
                 echo json_encode($response);
             }
@@ -445,7 +445,7 @@
 
                 $response = array(
                     "result"=>"Success",
-                    "uploadedTest"=>getUploadedTests_Students($databaseConnectionObject, $request)
+                    "uploadedTests"=>getUploadedTests_Students($databaseConnectionObject, $request)
                 );
                 echo json_encode($response);
             }

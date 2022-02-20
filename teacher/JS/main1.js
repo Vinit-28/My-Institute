@@ -676,7 +676,6 @@ function showUploadedAssignments(){
         uploadAssignmentContainer.style.justifyContent = "center"
         uploadAssignmentContainer.style.paddingTop = "10px"
         uploadAssignmentContainer.innerHTML = mynullmessage
-        // alert("No Uploaded Assignments to Show !!!");
     }
 }
 

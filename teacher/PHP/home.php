@@ -429,53 +429,53 @@ if( isUserAuthenticated("teacher") == false ){
 
             <div class="uploadTestButtonContainer">
                 <button id="uploadTestButton" class="downloadOptions">New Test</button>
-                <button id="uploadedTestButton" class="downloadOptions">Uploaded Test</button>
+                <button id="uploadedTestButton" class="downloadOptions">Uploaded Tests</button>
             </div>
 
 
 
-            <div id="uploadTestContainer">
+            <div id="uploadTestContainer" style="display: none;">
 
                 <form action="" class="forms">
-                    <input required autocomplete="OFF" type="text" placeholder="Inviglator Name" name="hostName">
-                    <input required autocomplete="OFF" type="text" placeholder="Subject Name" name="subjectName">
-                    <input required autocomplete="OFF" type="text" placeholder="Topic Name" name="topicName">
+                    <input disabled autocomplete="OFF" type="text" value="<?php echo $_SESSION['userId'] . ' ( Creator )';?>" id="hostName">
+                    <input required autocomplete="OFF" type="text" placeholder="Subject Name" id="subjectName">
+                    <input required autocomplete="OFF" type="text" placeholder="Topic Name" id="topicName">
 
                     <div class="timeDiv">
                         <label for="">From:- </label>
-                        <input required autocomplete="OFF" type="time" name="startingTime">
+                        <input required autocomplete="OFF" type="time" id="fromTime">
                         <label for="">Till:- </label>
-                        <input required autocomplete="OFF" type="time" name="endingTime">
+                        <input required autocomplete="OFF" type="time" id="toTime">
                     </div>
 
-                    <input required autocomplete="OFF" type="date" name="classDate" style="width: 100%;">
-                    <select name="classForClass">
-                        <option value="">BCA 1st Yr.</option>
-                        <option value="">BCA 2nd Yr.</option>
-                        <option value="">BCA 3rd Yr.</option>
+                    <input required autocomplete="OFF" type="date" id="testDate" style="width: 100%;">
+
+                    <select id="classForTest" name="classForClass">
                     </select>
-                    <select name="classForTime">
-                        <option value="15">Default Time :- 15</option>
+
+                    <select id="questionGap" name="classForTime">
+                        <option value="" selected>Select Question Gap in Secs</option>
+                        <option value="10">10</option>
+                        <option value="15">15</option>
                         <option value="20">20</option>
                         <option value="25">25</option>
                     </select>
-                    <button onclick="{document.getElementById('testFile').click(); event.preventDefault();}">Upload .xls
-                        file</button>
-                    <input style="display: none;" id="testFile" accept=".xls" required autocomplete="OFF" type="file"
-                        placeholder="Joining Link" name="classLink">
+                
+                    <input  id="studentTestFile" accept=".xls" required autocomplete="OFF" type="file" placeholder="Joining Link" name="classLink">
+                    
                     <button
-                        onclick="window.open('http://localhost/Server/UersRelatedDocs/testFilePattern.xls', '_blank');"
+                        onclick="window.open('http://localhost/Server/UserRelatedDocs/testFileSample.xls', '_blank');"
                         type="button">See file pattern</button>
-                    <button type="submit">Upload</button>
+
+                    <button type="submit" id="uploadNewTest" >Upload</button>
                 </form>
             </div>
 
 
             <div id="uploadedTestContainer" style="display: none;">
 
-
                 <!-- This is a test Card Start -->
-                <div class="classItem" style="width: fit-content;">
+                <!-- <div class="classItem" style="width: fit-content;">
                     
                     <div class="classSelector">
                         <div class="classHeading">Subject Name</div>
@@ -486,9 +486,10 @@ if( isUserAuthenticated("teacher") == false ){
                     <div class="classDescription">
                         <div class="classTitle">Any Topic of Test</div>
                         <ul class="classSubtopics" style="margin-top: 0.5rem; row-gap: 0.3rem;">
-                            <div>Class :- BCA 1st Year </div>
-                            <div class="classDate">Date :- 25-Nov-2021</div>
-                            <div class="classTime">Timing :- 10:00 AM to 11:00 AM</div>
+                            <div>Class : BCA 1st Year </div>
+                            <div>Uploaded Date : 25-Nov-2021</div>
+                            <div class="classDate">Test Date : 25-Nov-2021</div>
+                            <div class="classTime">Test Timing : 10:00 AM to 11:00 AM</div>
                         </ul>
                     </div>
                     
@@ -497,27 +498,18 @@ if( isUserAuthenticated("teacher") == false ){
                         <button>Delete Test</button>
                     </div>
                     
-                </div>
+                </div> -->
                 <!-- This is a test Card End -->
-                
-                
+ 
             </div>
             
             <script>
-                document.getElementById('uploadTestButton').addEventListener('click', () => {
-                    document.getElementById('uploadedTestContainer').style.display = "none";
-                    document.getElementById('uploadTestContainer').style.display = "block";
-                })
-                document.getElementById('uploadedTestButton').addEventListener('click', () => {
-                    document.getElementById('uploadTestContainer').style.display = "none";
-                    document.getElementById('uploadedTestContainer').style.display = "flex";
-                })
-                document.getElementById('closeTestDetailsButton').addEventListener('click', () => {
-                    document.getElementById('submittedTestByStudentsModal').style.display = "none";
-                })
-                document.getElementById('viewTestSubmissionButton').addEventListener('click', () => {
-                    document.getElementById('submittedTestByStudentsModal').style.display = "flex";
-                })
+                // document.getElementById('closeTestDetailsButton').addEventListener('click', () => {
+                //     document.getElementById('submittedTestByStudentsModal').style.display = "none";
+                // })
+                // document.getElementById('viewTestSubmissionButton').addEventListener('click', () => {
+                //     document.getElementById('submittedTestByStudentsModal').style.display = "flex";
+                // })
             </script>
 
         </div>
@@ -893,6 +885,9 @@ if( isUserAuthenticated("teacher") == false ){
         }
         else if($(person).attr("value") == "#setAttendance"){
             showAttendanceTab();
+        }
+        else if($(person).attr("value") == "#uploadTest"){
+            showUploadedTests();
         }
     }
     

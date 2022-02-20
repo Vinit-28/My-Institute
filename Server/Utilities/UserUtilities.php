@@ -130,7 +130,7 @@
         $query = "CREATE TABLE UploadedTest(
             testId BIGINT(8) AUTO_INCREMENT PRIMARY kEY, 
             uploadedBy VARCHAR(100),
-            uploadedDateTime VARCHAR(100),
+            uploadedDateTime DATE,
             subjectName VARCHAR(100),
             topicName VARCHAR(100),
             testDate DATE,
