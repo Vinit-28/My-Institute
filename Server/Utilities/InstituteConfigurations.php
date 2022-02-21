@@ -693,7 +693,9 @@
         $testResult = array();
 
         while($row = $result->fetch_assoc()){
-            $row += ['profilePath' => getUserProfilePath($databaseConnectionObject, $request['instituteId'], $row['submittedBy'])];
+
+            $studentDetails = getStudentDetails($databaseConnectionObject, $request['instituteId'], $row['submittedBy']);
+            $row += ['profilePath' => $studentDetails['profilePath'], 'studentName'=>$studentDetails['name']];
             $testResult += [$row['submittedBy']=>$row];
         }
 
@@ -725,7 +727,14 @@
     }
 
 
+    // Function to submit the result of a test //
+    function submitTest($databaseConnectionObject, $request){
 
+        $databaseConnectionObject->select_db($request['instituteId']);
+        $todayDate = date("Y-m-d");
+        $query = "INSERT INTO testSubmission(testId, submittedBy, submittedDateTime, totalMarks, marksAchieved) VALUES(?,?,?,?,?);";
+        runQuery($databaseConnectionObject, $query, [$request['testId'], $request['loggedInUser'], $todayDate, $request['totalMarks'], $request['marksAchieved']], "issii", true);
+    }
 
 
 ?>

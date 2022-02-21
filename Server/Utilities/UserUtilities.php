@@ -396,8 +396,25 @@
     // Function to get the User Profile Path From the Database // 
     function getUserProfilePath($databaseConnectionObject, $institueId, $userId){
 
+        $databaseConnectionObject->select_db("App_Database");
         $path = getColumnValue($databaseConnectionObject, "SELECT * FROM AppUsers WHERE userId = ?", [$userId], "s", "profilePath");
         return $path;
+    }
+
+
+    // Function to get the Student details of an institute  // 
+    function getStudentDetails($databaseConnectionObject, $institueId, $userId){
+
+        $databaseConnectionObject->select_db($institueId);
+
+        // Getting student information //
+        $query = "SELECT * FROM StudentInfo WHERE userId = ?;";
+        $result = runQuery($databaseConnectionObject, $query, [$userId], "s");
+        $studentDetails = $result->fetch_assoc();
+
+        // Getting student profile image //
+        $studentDetails += ['profilePath'=>getUserProfilePath($databaseConnectionObject, $institueId, $userId)];
+        return $studentDetails;
     }
 
 

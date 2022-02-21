@@ -391,8 +391,6 @@ if( isUserAuthenticated("teacher") == false ){
         <!-- THIS IS VERY IMPORTANT BOX, IT CONTAINS THE INFORMATION OF THE TESTS SUBMITTED BY STUDENTS (Modal) -->
         <div id="submittedTestByStudentsModal" style="display: none;">
 
-            
-            
             <div id="submittedTestByStudentsDetailsContainer" class="formsDiv">
                 <div class="boxHeadingDiv">
                     <h3 id="studentTestHeading" class="boxHeading">Python &nbsp;|&nbsp; 20-12-2020</h3>
@@ -401,18 +399,16 @@ if( isUserAuthenticated("teacher") == false ){
                 <div id="studentTestCardsContainer" class="internalContainer">
                     
                     <!-- This is a card of student who submitted the test Start-->
-                    <div class="studentTestCard">
+                    <!-- <div class="studentTestCard">
                         <div class="testStudentName">Aman Khushalani</div>
                         <div class="testStudentTime">12:00 PM</div>
                         <div class="testStudentScore">90/100</div>
-                    </div>
+                    </div> -->
                     <!-- This is a card of student who submitted the test End -->
 
                 </div>
                 
-                <button id="closeTestDetailsButton">Go Back</button>
-                
-                
+                <button id="closeTestResultModal">Go Back</button>
             </div>
 
         </div>

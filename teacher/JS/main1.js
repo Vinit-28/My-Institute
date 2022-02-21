@@ -389,6 +389,7 @@ function getUploadNewAssignmentForm(){
 
     let uploadAssignmentContainer = document.getElementById("uploadAssignmentContainer");
     uploadAssignmentContainer.innerHTML = "";
+    uploadAssignmentContainer.style.color = "black";
 
     // Creating Tags //
     // let divForm = document.createElement("div");
@@ -458,7 +459,6 @@ function getUploadNewAssignmentForm(){
         option.value = option.innerText = instituteClasses[key].className;
         selectVisibility.appendChild(option);
     }
-
 
     return [form, subjectName, assignmentTitle, assignmentDescription, fileInput, deadline, selectVisibility, uploadAssignmentButton, uploadedBy]
 }
@@ -661,6 +661,11 @@ function showUploadedAssignments(){
     getUploadedAssignments(false);
     let userId = document.getElementById("userId").textContent;
 
+    // Making the dispay default //
+    uploadAssignmentContainer.style.color = "black";
+    uploadAssignmentContainer.style.display = "flex";
+    uploadAssignmentContainer.style.justifyContent = "start";
+
     for(let key in uploadedAssignments){
         if( userId == uploadedAssignments[key].uploadedBy ){
             uploadAssignmentContainer.appendChild(getUploadedAssignmentCard(uploadedAssignments[key]));
@@ -671,11 +676,11 @@ function showUploadedAssignments(){
     if( !uploadAssignmentContainer.children.length )
     {
         let mynullmessage = 'No Uploaded Assignments to Show !';
-        uploadAssignmentContainer.style.color = "red"
-        uploadAssignmentContainer.style.display = "flex"
-        uploadAssignmentContainer.style.justifyContent = "center"
-        uploadAssignmentContainer.style.paddingTop = "10px"
-        uploadAssignmentContainer.innerHTML = mynullmessage
+        uploadAssignmentContainer.style.color = "red";
+        uploadAssignmentContainer.style.display = "flex";
+        uploadAssignmentContainer.style.justifyContent = "center";
+        uploadAssignmentContainer.style.paddingTop = "10px";
+        uploadAssignmentContainer.innerHTML = mynullmessage;
     }
 }
 

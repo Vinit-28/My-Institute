@@ -473,6 +473,17 @@
             }
 
 
+            // If request is to submit the test //
+            else if($request['task'] == "Submit Test" && $authority == "student" ){
+
+                $response = array(
+                    "result" => "Success",
+                    "message" => "Test Submitted Successfully !!!"
+                );
+                echo json_encode($response);
+            }
+
+
 
 
 

@@ -159,6 +159,7 @@ function getUploadedTestCard(testDetails){
     viewResultButton.innerText = "View Result";
     deleteTestButton.innerText = "Delete Test";
     deleteTestButton.addEventListener("click", ()=>{deleteUpladedTest(testDetails.testId);});
+    viewResultButton.addEventListener("click", ()=>{viewTestResult(testDetails.testId);});
     classSelector.addEventListener("click", ()=>{window.open(testDetails.testFileLinkHref, "_blank");});
 
 
@@ -221,23 +222,67 @@ function showUploadedTests(){
 }
 
 
+
 // Function to delete the uploaded tests // 
 function deleteUpladedTest(testId){
 
-    // Craeting some request variables and handlers //
-    let data = {
+    // Taking user confirmation before deleting the test //
+    if( confirm("Do You Really Want to Delete the Test ?") ){
+
+        // Creating some request variables and handlers //
+        let data = {
         "task" : "Delete Tests", 
         "loggedInUser" : document.getElementById("userId").textContent, 
         "instituteId" : document.getElementById("instituteId").textContent,  
         "sessionId" : document.getElementById("sessionId").textContent,
         "authority" : document.getElementById("authority").textContent,
         "testId" : testId
-    };
+        };
+        
+        let serverUrl = "../../Server/Utilities/InstituteSpecificUtilities.php";
+        let requesType = "POST";
+        let onLoadFunction = function(){
+            
+            if( this.status != 200 ){
+                alert("Something Went Wrong!");
+            }
+            else{
+                let responseText = this.responseText.replace(/(\r\n|\n|\r)/gm, "");
+                if( responseText.includes("Success") ){
+                    let response = JSON.parse(responseText);
+                    alert(response.message);
+                    showUploadedTests();
+                }
+                else{
+                    alert(responseText);
+                }
+            }
+        };
+        
+        // Making the Request //
+        makeAJAXRequest(requesType, serverUrl, data, onLoadFunction, false);
+    }
+}
 
+
+
+// Function to make the request to the server to get the test result //
+function getTestResult(testId){
+
+    // Creating some request variables and handlers //
+    let data = {
+        "task" : "Get Test's Marks", 
+        "loggedInUser" : document.getElementById("userId").textContent, 
+        "instituteId" : document.getElementById("instituteId").textContent,  
+        "sessionId" : document.getElementById("sessionId").textContent,
+        "authority" : document.getElementById("authority").textContent,
+        "testId" : testId
+    };
+    let testResult = null;
     let serverUrl = "../../Server/Utilities/InstituteSpecificUtilities.php";
     let requesType = "POST";
     let onLoadFunction = function(){
-
+        
         if( this.status != 200 ){
             alert("Something Went Wrong!");
         }
@@ -245,17 +290,68 @@ function deleteUpladedTest(testId){
             let responseText = this.responseText.replace(/(\r\n|\n|\r)/gm, "");
             if( responseText.includes("Success") ){
                 let response = JSON.parse(responseText);
-                alert(response.message);
-                showUploadedTests();
+                console.log(response.testResult);
+                testResult = response.testResult;
             }
             else{
                 alert(responseText);
             }
         }
     };
-
+    
     // Making the Request //
     makeAJAXRequest(requesType, serverUrl, data, onLoadFunction, false);
+    return testResult;
+}
+
+
+
+// Function to make and return the test result card //
+function getTestResultCard(resultDetails){
+
+    // Creating tags //
+    let studentTestCard = document.createElement("div");
+    let testStudentName = document.createElement("div");
+    let testStudentTime = document.createElement("div");
+    let testStudentScore = document.createElement("div");
+
+    // Adding Classes //
+    studentTestCard.classList.add("studentTestCard");
+    testStudentName.classList.add("testStudentName");
+    testStudentTime.classList.add("testStudentTime");
+    testStudentScore.classList.add("testStudentScore");
+
+    // Assigning values to tag's attributes //
+    testStudentName.innerText = (resultDetails.studentName + " ( " + resultDetails.submittedBy + " )");
+    testStudentTime.innerText = resultDetails.submittedDateTime;
+    testStudentScore.innerText = (resultDetails.marksAchieved + " / " + resultDetails.totalMarks);
+    
+    // Wrapping up the tags //
+    studentTestCard.appendChild(testStudentName);
+    studentTestCard.appendChild(testStudentTime);
+    studentTestCard.appendChild(testStudentScore);
+
+    return studentTestCard;
+}
+
+
+
+// Function to show the result of the uploaded test // 
+function viewTestResult(testId){
+
+    // Getting test Result //
+    let testResult = getTestResult(testId);
+    let submittedTestByStudentsModal = document.getElementById("submittedTestByStudentsModal");
+
+    submittedTestByStudentsModal.style.display = "flex";
+    studentTestCardsContainer.innerHTML = "";
+
+    // Iterating through all the test Results/Submissions //
+    for(let key in testResult){
+
+        studentTestCardsContainer.appendChild(getTestResultCard(testResult[key]));
+        studentTestCardsContainer.appendChild(getTestResultCard(testResult[key]));
+    }
 }
 
 
@@ -299,3 +395,6 @@ function openFormToUploadTest(){
 document.getElementById("uploadNewTest").addEventListener("click", uploadTest);
 document.getElementById("uploadTestButton").addEventListener("click", openFormToUploadTest);
 document.getElementById("uploadedTestButton").addEventListener("click", showUploadedTests);
+document.getElementById("closeTestResultModal").addEventListener("click", ()=>{
+    document.getElementById("submittedTestByStudentsModal").style.display = "none";
+});
