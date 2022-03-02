@@ -152,6 +152,10 @@ if( isUserAuthenticated("teacher") == false ){
                 <i class='mynavigationItemIcon bx bx-check-square'></i>
                 <span class="mynavigationItemName">Set Attendance</span>
             </div>
+            <div class="mynavigationItem" value="#updateClass">
+                <i class='mynavigationItemIcon bx bx-check-update'></i>
+                <span class="mynavigationItemName">Update Class</span>
+            </div>
             <!-- <div class="mynavigationItem" value="#uploadMarks">
                 <i class='mynavigationItemIcon bx bx-medal'></i>
                 <span class="mynavigationItemName">Upload Marks</span>
@@ -166,7 +170,7 @@ if( isUserAuthenticated("teacher") == false ){
 
         <!-- Personal Profile Div -->
 
-        <div value="#teacherProfileDiv" id="teacherProfileDiv" class="formsDiv">
+        <div value="#teacherProfileDiv" id="teacherProfileDiv" class="formsDiv" style="display: none;">
             <div class="boxHeadingDiv">
                 <h3 class="boxHeading">Personl Profile</h3>
             </div>
@@ -855,7 +859,7 @@ if( isUserAuthenticated("teacher") == false ){
 
     let lastActiveItem = $("#item1");
     $("#item1").addClass("activeItem");
-    fillUpPersonalDetails();
+    // fillUpPersonalDetails();
 
     function manipulate(person) {
 
