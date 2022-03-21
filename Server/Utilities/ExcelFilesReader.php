@@ -2,7 +2,7 @@
 <?php
 include './excel_reader.php';
 // This is for checking test paper for teachers only 
-// CHecking only !
+// Checking only !
 
 function validateFile($excel)
 {
@@ -10,33 +10,34 @@ function validateFile($excel)
     $firstRow = $sheet['cells'][1];
 
     if(
+        (count($firstRow) == 6) &&
         (strtoupper($firstRow[1]) == "QUESTION") &&
         (strtoupper($firstRow[2]) == "OPTION_A") &&
         (strtoupper($firstRow[3]) == "OPTION_B") &&
         (strtoupper($firstRow[4]) == "OPTION_C") &&
         (strtoupper($firstRow[5]) == "OPTION_D") &&
-        (strtoupper($firstRow[6]) == "CORRECT_OPTION")
+        (strtoupper($firstRow[6]) == "CORRECT_ANSWER")
     )
         return true;
     else
-        return array();
+        return false;
 }
 
 
 function validateRows($excel)
 {
-
     $x = 2;
-
     $sheet = $excel->sheets[0];
     $goOn = array("success"=>true);
-    while(($x <= $sheet['numRows']) && $goOn) 
+
+    while(($x <= $sheet['numRows']) && $goOn['success']) 
     {
         $y = 1;
-        $row = trim($sheet['cells'][$x]);
+        // $row = trim($sheet['cells'][$x]);
+        $row = $sheet['cells'][$x];
         while($y<6)
         {
-            if($row[$y] == "" || $row[$y] == " ")
+            if(count($row) < 6 || $row[$y] == "" || $row[$y] == " ")
             {
                 $goOn = ["success"=>false , "message"=>"There is a value error in Row = ".$x." and Column = ".chr(64+$y)." "];
                 break;
@@ -47,7 +48,6 @@ function validateRows($excel)
         $x++;
     }
     return $goOn;
-
 }
 
 
@@ -68,20 +68,10 @@ function testFileChecker($path)
     }
 
     return $result;
-
 }
 
 
 // teacher test file reader ends here !
-
-
-
-
-
-
-
-
-
 
 
 
@@ -103,8 +93,6 @@ function getTestRow($index ,  $sheet) {
         );
 
         return $array;
-
-
 }
 
 function getTestPaper($path)
@@ -132,7 +120,6 @@ function getTestPaper($path)
 }
 
 
+// Student test file reader ends here ! //
+
 ?>
-
-
-<!-- Student test file reader ends here ! -->

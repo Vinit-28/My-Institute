@@ -139,7 +139,7 @@ if( isUserAuthenticated("student") == false ){
                 <i class='mynavigationItemIcon bx bx-book-open'></i>
                 <span class="mynavigationItemName">Library</span>
             </div>
-            <!-- <div class="mynavigationItem" value="#studentExam">
+            <div class="mynavigationItem" value="#studentExam">
                 <i class='mynavigationItemIcon bx bxs-edit-alt'></i>
                 <span class="mynavigationItemName">Student Test</span>
             </div>
@@ -150,7 +150,7 @@ if( isUserAuthenticated("student") == false ){
             <div class="mynavigationItem" value="#scoresDiv">
                 <i class='mynavigationItemIcon bx bx-medal'></i>
                 <span class="mynavigationItemName">Test Scores</span>
-            </div> -->
+            </div>
         </div>
 
 
@@ -600,6 +600,7 @@ if( isUserAuthenticated("student") == false ){
                 <h3 class="boxHeading">Student Exam</h3>
             </div>
             <div id="testDetails">
+                
                 <div class="testCard">
                     <div class="subjectHeading">C++</div>
                     <div class="testHostedBy">Test by: &nbsp;Tarun Sharma</div>
@@ -607,6 +608,7 @@ if( isUserAuthenticated("student") == false ){
                     <div class="dateOn">Test Date : 12/12/12</div>
                     <button value="testid" onclick="executeText()" class="startTestButton">Starta test</button>
                 </div>
+                
                 <div id="testScript" style="display: none;"></div>
             </div>
         </div>

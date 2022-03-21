@@ -328,7 +328,7 @@ if( isUserAuthenticated("root") == false ){
                 <button type="submit" name="submitPerson" id="submitAddPersonForm">Submit Details</button>
             </form>
             <hr>
-            <form class="forms">
+            <form id="addPersonUploadFileForm" class="forms">
                 <input type="file"id="addPersonsFile" accept=".xls">
                 <div></div>
                 <button id="addPersonFilePattern">See File Pattern</button>

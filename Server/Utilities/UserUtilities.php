@@ -586,7 +586,7 @@
     }
 
 
-    // Function to the Plan Details by Plan Id(Selected) //
+    // Function to return the Plan Details by Plan Id(Selected) //
     function getPlanDetails($databaseConnectionObject, $planId){
 
         $query = "SELECT * FROM RechargePlans WHERE planId = ?;";

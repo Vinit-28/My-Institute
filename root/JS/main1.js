@@ -119,21 +119,21 @@ function uploadAddPersonFile(e){
     let requesType = "POST";
     let onLoadFunction = function(){
 
-        // if( this.status != 200 ){
-        //     alert("Something Went Wrong!");
-        // }
-        // else{
-        //     let responseText = this.responseText.replace(/(\r\n|\n|\r)/gm, "");
-        //     if( responseText.includes("Success") || responseText.includes("Failed") ){
-        //         let response = JSON.parse(responseText);
-        //         let message = (response.result == "Success")? (response.message + "\nNumber of Persons Added = " + response.successfullInsertions) : response.message
-        //         alert(message);
-        //     }
-        //     else{
-        //         alert(responseText);
-        //     }
-        // }
-        alert(this.responseText);
+        if( this.status != 200 ){
+            alert("Something Went Wrong!");
+        }
+        else{
+            let responseText = this.responseText.replace(/(\r\n|\n|\r)/gm, "");
+            if( responseText.includes("Success") || responseText.includes("Failed") ){
+                let response = JSON.parse(responseText);
+                let message = (response.result == "Success")? (response.message + "\nNumber of Persons Added = " + response.successfullInsertions) : response.message
+                alert(message);
+            }
+            else{
+                alert(responseText);
+            }
+            document.getElementById("addPersonUploadFileForm").reset();
+        }
     };
 
     // Making the Request //

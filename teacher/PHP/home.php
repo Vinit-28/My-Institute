@@ -436,7 +436,7 @@ if( isUserAuthenticated("teacher") == false ){
 
             <div id="uploadTestContainer" style="display: none;">
 
-                <form action="" class="forms">
+                <form id="uploadTestForm" action="" class="forms">
                     <input disabled autocomplete="OFF" type="text" value="<?php echo $_SESSION['userId'] . ' ( Creator )';?>" id="hostName">
                     <input required autocomplete="OFF" type="text" placeholder="Subject Name" id="subjectName">
                     <input required autocomplete="OFF" type="text" placeholder="Topic Name" id="topicName">

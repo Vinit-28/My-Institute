@@ -1,7 +1,9 @@
 
 <?php
 
-    include "./readData.php";
+    require_once("./ExcelFilesReader.php");
+    require_once("./readData.php");
+
 
     // Function to check whether a Class alraedy exits in the Institute Database or Not //
     function isClassExists($databaseConnectionObject, $className){
@@ -535,28 +537,10 @@
 
         $databaseConnectionObject->select_db($request['instituteId']);
 
-        // $filePath = ("InstituteFolders/". $request['instituteId'] . "/" . "temporaryDocuments/" . $fileName);
-
-        // $machinePath = getcwd();
-        // $machinePath = str_replace("Server/Utilities", $filePath, $machinePath);
-        // move_uploaded_file($tmpName, $machinePath);
-        
         // Reading the Excel File Data and Adding Persons in the Institute's Database //
-        // $response = readData($databaseConnectionObject, $machinePath, $request['instituteId']);
         $response = readData($databaseConnectionObject, $tmpName, $request['instituteId']);
 
-        // Removing the Excel File from the Server // 
-        // unlink($machinePath);
-
         return $response;
-    }
-
-
-
-    function replaceThisFunctionWithAmansFileCheckFunction($filePath){
-
-        // return true/false;
-        return true;
     }
 
 
@@ -574,10 +558,11 @@
     function uploadTest($databaseConnectionObject, $request, $fileName, $tmpName){
 
         $databaseConnectionObject->select_db($request['instituteId']);
+        $fileCheckResult = testFileChecker($tmpName);
         $result = $message = "";
 
         // If file uploaded by the teacher is readed successfully //
-        if( replaceThisFunctionWithAmansFileCheckFunction($tmpName) ){
+        if( $fileCheckResult['success'] ){
             
             // Moving the file in the institute's folder/data-warehouse //
             $fileSuffixPath = ("InstituteFolders/". $request['instituteId'] . "/" . "uploadedTests/" . $request['loggedInUser'] . "__" . time() . "__" . $fileName);
@@ -596,7 +581,7 @@
         // If any error occured or file is not up to the standards //
         else{
             $result = "Failed";
-            $message = "Error While Reading The File !!!";
+            $message = $fileCheckResult['message'];
         }
 
         return array(
@@ -699,9 +684,9 @@
             $testResult += [$row['submittedBy']=>$row];
         }
 
+
         return $testResult;
     }
-
 
     // Function to get the result of the uploaded tests (For Students) //
     function getTestsMarks_Students($databaseConnectionObject, $request){
@@ -723,6 +708,7 @@
                 $testResult += [$test['testId']=>$testAttemptedDetails['testResult']];
             }
         }
+
         return $testResult;
     }
 

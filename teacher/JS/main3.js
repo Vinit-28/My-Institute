@@ -103,6 +103,8 @@ function uploadTest(e){
             else{
                 alert(responseText);
             }
+            // Reseting/Clearing the Form //
+            document.getElementById("uploadTestForm").reset();
         }
     };
 
