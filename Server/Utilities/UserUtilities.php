@@ -345,10 +345,20 @@
         }
         else if( strtolower($request['designation']) == "student" ){
             
-            $query = "UPDATE StudentInfo SET name = ?, gender = ?, phoneNo = ?, adharCardNo = ?, address = ?, city = ?, state = ?, pinCode = ?, class = ? WHERE userId = ?";
+            // Finding the current submitted fees //
+            $query = "SELECT feeSubmitted FROM StudentInfo WHERE userId = ?;";
+            $result = runQuery($databaseConnectionObject, $query, [$request['userId']], "s");
+            $submittedFee = $result->fetch_assoc()['feeSubmitted'];
+            $feeDifference = ($request['fees'] - $submittedFee);
+            
+            // If fees has been modified //
+            if( $feeDifference ){
+                $temp = ["instituteId"=>$request['instituteId'], "studentId" => $request['userId'], "class"=> $request['class'], "transactionAmount"=>$feeDifference, "transactionTimestamp"=>$request['timestamp']];
+                updateFees($databaseConnectionObject, $temp);
+            }
 
-            $result = runQuery($databaseConnectionObject, $query, [$request['name'], $request['gender'], $request['phoneNo'], $request['adharCardNo'], $request['address'], $request['city'], $request['state'], $request['pinCode'], $request['class'], $request['userId']], "ssssssssss", true);
-        
+            $query = "UPDATE StudentInfo SET name = ?, gender = ?, phoneNo = ?, adharCardNo = ?, address = ?, city = ?, state = ?, pinCode = ?, class = ? WHERE userId = ?";
+            $result = runQuery($databaseConnectionObject, $query, [$request['name'], $request['gender'], $request['phoneNo'], $request['adharCardNo'], $request['address'], $request['city'], $request['state'], $request['pinCode'], $request['class'], $request['userId']], "ssssssssss");
         }
     }
 

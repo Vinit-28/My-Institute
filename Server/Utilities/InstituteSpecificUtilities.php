@@ -485,20 +485,29 @@
             // If request is to update the fees details //
             else if($request['task'] == "Update Fees" && $authority == "root" ){
                 
-                updateFees($databaseConnectionObject, $request);
                 $response = array(
                     "result" => "Success",
-                    "message" => "Fees Updated Successfully !!!"
+                ) + updateFees($databaseConnectionObject, $request);
+
+                echo json_encode($response);
+            }
+
+            // If request is to get the fees history //
+            else if($request['task'] == "Get Fees History" && $authority == "student" ){
+                
+                $response = array(
+                    "result" => "Success",
+                    "feesDetails" => getFeesHistory($databaseConnectionObject, $request)
                 );
                 echo json_encode($response);
             }
 
             // If request is to get the fees details //
-            else if($request['task'] == "Get Fees Details" && $authority == "student" ){
+            else if($request['task'] == "Get Class Students" && $authority == "root" ){
                 
                 $response = array(
                     "result" => "Success",
-                    "feesDetails" => getFeesDetails($databaseConnectionObject, $request)
+                    "students" => getClassStudents($databaseConnectionObject, $request)
                 );
                 echo json_encode($response);
             }

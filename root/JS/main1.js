@@ -448,6 +448,7 @@ function openModalForSelectedPerson(){
             "state" : updateState.value,
             "city" : updateCity.value,
             "pinCode" : updatePinCode.value,
+            "timestamp" : Date.now(),
         };
         
         // If Person's Class is not Selected //
@@ -482,6 +483,7 @@ function openModalForSelectedPerson(){
                     else{
                         alert(responseText);
                     }
+                    console.log(this.responseText);
                 }
             }
 

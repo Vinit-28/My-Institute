@@ -579,25 +579,25 @@ if( isUserAuthenticated("root") == false ){
                 <h3 class="boxHeading">Submit Fees</h3>
             </div>
 
-            <form action="" method="post" class="forms">
+            <form action="" method="post" class="forms" id="feeUpdateForm">
 
                 <select id="class_for_fees" name="class_for_fees">
-                    <option class="options" value="class_for_fees" selected>Select Class for Fees</option>
+                    <!-- <option class="options" value="class_for_fees" selected>Select Class for Fees</option>
                     <option class="options" value="">10th</option>
                     <option class="options" value="">11th</option>
-                    <option class="options" value="">12th</option>
+                    <option class="options" value="">12th</option> -->
                 </select>
                 
                 <select id="student_for_fees" name="student_for_fees">
-                    <option class="options" value="student_for_fees" selected>Student For Fees</option>
-                    <option class="options" value="">Aman</option>
+                    <option class="options" selected>Select Student</option>
+                    <!-- <option class="options" value="">Aman</option>
                     <option class="options" value="">Vinit</option>
-                    <option class="options" value="">Yash</option>
+                    <option class="options" value="">Yash</option> -->
                 </select>
 
-                <input required autocomplete="off"          name="Submit Fees"    type="number" placeholder="Submit Fees">
-                <input required autocomplete="off" disabled name="Remaining Fees" type="number" placeholder="Remaining Fees">
-                <input required autocomplete="off" disabled name="Total Fees"     type="number" placeholder="Total Fees">
+                <input required autocomplete="off" id="feeAmountToSubmit" name="Submit Fees" type="number" placeholder="Enter Amount to Submit">
+                <!-- <input required autocomplete="off" disabled name="Remaining Fees" type="number" placeholder="Remaining Fees">
+                <input required autocomplete="off" disabled name="Total Fees"     type="number" placeholder="Total Fees"> -->
                 
                 <button class="saveUpdatedClassInfo" type="submit" id="submitStudentFees" >Submit Fees</button>
 
@@ -685,6 +685,8 @@ if( isUserAuthenticated("root") == false ){
         $(person).addClass("activeItem");
         $($(person).attr("value")).css("display", "block");
 
+        console.log(($(person).attr("value")));
+
         // If Add Person Pannel is Active then Reload the Available Classes from the Database // 
         if ($(person).attr("value") == "#div4") {
 
@@ -702,6 +704,9 @@ if( isUserAuthenticated("root") == false ){
         }
         else if ($(person).attr("value") == "#setAttendance") {
             showAttendanceTab();
+        }
+        else if ($(person).attr("value") == "#submitFees") {
+            initializeSubmitFees();
         }
 
         lastActiveItem = $(person);

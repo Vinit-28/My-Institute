@@ -1013,12 +1013,132 @@ document.getElementById("markAttendance").addEventListener("click", (e)=>{
 
 
 
+// ------------------------- Fee Submit Tab ------------------------- //
 
 
-function callMe(){
+// Function to make a request to the database for getting the info of all the students of the selected class //
+function getClassStudents(selectedClass){
 
-    // Creating some Data Variables //
-    let dateObject = new Date(selectedDate);
+    let students = {};
+    // Declaring request variables // 
+    let data = {
+        "task" : "Get Class Students", 
+        "loggedInUser" : document.getElementById("userId").textContent, 
+        "instituteId" : document.getElementById("instituteId").textContent, 
+        "userId" : document.getElementById("userId").textContent, 
+        "sessionId" : document.getElementById("sessionId").textContent,
+        "authority" : document.getElementById("authority").textContent,
+        "class" : selectedClass,
+    };
+
+    let onLoadFunction = function(){
+        console.log(this.responseText);
+        if( this.status != 200 ){
+            alert("Something Went Wrong!");
+        }
+        else{
+            let responseText = this.responseText.replace(/(\r\n|\n|\r)/gm, "");
+            if( responseText.includes("Success") ){
+                let response = JSON.parse(responseText);
+                students = response.students;
+            }
+            else{
+                alert(responseText);
+            }
+        }
+    }
+
+    // Making the AJAX Request //
+    makeAJAXRequest("POST", "../../Server/Utilities/InstituteSpecificUtilities.php", data, onLoadFunction, false);
+    return students;
+}
+
+
+
+// Funciton to be executed when a user selects the class //
+function onClassChange__SubmitFees(){
+
+    let classDropdown = document.getElementById("class_for_fees");
+    let studentDropdown = document.getElementById("student_for_fees");
+
+    // Creating the default option //
+    studentDropdown.innerHTML = "";
+    let option = document.createElement("option");
+    option.classList.add("options");
+    option.innerText = "Select Student";
+    option.defaultSelected = true;
+    studentDropdown.appendChild(option);
+    
+    // If selectedClass is a valid classs //
+    if( classDropdown.selectedIndex != 0 ){
+
+        let selectedClass = classDropdown.options[classDropdown.selectedIndex].value;
+        let students = getClassStudents(selectedClass);
+       
+        for(let key in students){
+
+            let option = document.createElement("option");
+            option.classList.add("options");
+            option.innerText = students[key].name;
+            option.id = students[key].userId;
+            studentDropdown.appendChild(option);
+        }
+    }
+}
+
+
+// Initializing the fee submit tab //
+function initializeSubmitFees(){
+
+    let classDropdown = document.getElementById("class_for_fees");
+    classDropdown.innerHTML = "";
+    
+    // Creating the default option //
+    let option = document.createElement("option");
+    option.classList.add("options");
+    option.innerText = "Select Class for Fees";
+    option.defaultSelected = true;
+    classDropdown.appendChild(option);
+    classDropdown.onchange = onClassChange__SubmitFees;
+
+    // Appending the class in the dropdown menu //
+    for(let key in instituteClasses){
+        let option = document.createElement("option");
+        option.classList.add("options");
+        option.innerText = instituteClasses[key].className;
+        classDropdown.appendChild(option);
+    }
+}
+
+
+
+// Function to make request for submit fee in the database //
+function submitFees(e){
+
+    e.preventDefault();
+    let classDropdown = document.getElementById("class_for_fees");
+    let studentDropdown = document.getElementById("student_for_fees");
+    let feeAmountToSubmit = document.getElementById("feeAmountToSubmit").value;
+
+    // If class is not selected //
+    if( classDropdown.selectedIndex == 0 ){
+        alert("Please Select a Class !!!");
+        return;
+    }
+    // If student is not selected //
+    if( studentDropdown.selectedIndex == 0 ){
+        alert("Please Select a Student !!!");
+        return;
+    }
+    // If feeSubmitAmount is not valid //
+    if( feeAmountToSubmit <= 0 ){
+        alert("Please Enter a Valid Fee Amount !!!");
+        return;
+    }
+
+    // Creating some request variables //
+    let selectedClass = classDropdown.options[classDropdown.selectedIndex].value;
+    let selectedStudent = studentDropdown.options[studentDropdown.selectedIndex].id; // (userId) //
     let data = {
         "task" : "Update Fees", 
         "loggedInUser" : document.getElementById("userId").textContent, 
@@ -1026,9 +1146,9 @@ function callMe(){
         "userId" : document.getElementById("userId").textContent, 
         "sessionId" : document.getElementById("sessionId").textContent,
         "authority" : document.getElementById("authority").textContent,
-        "studentId" : "aman",
-        "class" : "BCA Final Year",
-        "transactionAmount" : 5000,
+        "studentId" : selectedStudent,
+        "class" : selectedClass,
+        "transactionAmount" : feeAmountToSubmit,
         "transactionTimestamp" : Date.now(),
     };
 
@@ -1040,14 +1160,27 @@ function callMe(){
         else{
             let responseText = this.responseText.replace(/(\r\n|\n|\r)/gm, "");
             if( responseText.includes("Success") ){
-                // let response = JSON.parse(responseText);
+                let response = JSON.parse(responseText);
+                alert(response.message);
+                if( response.isFeeUpdated ){
+                    document.getElementById("feeUpdateForm").reset();
+                }
             }
             else{
                 alert(responseText);
             }
         }
     }
-
     // Making the AJAX Request //
     makeAJAXRequest("POST", "../../Server/Utilities/InstituteSpecificUtilities.php", data, onLoadFunction, false);
 }
+
+
+
+// Binding the button with its event listener // 
+document.getElementById("submitStudentFees").addEventListener('click', submitFees);
+
+
+
+
+

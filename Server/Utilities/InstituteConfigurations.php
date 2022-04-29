@@ -723,24 +723,48 @@
     }
 
 
+    // Function to find the net payable fees of a student //
+    function getNetPayableFees($databaseConnectionObject, $studentId, $studentClass){
+
+        // Getting the Submitted Fee //
+        $query = "SELECT feeSubmitted FROM StudentInfo WHERE userId = ? AND class = ?;";
+        $result = runQuery($databaseConnectionObject, $query, [$studentId, $studentClass], "ss");
+        $submittedFee = $result->fetch_assoc()['feeSubmitted'];
+        
+        // Getting the Class's total Fee //
+        $query = "SELECT fees FROM Classes WHERE className = ?;";
+        $result = runQuery($databaseConnectionObject, $query, [$studentClass], "s");
+        $classFee = $result->fetch_assoc()['fees'];
+
+        return ($classFee - $submittedFee);
+    }
+
+
     // Function to update the fees details of a student //
     function updateFees($databaseConnectionObject, $request){
 
         $databaseConnectionObject->select_db($request['instituteId']);
+        $netPayableFee = getNetPayableFees($databaseConnectionObject, $request['studentId'], $request['class']);
         
-        // Updating feesDetails table //
-        $query = "INSERT INTO feesDetails(studentId, class, transactionAmount, transactionTimestamp) VALUES(?,?,?,?);";
-        runQuery($databaseConnectionObject, $query, [$request['studentId'], $request['class'], $request['transactionAmount'], $request['transactionTimestamp']], "ssis", true);
-       
-        // Updating StudentInfo table //
-        $query = "UPDATE StudentInfo SET feeSubmitted = (feeSubmitted + ?) WHERE userId = ?;";
-        runQuery($databaseConnectionObject, $query, [$request['transactionAmount'], $request['studentId']], "is");
-
+        // If fee can be updated //
+        if( $netPayableFee >= $request['transactionAmount'] ){
+            // Updating feesDetails table //
+            $query = "INSERT INTO feesDetails(studentId, class, transactionAmount, transactionTimestamp) VALUES(?,?,?,?);";
+            runQuery($databaseConnectionObject, $query, [$request['studentId'], $request['class'], $request['transactionAmount'], $request['transactionTimestamp']], "ssis", true);
+           
+            // Updating StudentInfo table //
+            $query = "UPDATE StudentInfo SET feeSubmitted = (feeSubmitted + ?) WHERE userId = ?;";
+            runQuery($databaseConnectionObject, $query, [$request['transactionAmount'], $request['studentId']], "is");
+            return ['message' => "Fees Updated Successfully !!!", 'isFeeUpdated' => true];
+        }
+        else{
+            return ['message' => "Transaction Amount is greater than the net payable fee amount !!!", 'isFeeUpdated' => false];
+        }
     }
 
 
     // Function to get the fees details of a student //
-    function getFeesDetails($databaseConnectionObject, $request){
+    function getFeesHistory($databaseConnectionObject, $request){
 
         $databaseConnectionObject->select_db($request['instituteId']);
         
@@ -753,6 +777,23 @@
             $feesDetails[$row['id']] = $row;
         }
         return $feesDetails;
+    }
+
+
+    // Function to get the students of a class //
+    function getClassStudents($databaseConnectionObject, $request){
+
+        $databaseConnectionObject->select_db($request['instituteId']);
+        
+        $query = "SELECT userId, name FROM StudentInfo WHERE class = ?;";
+        $result = runQuery($databaseConnectionObject, $query, [$request['class']], "s");
+        
+        $students = array();
+
+        while($row = $result->fetch_assoc()){
+            $students[$row['userId']] = $row;
+        }
+        return $students;
     }
 
 ?>
