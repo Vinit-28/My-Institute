@@ -1,58 +1,72 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200&display=swap');
 
-*, *:before, *:after {
+*,
+*:before,
+*:after {
     box-sizing: border-box;
-    --fontFamily : Poppins, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-    --backgroundColor : #edf2f9;
-    --navigationBarColor : rgb(209, 225, 248);
-    --textColor : #5e6e82;
-    --textHoverColor : #cad0d6;
-    --activeTextColor : #2864c5;
-    --hoverDarkColor : rgb(35, 43, 53);
-    --buttonColor : rgba(44, 124, 229, 0.844);
-    --buttonHover : rgb(44, 123, 229);
-    --formBorder : #d8e2ef;
-    --littleHeadings : #344050;
-    --backgroundDark : #0b1727;
-    --boxShadow : 0 .5rem 1rem rgba(0,0,0,.15) ;
+    --fontFamily: Poppins, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    --backgroundColor: #edf2f9;
+    --navigationBarColor: rgb(209, 225, 248);
+    --textColor: #5e6e82;
+    --textHoverColor: #cad0d6;
+    --activeTextColor: #2864c5;
+    --hoverDarkColor: rgb(35, 43, 53);
+    --buttonColor: rgba(44, 124, 229, 0.844);
+    --buttonHover: rgb(44, 123, 229);
+    --formBorder: #d8e2ef;
+    --littleHeadings: #344050;
+    --backgroundDark: #0b1727;
+    --boxShadow: 0 .5rem 1rem rgba(0, 0, 0, .15);
 }
 
-#studentExam{
+#studentExam {
     overflow-x: hidden;
     overflow-y: scroll;
 }
-#studentExam::-webkit-scrollbar{
+
+#studentExam::-webkit-scrollbar {
     display: none;
 }
 
-#testDetails{
+#testDetails {
     padding: 0.4rem;
     display: grid;
-    grid-template-columns: repeat(auto-fill , minmax(250px , 250px));
+    grid-template-columns: repeat(auto-fill, minmax(250px, 250px));
     column-gap: 0;
     row-gap: 1rem;
     justify-content: space-evenly;
     margin-bottom: 2rem;
 }
-.testCard{
-    padding: 1rem 0.8rem 1rem 0.8rem;
+
+.testCard {
+    padding: 1.3rem 1rem;
     border-radius: 0.5rem;
     width: max-content;
-    background-color: #fff;
+    background-color: var(--backgroundColor);
     display: flex;
     flex-direction: column;
-    row-gap: 1vw;
-    box-shadow: 0 .5rem 1rem rgba(0,0,0,.55) ;
+    row-gap: 1rem;
+    transition: all 300ms ease;
     cursor: pointer;
+    width: 250px;
 }
-.subjectHeading{
-    background-color: rgba(39, 69, 107, 0.357);
+
+.testCard:hover {
+    box-shadow: 0 0.5rem 1rem rgb(0 0 0 / 35%);
+}
+
+
+.subjectHeading {
+    /* background-color: rgba(39, 69, 107, 0.157); */
+    background-color: #fff;
     border-radius: 0.3rem;
-    text-align: center;
     font-weight: bold;
+    font-size: 1.3rem;
+    padding: 0 0.4rem;
 }
-.testCard  button{
-    padding: 0.3rem 0.6rem ;
+
+.testCard button {
+    padding: 0.3rem 0.6rem;
     border-radius: 0.25rem;
     border: none;
     cursor: pointer;
@@ -63,14 +77,26 @@
     transition: all 300ms ease;
 
 }
-.testCard button:hover{
+
+.testCard button:hover {
     background-color: var(--buttonHover);
 }
 
 
-@media screen and (max-width : 700px) and (min-width:550px) 
-{
-    #testDetails{
+
+
+.testTag {
+    font-size: 0.8rem;
+}
+
+.testTagValue {
+    font-size: 1rem;
+    font-weight: bold;
+}
+
+
+@media screen and (max-width : 700px) and (min-width:550px) {
+    #testDetails {
         padding: 0.4rem;
         display: grid;
         column-gap: 0rem;
@@ -78,23 +104,26 @@
         justify-content: space-around;
         margin-bottom: 2rem;
     }
-    .testCard{
+
+    .testCard {
         margin: auto;
     }
 }
+
 @media screen and (max-width : 550px) and (min-width:50px) {
-    #testDetails{
-        border: 2px solid red;
+    #testDetails {
         padding: 0.4rem;
         display: grid;
-        grid-template-columns: 250px ;
+        grid-template-columns: 250px;
         column-gap: 0;
         row-gap: 1rem;
         justify-content: flex-start;
         margin-bottom: 2rem;
     }
-    .testCard{
+
+    .testCard {
         margin: 0;
+        width: 210px;
     }
-    
+
 }

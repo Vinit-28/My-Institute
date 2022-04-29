@@ -152,6 +152,10 @@ if( isUserAuthenticated("root") == false ){
                 <i class='mynavigationItemIcon bx bx-check-square'></i>
                 <span class="mynavigationItemName">Set Attendance</span>
             </div>
+            <div class="mynavigationItem" value="#submitFees">
+                <i class='mynavigationItemIcon bx bx-rupee'></i>
+                <span class="mynavigationItemName">Submit Fees</span>
+            </div>
         </div>
 
 
@@ -564,6 +568,43 @@ if( isUserAuthenticated("root") == false ){
 
         </div>
         <!-- add class Section Div end -->
+        
+        
+        
+        
+        
+        <!-- Submit Fees Div -->
+        <div id="submitFees" style="display: none;" class="formsDiv">
+            <div class="boxHeadingDiv">
+                <h3 class="boxHeading">Submit Fees</h3>
+            </div>
+
+            <form action="" method="post" class="forms">
+
+                <select id="class_for_fees" name="class_for_fees">
+                    <option class="options" value="class_for_fees" selected>Select Class for Fees</option>
+                    <option class="options" value="">10th</option>
+                    <option class="options" value="">11th</option>
+                    <option class="options" value="">12th</option>
+                </select>
+                
+                <select id="student_for_fees" name="student_for_fees">
+                    <option class="options" value="student_for_fees" selected>Student For Fees</option>
+                    <option class="options" value="">Aman</option>
+                    <option class="options" value="">Vinit</option>
+                    <option class="options" value="">Yash</option>
+                </select>
+
+                <input required autocomplete="off"          name="Submit Fees"    type="number" placeholder="Submit Fees">
+                <input required autocomplete="off" disabled name="Remaining Fees" type="number" placeholder="Remaining Fees">
+                <input required autocomplete="off" disabled name="Total Fees"     type="number" placeholder="Total Fees">
+                
+                <button class="saveUpdatedClassInfo" type="submit" id="submitStudentFees" >Submit Fees</button>
+
+            </form>
+        </div>
+
+        <!-- Submit Fees Div end -->
 
 
     </div>
