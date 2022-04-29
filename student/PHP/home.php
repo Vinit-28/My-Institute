@@ -597,17 +597,37 @@ if( isUserAuthenticated("student") == false ){
         <link rel="stylesheet" href="../CSS/studentExam.css">
         <div id="studentExam" class="formsDiv" style="display: none;">
             <div class="boxHeadingDiv">
-                <h3 class="boxHeading">Student Exam</h3>
+                <h3 class="boxHeading">Student Test</h3>
             </div>
             <div id="testDetails">
                 
+
+                
+                
+                <!-- Student test card  -->
                 <div class="testCard">
                     <div class="subjectHeading">C++</div>
-                    <div class="testHostedBy">Test by: &nbsp;Tarun Sharma</div>
-                    <div class="timeBetween">Test Time: 12:00 - 01:00</div>
-                    <div class="dateOn">Test Date : 12/12/12</div>
-                    <button value="testid" onclick="executeText()" class="startTestButton">Starta test</button>
+                    
+                    <div>
+                        <div class="testTag">Test by:</div>
+                        <div class="testTagValue">Tarun Sir</div>
+                    </div>
+                    
+                    <div>
+                        <div class="testTag">Test time</div>
+                        <div class="testTagValue">12:00 - 01:00</div>
+                    </div>
+
+                    <div>
+                        <div class="testTag">Test date:</div>
+                        <div class="testTagValue">12/12/12</div>
+                    </div>
+                    
+                    <button value="testid" onclick="executeText()" class="startTestButton">Start test</button>
                 </div>
+                <!-- Student test card end -->
+
+
                 
                 <div id="testScript" style="display: none;"></div>
             </div>
@@ -794,6 +814,16 @@ if( isUserAuthenticated("student") == false ){
                 checkboxes.push(value);
             else
                 checkboxes.pop(value);
+        else if(checkboxes.length == 4)
+        {
+            if (checkboxes.includes(value) == false)
+            {
+                alert("Not more values are allowed");
+                $($("input[type=checkbox]").children()['prevObject'][value - 1]).prop("checked", false);
+            }
+            else
+                checkboxes.pop(value);
+        }
         else {
             alert("Not more values are allowed");
             $($("input[type=checkbox]").children()['prevObject'][value - 1]).prop("checked", false);
