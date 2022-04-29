@@ -682,27 +682,27 @@ if( isUserAuthenticated("student") == false ){
             <div class="boxHeadingDiv">
                 <h3 class="boxHeading">Fees Details</h3>
             </div>
-            <div class="feesDetailsContainer">
+            <div class="feesDetailsContainer" id="studentFeesDetailsContainer">
 
                 <!-- This is a necessary Card to show -->
-                <div class="feesDetailCard">
+                <!-- <div class="feesDetailCard">
                     <div class="feesHeads">Date of Transaction</div>
                     <div class="feesHeads">Amount</div>
                     <div class="feesHeads currentFees">Current</div>
                     <div class="feesHeads remainingFees">Remaining</div>
                     <div class="feesHeads totalFees">Total</div>
-                </div>
+                </div> -->
                 <!-- This is a necessary Card to show -->
 
 
                 <!-- This is a card of Positive Fees -->
-                <div class="feesDetailCard">
+                <!-- <div class="feesDetailCard">
                     <div class="feesDate">30 - January 2020</div>
                     <div class="fees positive">+ ₹5000</div>
                     <div class="currentFees">5000</div>
                     <div class="remainingFees">45000</div>
                     <div class="totalFees">50000</div>
-                </div>        
+                </div>         -->
                 <!-- This is a card of Positive Fees -->
 
 
@@ -964,6 +964,9 @@ if( isUserAuthenticated("student") == false ){
         }
         else if ($(person).attr("value") == "#uploadAssignment") {
             showAssignmentsTab();
+        }
+        else if ($(person).attr("value") == "#feesdetails") {
+            displayFeesDetails();
         }
         lastActiveItem = $(person);
     }

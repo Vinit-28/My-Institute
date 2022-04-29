@@ -161,7 +161,9 @@
             studentId VARCHAR(100),
             class VARCHAR(200),
             transactionAmount INT,
-            transactionTimestamp VARCHAR(100)
+            transactionTimestamp VARCHAR(100),
+            current INT,
+            remaining INT
             );";
         runQuery($instituteDatabase, $query, [], "");
 

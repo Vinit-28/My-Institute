@@ -1,6 +1,22 @@
 
 
 
+let monthNames = {
+    1:"January",
+    2:"February",
+    3:"March",
+    4:"April",
+    5:"May",
+    6:"June",
+    7:"July",
+    8:"August",
+    9:"September",
+    10:"October",
+    11:"November",
+    12:"December",
+};
+
+
 // Function to get the Uploaded assignments from the Institute's Database //
 function getUploadedAssignments(asyncRequest=true){
 
@@ -237,5 +253,121 @@ function showAssignmentsTab(){
         assignmentContainer.style.justifyContent = 'center';
         assignmentContainer.innerHTML = mynullmessage;
         // alert("No Uploaded Assignments !!!");
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+// -------------------------- Fees Details Tab -------------------------- //
+
+
+
+// Function to make request for getting the fee details of a student //
+function getFeesDetails(){
+
+    // Creating the Data Variables //
+    let data = {
+        "task" : "Get Fees History", 
+        "loggedInUser" : document.getElementById("userId").textContent, 
+        "instituteId" : document.getElementById("instituteId").textContent, 
+        "authority" : document.getElementById("authority").textContent,
+        "sessionId" : document.getElementById("sessionId").textContent,
+        "studentId" : document.getElementById("userId").textContent, 
+    };
+    let feesDetails = {};
+    
+    let onLoadFunction = function(){
+        if( this.status != 200 ){
+            alert("Something Went Wrong!");
+        }
+        else{
+            let responseText = this.responseText.replace(/(\r\n|\n|\r)/gm, "");
+            if( responseText.includes("Success") ){
+                let response = JSON.parse(responseText);
+                feesDetails = response.feesDetails;
+            }
+            else{
+                uploadedAssignments = {};
+            }
+        }
+    }
+    
+    // Making the Request to the Server //
+    makeAJAXRequest("POST", "../../Server/Utilities/InstituteSpecificUtilities.php", data, onLoadFunction, false);
+    return feesDetails;
+}
+
+
+
+// Fucntion to make a card for displaying fee details //
+function getFeesDetailCard(feesDetails){
+
+    // Making Tags //
+    let feesDetailCard = document.createElement("div");
+    let feesDate = document.createElement("div");
+    let currentFees = document.createElement("div");
+    let remainingFees = document.createElement("div");
+    let totalFees = document.createElement("div");
+    let transactionAmount = document.createElement("div");
+    let dateTimeObject = new Date(parseInt(feesDetails.transactionTimestamp));
+
+    // Adding Classes //
+    feesDetailCard.classList.add("feesDetailCard");
+    feesDate.classList.add("feesDate");
+    currentFees.classList.add("currentFees");
+    remainingFees.classList.add("remainingFees");
+    totalFees.classList.add("totalFees");
+    transactionAmount.classList.add("fees");
+
+    // If transactionAmount was negative //
+    if( feesDetails.transactionAmount < 0 ){
+        transactionAmount.classList.add("negative");
+        transactionAmount.innerText = "- ₹" + Math.abs(feesDetails.transactionAmount);
+    }
+    // If transactionAmount was positive //
+    else{
+        transactionAmount.classList.add("positive");
+        transactionAmount.innerText = "+ ₹" + feesDetails.transactionAmount;
+    } 
+
+    // Assigning Attributes //
+    feesDate.innerText = (dateTimeObject.getDate() + " - " + monthNames[(dateTimeObject.getMonth()+1)] + " " + dateTimeObject.getFullYear());
+    currentFees.innerText = (feesDetails.current);
+    remainingFees.innerText = (feesDetails.remaining);
+    totalFees.innerText = (feesDetails.totalFee);
+
+    // Wrapping up the tags //
+    feesDetailCard.appendChild(feesDate);
+    feesDetailCard.appendChild(transactionAmount);
+    feesDetailCard.appendChild(currentFees);
+    feesDetailCard.appendChild(remainingFees);
+    feesDetailCard.appendChild(totalFees);
+    return feesDetailCard;
+}
+
+
+
+// Fucntion to display fees details(fees history) //
+function displayFeesDetails(){
+
+    // Getting fees details //
+    let feesDetails = getFeesDetails();
+    let studentFeesDetailsContainer = document.getElementById("studentFeesDetailsContainer");
+
+    // Initializing the table //
+    studentFeesDetailsContainer.innerHTML = `<div class="feesDetailCard"><div class="feesHeads">Date of Transaction</div><div class="feesHeads">Amount</div><div class="feesHeads currentFees">Current</div><div class="feesHeads remainingFees">Remaining</div><div class="feesHeads totalFees">Total</div></div>`;
+
+    // Iterating through every transaction //
+    for(let key in feesDetails){
+        studentFeesDetailsContainer.appendChild( getFeesDetailCard(feesDetails[key]) );
     }
 }

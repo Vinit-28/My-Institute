@@ -736,7 +736,7 @@
         $result = runQuery($databaseConnectionObject, $query, [$studentClass], "s");
         $classFee = $result->fetch_assoc()['fees'];
 
-        return ($classFee - $submittedFee);
+        return ["netPayableFee"=>($classFee - $submittedFee), "classFee"=>$classFee, "submittedFee"=>$submittedFee];
     }
 
 
@@ -744,13 +744,15 @@
     function updateFees($databaseConnectionObject, $request){
 
         $databaseConnectionObject->select_db($request['instituteId']);
-        $netPayableFee = getNetPayableFees($databaseConnectionObject, $request['studentId'], $request['class']);
+        // $netPayableFee = getNetPayableFees($databaseConnectionObject, $request['studentId'], $request['class']);
+        $feesDetails = getNetPayableFees($databaseConnectionObject, $request['studentId'], $request['class']);
         
         // If fee can be updated //
-        if( $netPayableFee >= $request['transactionAmount'] ){
+        if( $feesDetails['netPayableFee'] >= $request['transactionAmount'] ){
+
             // Updating feesDetails table //
-            $query = "INSERT INTO feesDetails(studentId, class, transactionAmount, transactionTimestamp) VALUES(?,?,?,?);";
-            runQuery($databaseConnectionObject, $query, [$request['studentId'], $request['class'], $request['transactionAmount'], $request['transactionTimestamp']], "ssis", true);
+            $query = "INSERT INTO feesDetails(studentId, class, transactionAmount, transactionTimestamp, current, remaining) VALUES(?,?,?,?,?,?);";
+            runQuery($databaseConnectionObject, $query, [$request['studentId'], $request['class'], $request['transactionAmount'], $request['transactionTimestamp'], ($request['transactionAmount'] + $feesDetails['submittedFee']), ($feesDetails['netPayableFee'] - $request['transactionAmount'])], "ssisii", true);
            
             // Updating StudentInfo table //
             $query = "UPDATE StudentInfo SET feeSubmitted = (feeSubmitted + ?) WHERE userId = ?;";
@@ -768,13 +770,24 @@
 
         $databaseConnectionObject->select_db($request['instituteId']);
         
+        // Getting student class //
+        $query = "SELECT class FROM StudentInfo WHERE userId = ?;";
+        $result = runQuery($databaseConnectionObject, $query, [$request['studentId']], "s");
+        $studentClass = $result->fetch_assoc()['class'];
+        
+        // Getting class Fees //
+        $query = "SELECT fees FROM Classes WHERE className = ?;";
+        $result = runQuery($databaseConnectionObject, $query, [$studentClass], "s");
+        $classFee = $result->fetch_assoc()['fees'];
+        
+        // Getting fees history //
         $query = "SELECT * FROM feesDetails WHERE studentId = ? AND class = ?;";
-        $result = runQuery($databaseConnectionObject, $query, [$request['studentId'], $request['class']], "ss");
+        $result = runQuery($databaseConnectionObject, $query, [$request['studentId'], $studentClass], "ss");
         
         $feesDetails = array();
 
         while($row = $result->fetch_assoc()){
-            $feesDetails[$row['id']] = $row;
+            $feesDetails[$row['id']] = ($row + ["totalFee"=>$classFee]);
         }
         return $feesDetails;
     }
