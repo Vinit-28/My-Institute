@@ -472,13 +472,33 @@
                 echo json_encode($response);
             }
 
-
             // If request is to submit the test //
             else if($request['task'] == "Submit Test" && $authority == "student" ){
 
                 $response = array(
                     "result" => "Success",
                     "message" => "Test Submitted Successfully !!!"
+                );
+                echo json_encode($response);
+            }
+
+            // If request is to update the fees details //
+            else if($request['task'] == "Update Fees" && $authority == "root" ){
+                
+                updateFees($databaseConnectionObject, $request);
+                $response = array(
+                    "result" => "Success",
+                    "message" => "Fees Updated Successfully !!!"
+                );
+                echo json_encode($response);
+            }
+
+            // If request is to get the fees details //
+            else if($request['task'] == "Get Fees Details" && $authority == "student" ){
+                
+                $response = array(
+                    "result" => "Success",
+                    "feesDetails" => getFeesDetails($databaseConnectionObject, $request)
                 );
                 echo json_encode($response);
             }

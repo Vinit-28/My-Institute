@@ -155,6 +155,17 @@
         runQuery($instituteDatabase, $query, [], "");
 
 
+        // Making a feesDetails Table which will store all the information about fees details of students // 
+        $query = "CREATE TABLE feesDetails(
+            id BIGINT(8) AUTO_INCREMENT PRIMARY kEY, 
+            studentId VARCHAR(100),
+            class VARCHAR(200),
+            transactionAmount INT,
+            transactionTimestamp VARCHAR(100)
+            );";
+        runQuery($instituteDatabase, $query, [], "");
+
+
         // Making the Institute Folder in the Server //
         $path = getcwd();
         $path = str_replace("Server", "InstituteFolders/" . $instituteId, $path);

@@ -723,4 +723,36 @@
     }
 
 
+    // Function to update the fees details of a student //
+    function updateFees($databaseConnectionObject, $request){
+
+        $databaseConnectionObject->select_db($request['instituteId']);
+        
+        // Updating feesDetails table //
+        $query = "INSERT INTO feesDetails(studentId, class, transactionAmount, transactionTimestamp) VALUES(?,?,?,?);";
+        runQuery($databaseConnectionObject, $query, [$request['studentId'], $request['class'], $request['transactionAmount'], $request['transactionTimestamp']], "ssis", true);
+       
+        // Updating StudentInfo table //
+        $query = "UPDATE StudentInfo SET feeSubmitted = (feeSubmitted + ?) WHERE userId = ?;";
+        runQuery($databaseConnectionObject, $query, [$request['transactionAmount'], $request['studentId']], "is");
+
+    }
+
+
+    // Function to get the fees details of a student //
+    function getFeesDetails($databaseConnectionObject, $request){
+
+        $databaseConnectionObject->select_db($request['instituteId']);
+        
+        $query = "SELECT * FROM feesDetails WHERE studentId = ? AND class = ?;";
+        $result = runQuery($databaseConnectionObject, $query, [$request['studentId'], $request['class']], "ss");
+        
+        $feesDetails = array();
+
+        while($row = $result->fetch_assoc()){
+            $feesDetails[$row['id']] = $row;
+        }
+        return $feesDetails;
+    }
+
 ?>

@@ -1007,3 +1007,47 @@ document.getElementById("markAttendance").addEventListener("click", (e)=>{
     // Calling the setAttendance Function which will make request to the server to make attendance in the Database //
     setAttendance(selectedClass, selectedDate);
 });
+
+
+
+
+
+
+
+
+function callMe(){
+
+    // Creating some Data Variables //
+    let dateObject = new Date(selectedDate);
+    let data = {
+        "task" : "Update Fees", 
+        "loggedInUser" : document.getElementById("userId").textContent, 
+        "instituteId" : document.getElementById("instituteId").textContent, 
+        "userId" : document.getElementById("userId").textContent, 
+        "sessionId" : document.getElementById("sessionId").textContent,
+        "authority" : document.getElementById("authority").textContent,
+        "studentId" : "aman",
+        "class" : "BCA Final Year",
+        "transactionAmount" : 5000,
+        "transactionTimestamp" : Date.now(),
+    };
+
+    let onLoadFunction = function(){
+        console.log(this.responseText);
+        if( this.status != 200 ){
+            alert("Something Went Wrong!");
+        }
+        else{
+            let responseText = this.responseText.replace(/(\r\n|\n|\r)/gm, "");
+            if( responseText.includes("Success") ){
+                // let response = JSON.parse(responseText);
+            }
+            else{
+                alert(responseText);
+            }
+        }
+    }
+
+    // Making the AJAX Request //
+    makeAJAXRequest("POST", "../../Server/Utilities/InstituteSpecificUtilities.php", data, onLoadFunction, false);
+}
