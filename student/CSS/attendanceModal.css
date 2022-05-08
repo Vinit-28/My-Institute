@@ -71,11 +71,19 @@
 }
 
 .attendanceItem{
-    display: flex;
-    justify-content: space-evenly;
-    /* border: 2px solid red; */
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(4 , 1fr);
     flex-wrap: wrap;
-    margin: 10px auto;
+    margin: 0.1rem auto;
+}
+.attendanceItem *{
+    text-align: center;
+    width: 100%;
+}
+
+.attendanceHead{
+    font-weight: bold;
 }
 
 
@@ -101,4 +109,25 @@
         white-space: nowrap;
     }
     
+}
+
+@media screen and (max-width: 425px) 
+{
+    .attendanceItem{
+        grid-template-columns: repeat(3 , 1fr);
+    }
+    .attendanceClass{
+        display: none !important;
+    }
+}
+
+@media screen and (max-width: 330px) 
+{
+    .attendanceItem{
+        grid-template-columns: repeat(2 , 1fr);
+    }
+    
+    .attendanceBy{
+        display: none !important;
+    }
 }
