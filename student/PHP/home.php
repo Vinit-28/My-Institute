@@ -82,10 +82,31 @@ if( isUserAuthenticated("student") == false ){
             <div class="boxHeading attendanceBlockHead">Attendance of January 2020</div>
             <div class="tableView">
 
+
+            
+                <!-- This is for headings -->
+                <!-- It should be there every time -->
+                <div class="attendanceItem formsDiv ">
+                    <div class="attendanceHead">DATE</div>
+                    <div class="attendanceHead">STATUS</div>
+                    <div class="attendanceHead attendanceClass">CLASS</div>
+                    <div class="attendanceHead attendanceBy">TEACHER</div>
+                </div>
+                <!-- It should be there every time -->
+
+
+
+                <!-- implement this item in every iteration !! -->
                 <div class="attendanceItem formsDiv ">
                     <div class="attendanceDate">01-01-2020</div>
                     <div class="attendanceStatus">Present</div>
+                    <div class="attendanceClass">12th Class</div>
+                    <div class="attendanceBy">Tarun Sir</div>
                 </div>
+                <!-- implement this item in every iteration !! -->
+
+
+
 
             </div>
 
