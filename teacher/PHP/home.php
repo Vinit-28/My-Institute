@@ -152,14 +152,14 @@ if( isUserAuthenticated("teacher") == false ){
                 <i class='mynavigationItemIcon bx bx-check-square'></i>
                 <span class="mynavigationItemName">Set Attendance</span>
             </div>
-            <div class="mynavigationItem" value="#updateClass">
+            <!-- <div class="mynavigationItem" value="#updateClass">
                 <i class='mynavigationItemIcon bx bx-check-update'></i>
                 <span class="mynavigationItemName">Update Class</span>
-            </div>
-            <!-- <div class="mynavigationItem" value="#uploadMarks">
+            </div> -->
+            <div class="mynavigationItem" value="#uploadMarks">
                 <i class='mynavigationItemIcon bx bx-medal'></i>
                 <span class="mynavigationItemName">Upload Marks</span>
-            </div> -->
+            </div>
         </div>
 
 
@@ -765,17 +765,17 @@ if( isUserAuthenticated("teacher") == false ){
             <div class="marksDetailsContainer">
 
                 <form action="" class="forms">
-                    <input required autocomplete="OFF" type="text" placeholder="Subject Name" name="subjectName">
-                    <input required autocomplete="OFF" type="date" name="classDate" style="width: 100%;">
-                    <input required autocomplete="OFF" type="number" name="totalMarks">
+                    <input required autocomplete="OFF" type="text"   placeholder="Subject Name" name="subjectName">
+                    <input required autocomplete="OFF" type="date"    name="classDate" style="width: 100%;">
+                    <input required autocomplete="OFF" type="number" placeholder="Total Marks" name="totalMarks">
                     <select name="classForClass">
+                        <option value="">Select Class</option>
                         <option value="">BCA 1st Yr.</option>
                         <option value="">BCA 2nd Yr.</option>
                         <option value="">BCA 3rd Yr.</option>
                     </select>
                     <button  type="button">See file pattern</button>
-                    <button onclick="{document.getElementById('testFile').click(); event.preventDefault();}">Upload .xls
-                        file</button>
+                    <button onclick="{document.getElementById('testFile').click(); event.preventDefault();}">Upload .xlsfile</button>
                     <input style="display: none;" id="testFile" accept=".xls" required autocomplete="OFF" type="file"
                         placeholder="Joining Link" name="classLink">
                     <button type="submit">Upload</button>
@@ -859,7 +859,7 @@ if( isUserAuthenticated("teacher") == false ){
 
     let lastActiveItem = $("#item1");
     $("#item1").addClass("activeItem");
-    // fillUpPersonalDetails();
+    fillUpPersonalDetails();
 
     function manipulate(person) {
 
