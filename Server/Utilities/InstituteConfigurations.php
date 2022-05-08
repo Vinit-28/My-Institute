@@ -437,7 +437,7 @@
         $personAttendance = array();
 
         // Getting all the Records //
-        $query = "SELECT * FROM $tableName WHERE attendanceDate BETWEEN ? AND ? AND userId = ? AND  status <> ?;";
+        $query = "SELECT * FROM $tableName WHERE attendanceDate BETWEEN ? AND ? AND userId = ? AND  status <> ? ORDER BY attendanceDate;";
         $result = runQuery($databaseConnectionObject, $query, [$startingDate, $endingDate, $userId, "Not-Set"], "ssss");
         $personAttendance += ['attendanceRecords'=>$result->fetch_all(MYSQLI_ASSOC)];
         

@@ -79,11 +79,9 @@ if( isUserAuthenticated("student") == false ){
 
         <div  class="formsDiv" id="mainAttendanceContainer">
 
-            <div class="boxHeading attendanceBlockHead">Attendance of January 2020</div>
-            <div class="tableView">
+            <div class="boxHeading attendanceBlockHead">Student Attendance</div>
+            <div class="tableView" id="displayAttendanceContainer">
 
-
-            
                 <!-- This is for headings -->
                 <!-- It should be there every time -->
                 <div class="attendanceItem formsDiv ">
@@ -104,9 +102,6 @@ if( isUserAuthenticated("student") == false ){
                     <div class="attendanceBy">Tarun Sir</div>
                 </div>
                 <!-- implement this item in every iteration !! -->
-
-
-
 
             </div>
 

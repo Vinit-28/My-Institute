@@ -86,6 +86,17 @@
     font-weight: bold;
 }
 
+.positiveAttendance{
+    color: green;
+    font-weight: bolder;
+    text-shadow: 0px 5px 10px rgba(0, 128, 0, 0.408);
+}
+
+.negativeAttendance{
+    color: red;
+    font-weight: bolder;
+    text-shadow: 0px 5px 10px rgba(255, 0, 0, 0.408);
+}
 
 
 @media screen and (max-width:700px) {

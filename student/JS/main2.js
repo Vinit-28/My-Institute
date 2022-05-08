@@ -381,16 +381,36 @@ function displayFeesDetails(){
 
 
 
+// Function to make the request to the server to find the attendance between two dates //
 function getStudentAttendance(){
 
-    let studentAttendance = {};
+    let attendance = {};
     let fromDate = document.getElementById("fromDateAttendance").value;
     let toDate = document.getElementById("toDateAttendance").value;
 
+    // If from date is not picked by the user //
+    if( fromDate == "" ){
+        alert("Please Select the From Date");
+        return null;
+    }
+    // If to date is not picked by the user //
+    if( toDate == "" ){
+        alert("Please Select the To Date");
+        return null;
+    }
+    
     fromDate = new Date(fromDate);
     toDate = new Date(toDate);
-    console.log("From Date => ", fromDate);
-    console.log("To Date => ", toDate);
+
+    // If from date is greater than the to date //
+    if( fromDate.getTime() > toDate.getTime() ){
+        alert("Invalid Combination of Dates");
+        return null;
+    }
+
+    attendance['fromDate'] = fromDate;
+    attendance['toDate'] = toDate;
+
 
     let data = {
         "task" : "Get Particular Person Attendance", 
@@ -416,8 +436,7 @@ function getStudentAttendance(){
             let responseText = this.responseText.replace(/(\r\n|\n|\r)/gm, "");
             if( responseText.includes("Success") ){
                 let response = JSON.parse(responseText);
-                studentAttendance = response.personAttendance;
-                console.log(studentAttendance);
+                attendance = response.personAttendance;
             }
             else{
                 alert(responseText);
@@ -427,19 +446,38 @@ function getStudentAttendance(){
 
     // Making the AJAX Request //
     makeAJAXRequest("POST", "../../Server/Utilities/InstituteSpecificUtilities.php", data, onLoadFunction, false);
-    return studentAttendance;
+    return attendance;
 }
 
 
 
 
+// Function to sshow attendance //
 function showStudentAttendance(e){
 
     e.preventDefault();
-    getStudentAttendance();
+
+    // Getting student attendance //
+    attendanceDetails = getStudentAttendance();
+
+    // If dates picked by the user are correct //
+    if( attendanceDetails != null ){
+        // Seeting up the Attendance Details //
+        document.getElementById("totalPresents").innerText = "Presents =" + " " + attendanceDetails.presents;
+        document.getElementById("totalLeaves").innerText = "Leaves =" + " " + attendanceDetails.absents;
+        document.getElementById("totalDays").innerText = "Total =" + " " + attendanceDetails.totalDays;
+    
+        // Calculating the attendance percentage //
+        let attendancePercentage = (attendanceDetails.totalDays == 0)? 0 : ((attendanceDetails.presents/attendanceDetails.totalDays) * 100);
+        console.log("Attendance % => ", attendancePercentage);
+        // Updating Attendance percentage in the spinner //
+        updatePercentages('attendanceProgress', attendancePercentage.toString().substring(0, 5));
+        // Showing attendance records in the modal //
+        showAttendanceInTheModal(attendanceDetails, attendanceDetails['fromDate'], attendanceDetails['toDate']);
+    }
+
 }
 
 
-
-
+// Binding the buttong to its respective handler //
 document.getElementById("showStudentAttedance").addEventListener("click", showStudentAttendance);

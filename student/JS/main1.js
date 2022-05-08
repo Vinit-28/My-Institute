@@ -6,6 +6,14 @@ let studentAttendance = {};
 
 
 
+// Function to convert month/date to two places //
+function convertToTwoPlaces(value){
+    string = value.toString();
+    return ( string.length == 1 )? ("0" + string) : string;
+}
+
+
+
 // ---------------------------------- Update Personal Details ---------------------------------- //
 
 
@@ -70,6 +78,9 @@ function getStudentDetails(){
 
     // Making the AJAX Request //
     makeAJAXRequest("POST", "../../Server/Utilities/InstituteSpecificUtilities.php", data, onLoadFunction, false);
+    studentData['attendanceFromDate'] = (dates[0].getFullYear() + "-" + convertToTwoPlaces(dates[0].getMonth()+1) + "-" + convertToTwoPlaces(dates[0].getDate()));
+    studentData['attendanceToDate'] = (dates[1].getFullYear() + "-" + convertToTwoPlaces(dates[1].getMonth()+1) + "-" + convertToTwoPlaces(dates[1].getDate()));
+    
     return studentData;
 }
 
@@ -503,9 +514,73 @@ function initializeStudentDetails(){
 
     let feePercentage = (studentData.totalFee == 0)? 0 : (studentData.feeSubmitted/studentData.totalFee) * 100;
     let attendancePercentage = (studentAttendance.totalDays == 0)? 0 : ((studentAttendance.presents/studentAttendance.totalDays) * 100);
-    updatePercentages('feesProgress', feePercentage.toFixed(1));
-    updatePercentages('attendanceProgress', attendancePercentage.toFixed(1));
+    console.log("Fess % => ", feePercentage);
+    console.log("Attendance % => ", attendancePercentage);
+    updatePercentages('feesProgress', feePercentage.toString().substring(0, 5));
+    updatePercentages('attendanceProgress', attendancePercentage.toString().substring(0, 5));
+    showAttendanceInTheModal(studentAttendance, studentData['attendanceFromDate'], studentData['attendanceToDate']);
 }
+
+
+// Function to get Attendance card //
+function getAttendanceCard(attendanceDetails){
+
+    // Creating Tags //
+    let attendanceItem = document.createElement("div");
+    let attendanceDate = document.createElement("div");
+    let attendanceStatus = document.createElement("div");
+    let attendanceClass = document.createElement("div");
+    let attendanceBy = document.createElement("div");
+
+    // Adding Classes //
+    attendanceItem.classList.add("attendanceItem");
+    attendanceItem.classList.add("formsDiv");
+    attendanceDate.classList.add("attendanceDate");
+
+    if( attendanceDetails.status.toLowerCase() == "present" )
+        attendanceStatus.classList.add("positiveAttendance");
+    else
+        attendanceStatus.classList.add("negativeAttendance");
+
+    attendanceClass.classList.add("attendanceClass");
+    attendanceBy.classList.add("attendanceBy");
+
+    // Assing values to their attributes //
+    attendanceDate.innerText = attendanceDetails.attendanceDate;
+    attendanceStatus.innerText = attendanceDetails.status;
+    attendanceClass.innerText = attendanceDetails.class;
+    attendanceBy.innerText = attendanceDetails.updatedBy;
+
+    // Wrapping up the tags //
+    attendanceItem.appendChild(attendanceDate);
+    attendanceItem.appendChild(attendanceStatus);
+    attendanceItem.appendChild(attendanceClass);
+    attendanceItem.appendChild(attendanceBy);
+
+    return attendanceItem;
+}
+
+
+
+// Function to show attendance in the modal //
+function showAttendanceInTheModal(attendance, fromDate, toDate){
+
+    let displayAttendanceContainer = document.getElementById("displayAttendanceContainer");
+    let heading = `<div class="attendanceItem formsDiv"><div class="attendanceHead">DATE</div><div class="attendanceHead">STATUS</div><div class="attendanceHead attendanceClass">CLASS</div><div class="attendanceHead attendanceBy">TEACHER</div></div>`
+    displayAttendanceContainer.innerHTML = heading;
+
+    // Iterating through every attendance record //
+    for(let key in attendance.attendanceRecords){
+        // Appending the attendance record //
+        displayAttendanceContainer.appendChild( getAttendanceCard(attendance.attendanceRecords[key]) );
+    }
+
+    // Settin from to to date values //
+    document.getElementById("fromDateAttendance").value = fromDate;
+    document.getElementById("toDateAttendance").value = toDate;
+}
+
+
 
 
 // Calling the initializeStudentDetails to get the Student Data or Getting the Student Data from the Database //
