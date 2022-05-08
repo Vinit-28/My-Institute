@@ -63,10 +63,16 @@
 .feesDetailCard{
     cursor: pointer;
     background-color: #fff;
-    display: flex;
-    justify-content: space-between;
+    /* display: flex;
+    justify-content: space-between; */
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
     padding: 0.4rem;
     box-shadow: var(--boxShadow);
+}
+
+.feesDetailCard *{
+    width: 100%;
 }
 
 .feesHeads{
@@ -119,17 +125,35 @@
     }
 }
 
-@media screen and (max-width : 900px) and (min-width : 701px) 
+@media screen and (max-width : 900px) and (min-width : 786px) 
 {
     #feesdetails {
-        width: 30rem;
+        width: 35rem;
     }
     .totalFees{
         display: none;
     }
+    
+    .feesDetailCard{
+        grid-template-columns: 2fr 1fr 1fr 1fr;
+    }
 }
 
 
+@media screen and (max-width : 785px) and (min-width : 701px) 
+{
+    #feesdetails {
+        width: 30rem;
+    }
+    .currentFees , .totalFees{
+        display: none;
+    }
+    
+    .feesDetailCard{
+        grid-template-columns: 2fr 1fr 1fr;
+    }
+
+}
 
 @media screen and (max-width : 700px) and (min-width : 50px) 
 {
@@ -148,16 +172,22 @@
     
     
 }
-@media screen and (max-width : 550px)
+@media screen and (max-width : 600px)
 {
     .totalFees , .currentFees{
         display: none;
+    }
+    .feesDetailCard{
+        grid-template-columns: 2fr 1fr 1fr;
     }
 } 
 @media screen and (max-width : 450px)
 {
     .remainingFees{
         display: none;
+    }
+    .feesDetailCard{
+        grid-template-columns: 2fr 1fr;
     }
 }
 @media screen and (max-width : 320px)
