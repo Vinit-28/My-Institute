@@ -371,3 +371,75 @@ function displayFeesDetails(){
         studentFeesDetailsContainer.appendChild( getFeesDetailCard(feesDetails[key]) );
     }
 }
+
+
+
+
+
+
+// --------------------------- Student Attendance --------------------------- //
+
+
+
+function getStudentAttendance(){
+
+    let studentAttendance = {};
+    let fromDate = document.getElementById("fromDateAttendance").value;
+    let toDate = document.getElementById("toDateAttendance").value;
+
+    fromDate = new Date(fromDate);
+    toDate = new Date(toDate);
+    console.log("From Date => ", fromDate);
+    console.log("To Date => ", toDate);
+
+    let data = {
+        "task" : "Get Particular Person Attendance", 
+        "loggedInUser" : document.getElementById("userId").textContent, 
+        "instituteId" : document.getElementById("instituteId").textContent, 
+        "userId" : document.getElementById("userId").textContent, 
+        "sessionId" : document.getElementById("sessionId").textContent,
+        "authority" : document.getElementById("authority").textContent,
+        "fromDate" : fromDate.getDate(),
+        "fromMonth" : fromDate.getMonth()+1,
+        "fromYear" : fromDate.getFullYear(),
+        "toDate" : toDate.getDate(),
+        "toMonth" : toDate.getMonth()+1,
+        "toYear" : toDate.getFullYear(),
+        "forUser" : document.getElementById("userId").textContent,
+    };
+    
+    let onLoadFunction = function(){
+        if( this.status != 200 ){
+            alert("Something Went Wrong!");
+        }
+        else{
+            let responseText = this.responseText.replace(/(\r\n|\n|\r)/gm, "");
+            if( responseText.includes("Success") ){
+                let response = JSON.parse(responseText);
+                studentAttendance = response.personAttendance;
+                console.log(studentAttendance);
+            }
+            else{
+                alert(responseText);
+            }
+        }
+    }
+
+    // Making the AJAX Request //
+    makeAJAXRequest("POST", "../../Server/Utilities/InstituteSpecificUtilities.php", data, onLoadFunction, false);
+    return studentAttendance;
+}
+
+
+
+
+function showStudentAttendance(e){
+
+    e.preventDefault();
+    getStudentAttendance();
+}
+
+
+
+
+document.getElementById("showStudentAttedance").addEventListener("click", showStudentAttendance);

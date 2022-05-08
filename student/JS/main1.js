@@ -15,13 +15,12 @@ function getDefaultAttendanceDates(){
     let currDate = new Date();
     let starting, ending;
 
+    // If today is 1st of Jan then the starting date = 1st Jan last year, ending date = 31st dec last year //
     if( currDate.getDate() == 1 && currDate.getMonth() == 0 ){
         currDate.setDate(currDate.getDate()-1);
         starting = currDate.getFullYear() + "/1/1", ending = currDate.getFullYear() + "/12/31";
     }
-    else if( currDate.getDate() == 2 && currDate.getMonth() == 0 ){
-        starting = ending = currDate.getFullYear() + "/1/1";
-    }
+    // Else the starting date = 1st Jan current year, ending date = yesterday's date //
     else{
         currDate.setDate(currDate.getDate()-1);
         starting = currDate.getFullYear() + "/1/1", ending = currDate.getFullYear() + "/" + (currDate.getMonth()+1) + "/" + currDate.getDate();
@@ -490,7 +489,7 @@ function initializeStudentDetails(){
     greetings.innerText = (currDate.getHours() < 12)? "Good Morning" : (currDate.getHours() < 17)? "Good Afternoon" : "Good Evening";
     greetings.innerText += (" " + studentData.name);
     
-
+    console.log(studentData);
     // Seeting up the Fee Details //
     document.getElementById("submitedFees").innerText = "Submitted =" + " " + studentData.feeSubmitted;
     document.getElementById("remainingFees").innerText = "Remaining =" + " " + (studentData.totalFee - studentData.feeSubmitted);
@@ -502,8 +501,8 @@ function initializeStudentDetails(){
     document.getElementById("totalDays").innerText = "Total =" + " " + studentAttendance.totalDays;
     
 
-    let feePercentage = (studentData.totalFee == 0)? 100.0 : (studentData.feeSubmitted/studentData.totalFee) * 100;
-    let attendancePercentage = (studentAttendance.totalDays == 0)? 100.0 : ((studentAttendance.presents/studentAttendance.totalDays) * 100);
+    let feePercentage = (studentData.totalFee == 0)? 0 : (studentData.feeSubmitted/studentData.totalFee) * 100;
+    let attendancePercentage = (studentAttendance.totalDays == 0)? 0 : ((studentAttendance.presents/studentAttendance.totalDays) * 100);
     updatePercentages('feesProgress', feePercentage.toFixed(1));
     updatePercentages('attendanceProgress', attendancePercentage.toFixed(1));
 }

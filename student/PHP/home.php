@@ -112,9 +112,9 @@ if( isUserAuthenticated("student") == false ){
 
 
             <div id="datepicker" class="forms">
-                <input type="date" name="" id="">
-                <input type="date" name="" id="">
-                <button onclick="return false;">Submit</button>
+                <input id="fromDateAttendance" type="date" name="">
+                <input id="toDateAttendance" type="date" name="">
+                <button id="showStudentAttedance">Submit</button>
             </div>
         </div>
     </div>
